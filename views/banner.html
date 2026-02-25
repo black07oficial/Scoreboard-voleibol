@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Scoreboard - Banner</title>
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+            crossorigin="anonymous"
+        />
+
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+
+        <!-- Custom Css -->
+        <link rel="stylesheet" href="../resources/css/custom.css" />
+
+        <!-- Bootstrap JS -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Popper -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+            integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <script src="renderer.js"></script>
+
+        <style>
+            @font-face {
+                font-family: "Digital Display";
+                src: url("../resources/fonts/digital_display.ttf")
+                    format("truetype");
+            }
+
+            @font-face {
+                font-family: "Digital Dismay";
+                src: url("../resources/fonts/digital_dismay.otf")
+                    format("opentype");
+            }
+
+            @font-face {
+                font-family: "Gobold";
+                src: url("../resources/fonts/gobold_bold.otf")
+                    format("opentype");
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #129647;
+            }
+
+            .banner-container {
+                display: flex;
+                align-items: stretch;
+                background-color: #000000;
+                width: 100%;
+                height: 100%;
+            }
+
+            /* Logo do Gestor */
+            .gestor-section {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 25px;
+                background-color: #000000;
+                min-width: 200px;
+            }
+
+            #gestor-logo {
+                height: 90%;
+                max-height: 100px;
+                width: auto;
+                object-fit: contain;
+                background-color: transparent;
+            }
+
+            /* Container das duas linhas de times */
+            .teams-container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                height: 100%;
+                justify-content: flex-start;
+                gap: 4px;
+            }
+
+            /* Linha de cada time */
+            .team-row {
+                display: flex;
+                align-items: center;
+                flex: 1;
+                background-color: #000000;
+                padding: 0;
+            }
+
+            /* Barra de cor do time */
+            .team-color-bar {
+                width: 20px;
+                height: 100%;
+                min-height: 40px;
+            }
+
+            /* Sigla do time */
+            .team-abbrev {
+                font-family: "Gobold", sans-serif;
+                font-size: 72px;
+                font-weight: bold;
+                color: #ffffff;
+                padding: 0 15px 0 30px;
+                min-width: 150px;
+                white-space: nowrap;
+            }
+
+            /* Logo do time */
+            .team-logo {
+                height: 100px;
+                width: 100px;
+                object-fit: contain;
+                background-color: transparent;
+                margin: 0 10px 0 0;
+            }
+
+            /* Sets (vem primeiro) */
+            .sets-value {
+                font-family: "Digital Dismay", sans-serif;
+                font-size: 100px;
+                line-height: 80px;
+                color: #000000;
+                background-color: #ffff00;
+                min-width: 140px;
+                text-align: center;
+                padding: 30px 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            /* Pontuação (vem depois) */
+            .score-value {
+                font-family: "Digital Dismay", sans-serif;
+                font-size: 100px;
+                line-height: 80px;
+                color: #ffffff;
+                background-color: #ff0000;
+                min-width: 140px;
+                text-align: center;
+                margin-left: 5px;
+                padding: 30px 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            /* Linha divisória */
+            .divider {
+                width: 4px;
+                background-color: #ffffff;
+                min-height: 100%;
+                align-self: stretch;
+            }
+
+            /* Wrapper dos sets com seta */
+            .sets-wrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+                margin-left: 30px;
+            }
+
+            /* Seta indicadora de serviço */
+            .serve-indicator {
+                position: absolute;
+                left: -35px;
+                font-size: 80px;
+                color: #ffa600;
+                display: none;
+            }
+
+            .serve-indicator.active {
+                display: inline-block;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="banner-container">
+            <!-- Logo do Gestor -->
+            <div class="gestor-section" id="gestor-section">
+                <img id="gestor-logo" />
+            </div>
+
+            <!-- Linha divisória branca -->
+            <div class="divider"></div>
+
+            <!-- Container dos Times (vertical) -->
+            <div class="teams-container">
+                <!-- Time 1 (linha de cima) -->
+                <div class="team-row">
+                    <div class="team-color-bar" id="team1-color"></div>
+                    <span id="sigla-time1" class="team-abbrev">N/D</span>
+                    <img id="logo-time-01" class="team-logo" />
+                    <div class="sets-wrapper">
+                        <i
+                            id="serve-time1"
+                            class="fa fa-caret-left serve-indicator"
+                        ></i>
+                        <span id="sets-time1" class="sets-value">0</span>
+                    </div>
+                    <span id="pontuacao-time1" class="score-value">00</span>
+                </div>
+                <!-- Time 2 (linha de baixo) -->
+                <div class="team-row">
+                    <div class="team-color-bar" id="team2-color"></div>
+                    <span id="sigla-time2" class="team-abbrev">N/D</span>
+                    <img id="logo-time-02" class="team-logo" />
+                    <div class="sets-wrapper">
+                        <i
+                            id="serve-time2"
+                            class="fa fa-caret-left serve-indicator"
+                        ></i>
+                        <span id="sets-time2" class="sets-value">0</span>
+                    </div>
+                    <span id="pontuacao-time2" class="score-value">00</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const { ipcRenderer } = require("electron");
+
+            // Atualizações de pontuação
+            ipcRenderer.on("updatesFromControl", function (event, arg) {
+                switch (arg["inputOrigin"]) {
+                    case "#input-gols-time-01":
+                        document.querySelector("#pontuacao-time1").innerHTML =
+                            arg["pontuacaoFormatada"];
+                        break;
+                    case "#input-gols-time-02":
+                        document.querySelector("#pontuacao-time2").innerHTML =
+                            arg["pontuacaoFormatada"];
+                        break;
+                    case "#input-faltas-time-01":
+                        document.querySelector("#sets-time1").innerHTML =
+                            parseInt(arg["pontuacaoFormatada"]).toString();
+                        break;
+                    case "#input-faltas-time-02":
+                        document.querySelector("#sets-time2").innerHTML =
+                            parseInt(arg["pontuacaoFormatada"]).toString();
+                        break;
+                }
+            });
+
+            // Seta indicadora de serviço
+            ipcRenderer.on("getClickedButton", function (event, arg) {
+                const serve1 = document.querySelector("#serve-time1");
+                const serve2 = document.querySelector("#serve-time2");
+
+                if (arg == 1) {
+                    serve1.classList.add("active");
+                    serve2.classList.remove("active");
+                } else if (arg == 2) {
+                    serve1.classList.remove("active");
+                    serve2.classList.add("active");
+                } else {
+                    serve1.classList.remove("active");
+                    serve2.classList.remove("active");
+                }
+            });
+        </script>
+
+        <!-- Configurações: Variáveis -->
+        <script>
+            const sqlite3 = require("sqlite3").verbose();
+            const { pathToFileURL } = require("url");
+            let dbPath = require("path").join(
+                __dirname,
+                "..",
+                "scoreboard.sqlite",
+            );
+            (async () => {
+                try {
+                    const p = await ipcRenderer.invoke("get-db-path");
+                    if (p) dbPath = p;
+                } catch (e) {}
+            })();
+
+            // Função para resolver corretamente o caminho de imagens/logos
+            function resolveImageSrcForDisplay(storedPath) {
+                if (!storedPath || typeof storedPath !== "string")
+                    return "../resources/images/no-image.jpg";
+
+                const p = storedPath.replace(/\\/g, "/");
+
+                if (p.startsWith("file://")) return storedPath;
+                if (/^[a-zA-Z]:\//.test(p)) return pathToFileURL(p).href;
+
+                const isAsar =
+                    window.location &&
+                    window.location.href &&
+                    window.location.href.includes("app.asar");
+                const assetsPrefix = isAsar
+                    ? "../../assets/"
+                    : "../resources/assets/";
+
+                if (p.startsWith("../resources/assets/")) {
+                    return isAsar
+                        ? p.replace("../resources/assets/", "../../assets/")
+                        : p;
+                }
+
+                if (p.startsWith("images/")) {
+                    return assetsPrefix + p;
+                }
+
+                return p;
+            }
+        </script>
+
+        <!-- Configuracoes: Cores -->
+        <script>
+            ipcRenderer.on("reloadAll", (event, args) => {
+                getConfigEquipaGeral();
+                getConfigEquipaTime("1");
+                getConfigEquipaTime("2");
+                getConfigCores();
+                getConfigBannerCores();
+            });
+
+            var configCores;
+            async function getConfigCores() {
+                var db = new sqlite3.Database(dbPath);
+                _ = await db.serialize(() => {
+                    db.all("SELECT * FROM config_cores", (err, rows) => {
+                        if (err) {
+                            console.error(err.message);
+                        }
+                        configCores = rows;
+                        setConfigCores();
+                    });
+                });
+                db.close();
+            }
+
+            function setConfigCores() {
+                console.log(configCores);
+            }
+        </script>
+
+        <!-- Configuracoes: Equipas/Geral -->
+        <script>
+            var configEquipaGeral;
+
+            async function getConfigEquipaGeral() {
+                var db = new sqlite3.Database(dbPath);
+                _ = await db.serialize(() => {
+                    db.all(
+                        "SELECT * FROM config_equipas_geral where id = 1",
+                        (err, rows) => {
+                            if (err) {
+                                console.error(err.message);
+                            }
+                            console.log(rows);
+                            configEquipaGeral = rows;
+                            loadConfigEquipaGeral();
+                        },
+                    );
+                });
+                db.close();
+            }
+
+            function loadConfigEquipaGeral() {
+                const logoData = configEquipaGeral[0]["logo_data"];
+                if (logoData && logoData.length > 0) {
+                    const base64 = Buffer.from(logoData).toString("base64");
+                    document
+                        .querySelector("#gestor-logo")
+                        .setAttribute("src", "data:image/png;base64," + base64);
+                } else {
+                    document
+                        .querySelector("#gestor-logo")
+                        .setAttribute(
+                            "src",
+                            resolveImageSrcForDisplay(
+                                configEquipaGeral[0]["logo_caminho"],
+                            ),
+                        );
+                }
+            }
+        </script>
+
+        <!-- Configurações: Equipe times-->
+        <script>
+            var configEquipaTime01;
+            var configEquipaTime02;
+
+            async function getConfigEquipaTime(id) {
+                var db = new sqlite3.Database(dbPath);
+                _ = await db.serialize(() => {
+                    db.all(
+                        "SELECT * FROM config_equipas_times where id =" + id,
+                        (err, rows) => {
+                            if (err) {
+                                console.error(err.message);
+                            }
+                            console.log(rows);
+                            if (id === "1") {
+                                configEquipaTime01 = rows;
+                            } else {
+                                configEquipaTime02 = rows;
+                            }
+                            loadConfigEquipaTime(id);
+                        },
+                    );
+                });
+                db.close();
+            }
+
+            function loadConfigEquipaTime(equipeId) {
+                var configuration =
+                    equipeId === "1" ? configEquipaTime01 : configEquipaTime02;
+                const logoData = configuration[0]["logo_data"];
+                if (logoData && logoData.length > 0) {
+                    const base64 = Buffer.from(logoData).toString("base64");
+                    document
+                        .querySelector("#logo-time-0" + equipeId)
+                        .setAttribute("src", "data:image/png;base64," + base64);
+                } else {
+                    document
+                        .querySelector("#logo-time-0" + equipeId)
+                        .setAttribute(
+                            "src",
+                            resolveImageSrcForDisplay(
+                                configuration[0]["logo_caminho"],
+                            ),
+                        );
+                }
+                document.querySelector("#sigla-time" + equipeId).innerHTML =
+                    configuration[0]["abreviatura"];
+            }
+        </script>
+
+        <!-- Configuracoes: Banner Color -->
+        <script>
+            var configBannerCores;
+
+            async function getConfigBannerCores() {
+                var db = new sqlite3.Database(dbPath);
+                _ = await db.serialize(() => {
+                    db.all("SELECT * FROM config_banner_color", (err, rows) => {
+                        if (err) {
+                            console.error(err.message);
+                        }
+                        configBannerCores = rows;
+                        setConfigBannerCores();
+                    });
+                });
+                db.close();
+            }
+
+            function setConfigBannerCores() {
+                // Cor da barra do time 1
+                if (configBannerCores[0]["camisa_visitada_color"]) {
+                    document.querySelector(
+                        "#team1-color",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["camisa_visitada_color"];
+                }
+
+                // Cor da barra do time 2
+                if (configBannerCores[0]["camisa_visitante_color"]) {
+                    document.querySelector(
+                        "#team2-color",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["camisa_visitante_color"];
+                }
+
+                // Cor de fundo do gestor
+                if (configBannerCores[0]["gestor_fundo_color"]) {
+                    document.querySelector(
+                        "#gestor-section",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["gestor_fundo_color"];
+                }
+
+                // Chroma key
+                if (configBannerCores[0]["chroma_key_color"]) {
+                    document.body.style.backgroundColor =
+                        configBannerCores[0]["chroma_key_color"];
+                }
+
+                // Cor da pontuação
+                if (configBannerCores[0]["golos_color"]) {
+                    document.querySelector("#pontuacao-time1").style.color =
+                        configBannerCores[0]["golos_color"];
+                    document.querySelector("#pontuacao-time2").style.color =
+                        configBannerCores[0]["golos_color"];
+                }
+                if (configBannerCores[0]["golos_bg_color"]) {
+                    document.querySelector(
+                        "#pontuacao-time1",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["golos_bg_color"];
+                    document.querySelector(
+                        "#pontuacao-time2",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["golos_bg_color"];
+                }
+
+                // Cor dos sets (faltas)
+                if (configBannerCores[0]["faltas_color"]) {
+                    document.querySelector("#sets-time1").style.color =
+                        configBannerCores[0]["faltas_color"];
+                    document.querySelector("#sets-time2").style.color =
+                        configBannerCores[0]["faltas_color"];
+                }
+                if (configBannerCores[0]["faltas_bg_color"]) {
+                    document.querySelector(
+                        "#sets-time1",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["faltas_bg_color"];
+                    document.querySelector(
+                        "#sets-time2",
+                    ).style.backgroundColor =
+                        configBannerCores[0]["faltas_bg_color"];
+                }
+
+                // Cor das siglas
+                if (configBannerCores[0]["equipa_nome_color"]) {
+                    document.querySelector("#sigla-time1").style.color =
+                        configBannerCores[0]["equipa_nome_color"];
+                    document.querySelector("#sigla-time2").style.color =
+                        configBannerCores[0]["equipa_nome_color"];
+                }
+            }
+        </script>
+
+        <!-- Configuração: Inicio -->
+        <script>
+            function StartConfigEquipesGeral() {
+                getConfigEquipaGeral();
+            }
+            function StartConfigEquipes() {
+                getConfigEquipaTime("1");
+                getConfigEquipaTime("2");
+            }
+            function StartConfigCores() {
+                getConfigCores();
+            }
+            function StartConfigBanner() {
+                getConfigBannerCores();
+            }
+            window.onload = function () {
+                StartConfigCores();
+                StartConfigEquipes();
+                StartConfigEquipesGeral();
+                StartConfigBanner();
+            };
+        </script>
+    </body>
+</html>

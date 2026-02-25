@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Banner</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../resources/css/custom.css">
+
+    <!-- jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script> -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="renderer.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Digital Display';
+            src: url('../resources/fonts/digital_display.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Digital Dismay';
+            src: url('../resources/fonts/digital_dismay.otf') format('truetype');
+        }
+
+        body {
+            background-color: #129647;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container-fluid {
+            max-width: 900px !important;
+            min-width: 900px !important;
+            overflow-x: hidden;
+        }
+
+        #cronometro {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 52px;
+            line-height: 52px;
+            color: white;
+            margin-top: 32px;
+            margin-left: 16px;
+        }
+
+        #tempo-ataque {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 42px;
+            line-height: 32px;
+            color: #EAE1D0;
+            background-color: #3C3C3B;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        #periodo {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 28px;
+            line-height: 28px;
+            color: #EAE1D0;
+            margin-left: 4px;
+            margin-top: 8px;
+        }
+
+        .pontuacao {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 48px;
+            line-height: 52px;
+            color: orange;
+            /* margin-top: 68px; */
+        }
+
+        .abreviatura {
+            /* font-family: 'Digital Dismay', sans-serif; */
+            font-size: 38px;
+            line-height: 48px;
+            color: #EAE1D0;
+            font-weight: bold;
+            /* margin-top: 68px; */
+        }
+
+        .faltas {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 48px;
+            line-height: 30px;
+            color: yellow;
+        }
+
+        #fundo-ataque {
+            font-family: 'Digital Dismay', sans-serif;
+            background-color: red;
+            color: white;
+            font-size: 286px;
+            line-height: 286px;
+            border-radius: 8px;
+            height: 300px;
+            width: 100%;
+            padding-top: 22px;
+        }
+
+        #gestor-logo {
+            background-color: white;
+            padding: 20px;
+            width: 100%;
+            height: 100%;
+            /* min-height: 82px; */
+        }
+
+        #logo-time-01 {
+            background-color: transparent;
+            padding: 6px;
+            width: 100px;
+            height: 88px;
+            background-color: transparent;
+            margin-left: 0px;
+            -webkit-border-top-right-radius: 20px;
+            -webkit-border-bottom-right-radius: 20px;
+            -moz-border-radius-topright: 20px;
+            -moz-border-radius-bottomright: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        #logo-time-02 {
+            background-color: transparent;
+            padding: 6px;
+            width: 100px;
+            height: 88px;
+            background-color: transparent;
+            margin-left: 0px;
+            float: right;
+            -webkit-border-top-left-radius: 20px;
+            -webkit-border-bottom-left-radius: 20px;
+            -moz-border-radius-topleft: 20px;
+            -moz-border-radius-bottomleft: 20px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .fundo-conteudo {
+            background-color: #231F20;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        /* Estilos para exclusões no banner */
+        .banner-exclusoes {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 80px;
+        }
+
+        .banner-exclusao-item {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .banner-player-number {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 28px;
+            line-height: 28px;
+            color: white;
+        }
+
+        .banner-player-time {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 28px;
+            line-height: 28px;
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="d-flex justify-content-center align-items-center"
+        style="width: 100%; height: 100%; margin: 0px; padding: 0px;">
+        <div class="container-fluid">
+            <div class="row" style="padding: 14px 8px;">
+                <div class="col-2 d-flex justify-content-start">
+                    <div style="width: 100px; height: 100px; overflow: hidden; border-radius: 50%;">
+                        <!-- <img id="gestor-logo" src=""/> -->
+                        <img id="gestor-logo" />
+                    </div>
+                </div>
+                <div class="col-9 fundo-conteudo" id="fundo-conteudo-1">
+                    <div class="d-flex justify-content-start">
+                        <img id="logo-time-01" />
+                        <div class="container" style="margin-right:36px;">
+                            <div class="row">
+                                <div class="col-2">
+                                    <span id="sigla-time1" class="abreviatura">ACF</span>
+                                </div>
+                                <div class="col-2 d-flex justify-content-end">
+                                    <span id="pontuacao-time1" class="pontuacao">00</span>
+                                </div>
+                                <div class="col-4 ">
+                                    <span id="cronometro">00:00</span>
+                                </div>
+                                <div class="col-2 d-flex justify-content-start">
+                                    <span id="pontuacao-time2" class="pontuacao">00</span>
+                                </div>
+                                <div class="col-2">
+                                    <span id="sigla-time2" class="abreviatura">FCP</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4" style="margin-left: -8px;">
+                                    <!-- Exclusões Time 1 + Faltas na mesma linha -->
+                                    <div class="d-flex justify-content-end align-items-start">
+                                        <div class="banner-exclusoes" id="banner-exclusoes-time1"
+                                            style="margin-right: 15px;">
+                                        </div>
+                                        <span id="faltas-time1" class="faltas">00</span>
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <span id="tempo-ataque">45</span>
+                                    <span id="periodo">1º</span>
+                                </div>
+                                <div class="col-4">
+                                    <!-- Exclusões Time 2 + Faltas na mesma linha -->
+                                    <div class="d-flex justify-content-start align-items-start">
+                                        <span id="faltas-time2" class="faltas">00</span>
+                                        <div class="banner-exclusoes" id="banner-exclusoes-time2"
+                                            style="margin-left: 15px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1 d-flex justify-content-end fundo-conteudo" id="fundo-conteudo-2">
+                    <div>
+                        <img id="logo-time-02" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let widthWindowPad = 900;
+        let heightWindowPad = 200;
+
+        let oldWindowWidth = widthWindowPad;
+        let oldWindowHeight = heightWindowPad;
+        // function adjustZoom() {
+        //     const newWindowWidth = window.innerWidth;
+        //     const newWindowHeight = window.innerHeight;
+        //     if (newWindowWidth != oldWindowWidth) {
+        //         const widthZoomFactor = newWindowWidth / oldWindowWidth;
+        //         document.body.style.zoom = parseFloat(document.body.style.zoom || 1) * widthZoomFactor;
+        //         document.querySelector("html").style.alignItems = "center";
+
+        //     }
+        //     // if (newWindowHeight != oldWindowHeight) {
+        //     //     const heightZoomFactor = newWindowHeight / oldWindowHeight *1;
+        //     //     document.body.style.zoom = parseFloat(document.body.style.zoom || 1) * heightZoomFactor;
+        //     //     if (document.body.style.zoom < 0.9) {
+        //     //         document.querySelector("html").style.alignItems = "center";
+        //     //     } else {
+        //     //         document.querySelector("html").style.alignItems = "start";
+        //     //     }
+        //     // }
+        //     oldWindowWidth = newWindowWidth;
+        //     oldWindowHeight = newWindowHeight;
+        // }
+        function adjustZoom() {
+            const baseWidth = 900;
+            const baseHeight = 200;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const baseAspectRatio = baseWidth / baseHeight;
+            let scale
+            if (aspectRatio < baseAspectRatio) {
+                scale = window.innerWidth / baseWidth;
+                document.body.style.width = '100%';
+            } else {
+                scale = window.innerHeight / baseHeight;
+                document.body.style.width = (100 / (aspectRatio * 0.5)) + '%'; // Ajuste o valor 0.5 conforme necessário
+            }
+            document.body.style.zoom = scale;
+            document.body.style.height = (window.innerHeight / scale) + 'px';
+            document.body.style.alignItems = "center";
+        }
+        // Chama a função de ajuste de zoom quando o DOM estiver pronto
+        document.addEventListener("DOMContentLoaded", function () {
+            adjustZoom();
+        });
+
+        // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+        window.addEventListener("resize", function () {
+            adjustZoom();
+        });
+        const { ipcRenderer } = require('electron');
+        ipcRenderer.on('updatesFromControl', function (event, arg) {
+
+            switch (arg['inputOrigin']) {
+                case "#input-periodo":
+                    document.querySelector("#periodo").innerHTML = arg['pontuacao'] + "º";
+                    break;
+                case "#input-gols-time-01":
+                    document.querySelector("#pontuacao-time1").innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                case "#input-faltas-time-01":
+                    const element1 = document.querySelector("#faltas-time1");
+                    element1.innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                case "#input-tempo-ataque":
+                    document.querySelector("#tempo-ataque").innerHTML = arg['pontuacaoFormatada'].toString().replace('.', ":");
+                    break;
+                case "#input-gols-time-02":
+                    document.querySelector("#pontuacao-time2").innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                case "#input-faltas-time-02":
+                    const element2 = document.querySelector("#faltas-time2");
+                    element2.innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                default:
+                // code block
+            }
+
+        });
+
+        ipcRenderer.on('updateCronometro', function (event, time) {
+            document.querySelector("#cronometro").innerHTML = time;
+        });
+
+        // Converte tempo "MM:SS" para segundos
+        function parseTimeToSeconds(tempo) {
+            const parts = tempo.split(':');
+            return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+        }
+
+        // Handler para exclusões
+        ipcRenderer.on('addNovaExclusao', function (event, arg) {
+            var containerId = arg['tabela'] === "lista-time-1"
+                ? "banner-exclusoes-time1"
+                : "banner-exclusoes-time2";
+
+            updateBannerExclusoes(containerId, arg['lista']);
+        });
+
+        function updateBannerExclusoes(containerId, lista) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            // Ordenar lista por tempo (menor primeiro)
+            const listaOrdenada = lista.slice().sort((a, b) => {
+                return parseTimeToSeconds(a.exclusoes.tempo) - parseTimeToSeconds(b.exclusoes.tempo);
+            });
+
+            // Mostrar apenas 1 exclusão (a com menor tempo)
+            if (listaOrdenada.length > 0 && listaOrdenada[0]?.exclusoes) {
+                const exc = listaOrdenada[0].exclusoes;
+                const item = document.createElement('div');
+                item.className = 'banner-exclusao-item';
+                item.innerHTML = `
+                    <span class="banner-player-number">${exc.jogador}</span>
+                    <span class="banner-player-time">${exc.tempo}</span>
+                `;
+                container.appendChild(item);
+            }
+        }
+
+    </script>
+
+    <!-- Configurações: Variáveis -->
+    <script>
+        const sqlite3 = require('sqlite3').verbose();
+    </script>
+
+    <!-- Configuracoes: Cores -->
+    <script>
+        ipcRenderer.on('reloadAll', (event, args) => {
+            getConfigEquipaGeral();
+            getConfigEquipaTime("1");
+            getConfigEquipaTime("2");
+            getConfigCores();
+            getConfigBannerCores()
+        })
+        var configCores;
+        async function getConfigCores() {
+            var db = new sqlite3.Database('./scoreboard.sqlite');
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_cores", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configCores = rows;
+                    setConfigCores();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigCores() {
+
+            console.log(configCores);
+
+            ccores_background = configCores[0]["background"] ? configCores[0]["background"] : "";
+            ccores_number_background = configCores[0]["number_background"] ? configCores[0]["number_background"] : "";
+            ccores_text_borders = configCores[0]["text_borders"] ? configCores[0]["text_borders"] : "";
+            ccores_team1_name = configCores[0]["team1_name"] ? configCores[0]["team1_name"] : "";
+            ccores_team2_name = configCores[0]["team2_name"] ? configCores[0]["team2_name"] : "";
+            ccores_main_clock = configCores[0]["main_clock"] ? configCores[0]["main_clock"] : "";
+            ccores_shot_clock = configCores[0]["shot_clock"] ? configCores[0]["shot_clock"] : "";
+            ccores_shot_clock_expiration_border = configCores[0]["shot_clock_expiration_border"] ? configCores[0]["shot_clock_expiration_border"] : "";
+            ccores_scores = configCores[0]["scores"] ? configCores[0]["scores"] : "";
+            ccores_period = configCores[0]["period"] ? configCores[0]["period"] : "";
+            ccores_shots_on_goal = configCores[0]["shots_on_goal"] ? configCores[0]["shots_on_goal"] : "";
+            ccores_fouls = configCores[0]["fouls"] ? configCores[0]["fouls"] : "";
+            ccores_penalty_player = configCores[0]["penalty_player"] ? configCores[0]["penalty_player"] : "";
+            ccores_penalty_time = configCores[0]["penalty_time"] ? configCores[0]["penalty_time"] : "";
+            ccores_display_screen_active_field = configCores[0]["display_screen_active_field"] ? configCores[0]["display_screen_active_field"] : "";
+
+            // document.querySelector("body").style.backgroundColor = ccores_background;
+
+            // document.querySelector(".cronometro").style.color = ccores_main_clock;            
+            // document.querySelector("#fundo-ataque").style.backgroundColor = ccores_shot_clock_expiration_border;            
+            // document.querySelector("#fundo-ataque span").style.color = ccores_shot_clock;
+
+        }
+
+    </script>
+
+    <!-- Configuracoes: Equipas/Geral -->
+    <script>
+        var configEquipaGeral;
+
+        async function getConfigEquipaGeral() {
+            var db = new sqlite3.Database('./scoreboard.sqlite');
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_equipas_geral where id = 1", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    console.log(rows);
+                    configEquipaGeral = rows;
+                    loadConfigEquipaGeral();
+                });
+            });
+            db.close();
+        }
+
+        function loadConfigEquipaGeral() {
+            document.querySelector('#gestor-logo').setAttribute('src', configEquipaGeral[0]["logo_caminho"]);
+        }
+
+    </script>
+
+    <!-- Configurações: Equipe times-->
+    <script>
+
+        var configEquipaTime01;
+        var configEquipaTime02;
+        async function getConfigEquipaTime(id) {
+            var db = new sqlite3.Database('./scoreboard.sqlite');
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_equipas_times where id =" + id, (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    console.log(rows);
+                    // configuration = rows;
+                    if (id === "1") {
+                        configEquipaTime01 = rows;
+                    } else {
+                        configEquipaTime02 = rows;
+                    }
+                    loadConfigEquipaTime(id);
+                });
+            });
+            db.close();
+        }
+
+        function loadConfigEquipaTime(equipeId) {
+            var configuration = equipeId === "1" ? configEquipaTime01 : configEquipaTime02;
+
+            document.querySelector("#logo-time-0" + equipeId).setAttribute('src', configuration[0]["logo_caminho"]);
+            document.querySelector("#sigla-time" + equipeId).innerHTML = configuration[0]["abreviatura"];
+        }
+
+    </script>
+
+
+    <!-- Configuracoes: Banner Color -->
+    <script>
+
+        var configBannerCores;
+        async function getConfigBannerCores() {
+            var db = new sqlite3.Database('./scoreboard.sqlite');
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_banner_color", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configBannerCores = rows;
+                    setConfigBannerCores();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigBannerCores() {
+
+            // console.log(configBannerCores);
+
+            document.querySelector("#fundo-conteudo-1").style.backgroundColor = configBannerCores[0]["fundo_color"] ? configBannerCores[0]["fundo_color"] : "";
+            document.querySelector("#fundo-conteudo-2").style.backgroundColor = configBannerCores[0]["fundo_color"] ? configBannerCores[0]["fundo_color"] : "";
+
+            document.querySelector("#sigla-time1").style.color = configBannerCores[0]["equipa_nome_color"] ? configBannerCores[0]["equipa_nome_color"] : "";
+            document.querySelector("#sigla-time2").style.color = configBannerCores[0]["equipa_nome_color"] ? configBannerCores[0]["equipa_nome_color"] : "";
+
+            // Cores no fundo dos containers de logo (substitui a área verde pela cor do time)
+            document.querySelector("#logo-time-01").style.backgroundColor = configBannerCores[0]["camisa_visitada_color"] ? configBannerCores[0]["camisa_visitada_color"] : "transparent";
+            document.querySelector("#logo-time-02").style.backgroundColor = configBannerCores[0]["camisa_visitante_color"] ? configBannerCores[0]["camisa_visitante_color"] : "transparent";
+
+            document.querySelector("#pontuacao-time1").style.color = configBannerCores[0]["golos_color"] ? configBannerCores[0]["golos_color"] : "";
+            document.querySelector("#pontuacao-time2").style.color = configBannerCores[0]["golos_color"] ? configBannerCores[0]["golos_color"] : "";
+
+            document.querySelector("#faltas-time1").style.color = configBannerCores[0]["faltas_color"] ? configBannerCores[0]["faltas_color"] : "";
+            document.querySelector("#faltas-time2").style.color = configBannerCores[0]["faltas_color"] ? configBannerCores[0]["faltas_color"] : "";
+            document.querySelector("#tempo-ataque").style.color = configBannerCores[0]["tempo_ataque_color"] ? configBannerCores[0]["tempo_ataque_color"] : "";
+            document.querySelector("body").style.backgroundColor = configBannerCores[0]["chroma_key_color"] ? configBannerCores[0]["chroma_key_color"] : "";
+
+            document.querySelector("#cronometro").style.color = configBannerCores[0]["tempo_jogo_color"] ? configBannerCores[0]["tempo_jogo_color"] : "";
+            document.querySelector("#periodo").style.color = configBannerCores[0]["parte_jogo_color"] ? configBannerCores[0]["parte_jogo_color"] : "";
+
+            document.querySelector("#gestor-logo").style.backgroundColor = configBannerCores[0]["gestor_fundo_color"] ? configBannerCores[0]["gestor_fundo_color"] : "";
+
+            // document.querySelector("#inputColor12").value = configBannerCores[0]["gestor_logo_color"] ? configBannerCores[0]["gestor_logo_color"] : "";
+
+        }
+
+    </script>
+
+    <!-- Configuração: Inicio -->
+    <script>
+        function StartConfigEquipesGeral() {
+            getConfigEquipaGeral();
+        }
+        function StartConfigEquipes() {
+            getConfigEquipaTime("1");
+            getConfigEquipaTime("2");
+        }
+        function StartConfigCores() {
+            getConfigCores();
+        }
+        function StartConfigBanner() {
+            getConfigBannerCores();
+        }
+        window.onload = function () {
+            StartConfigCores();
+            StartConfigEquipes();
+            StartConfigEquipesGeral();
+            StartConfigBanner();
+        }
+    </script>
+
+</body>
+
+</html>

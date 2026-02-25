@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Configurações</title>
+    <!-- Captura global de erros -->
+    <script src="../resources/js/error-capture.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="../resources/css/config.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../resources/css/custom.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Configuration Css -->
+    <link rel="stylesheet" href="../resources/css/configuration.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Gobold';
+            src: url('../resources/fonts/gobold_bold.otf') format('truetype');
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body {
+            /* overflow: hidden; */
+            font-family: 'Gobold';
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+        }
+
+        .btn-simples {
+            background-color: #EAE1D0 !important;
+            border-radius: 12px !important;
+        }
+
+        .input-simple {
+            border-radius: 12px !important;
+            width: 120px !important;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #92652A #EBD7C9;
+        }
+
+        /* Chrome, Edge and Safari */
+        *::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        *::-webkit-scrollbar-track {
+            border-radius: 0px;
+            background-color: #EBD7C9;
+            border: 1px solid #BA7F27;
+        }
+
+        *::-webkit-scrollbar-track:hover {
+            background-color: #EBD7C9;
+        }
+
+        *::-webkit-scrollbar-track:active {
+            background-color: #EBD7C9;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            background-color: #92652A;
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background-color: #B98035;
+        }
+
+        *::-webkit-scrollbar-thumb:active {
+            background-color: #B98035;
+        }
+
+
+        .lista-jogadores {
+            border-collapse: collapse !important;
+            border-spacing: 0 !important;
+        }
+
+        .lista-jogadores tbody {
+            height: 600px;
+            display: block;
+            width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-collapse: collapse;
+            border-spacing: 0 !important;
+        }
+
+        .textVerifica {
+            width: 300px;
+        }
+
+        .textNumber {
+            width: 50px;
+        }
+
+        .lista-jogadores tbody tr {
+            display: block;
+            margin: 0 auto;
+            margin-top: 10px;
+            width: 95%;
+            height: 60px;
+        }
+
+        .lista-jogadores tbody tr td {
+            padding: 10px;
+        }
+
+        .lista-jogadores tbody tr td span {
+            font-weight: bold;
+        }
+
+        .modal-backdrop.show {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* @media (max-width:1500px) or (max-height:800px) {
+            .input-simple {
+                border-radius: 12px !important;
+                width: 100px !important;
+                font-size: 14px !important;
+            }
+
+            .textVerifica {
+                width: 250px;
+            }
+
+            .textNumber {
+                width: 40px;
+            }
+        }
+
+        @media (max-width:1400px) or (max-height:800px) {
+            .input-simple {
+                border-radius: 12px !important;
+                width: 100px !important;
+                font-size: 14px !important;
+            }
+
+            .textVerifica {
+                width: 200px;
+            }
+
+            .lista-jogadores tbody tr td span {
+                font-weight: bold;
+                font-size: 12px !important;
+            }
+
+            .lista-jogadores tbody {
+                height: 400px;
+                display: block;
+                width: 100%;
+                overflow-y: auto;
+                overflow-x: hidden;
+                border-collapse: collapse;
+                border-spacing: 0 !important;
+            }
+        } */
+    </style>
+</head>
+
+<div class="row" style="height: 93%;">
+    <div class="col-12">
+
+        <div id="opcoesPrincipais" style="margin-top: 12px; margin-left: 10px;">
+            <button class="tab-button" onclick="openTab('configuracoes', this)">Jogo setup</button>
+            <button class="tab-button" onclick="openTab('config_equipas', this)">Equipas</button>
+            <button class="tab-button" onclick="openTab('config_monitores', this)">Monitores</button>
+            <button class="tab-button selected">Vídeo/Fotos</button>
+            <button class="tab-button" onclick="openTab('config_shortcuts', this)">Shortcuts</button>
+            <button class="tab-button" onclick="openTab('config_cores', this)">Cores</button>
+            <button class="tab-button" onclick="openTab('config_sons', this)">Sons</button>
+            <button class="tab-button" onclick="openTab('config_banner_color', this)">Banner Color</button>
+            <button class="tab-button" onclick="retornar();">Voltar</button>
+        </div>
+
+        <div id="Fotos" class="tab-panel">
+            <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+
+                <div class="row" style="margin-top: 27px;">
+
+                    <div class="col-4">
+
+                        <div class="container-fluid panel-equipe">
+                            <div class="row">
+                                <div class="col-6 panel-equipe-title" style="color: red; margin-top: -24px;">
+                                    Início de Jogo
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-end">
+                                        <button id="btn-t1-cancelar" onclick="cancelarTabela(1)"
+                                            class="btn-simples d-none" style="margin-right: 8px;">Cancelar</button>
+                                        <button id="btn-t1-gravar" onclick="salvarTabela(1)" class="btn-simples"
+                                            style="margin-top: -24px; border-radius: 12px;">Gravar</button>
+                                        <button id="btn-t1-export" class="btn-simples"
+                                            style="margin-left: 8px; margin-top: -24px; border-radius: 12px;">Exportar</button>
+                                        <button id="btn-t1-import" class="btn-simples"
+                                            style="margin-left: 8px; margin-top: -24px; border-radius: 12px;">Importar</button>
+                                        <input type="file" class="d-none" accept=".json" id="input-file-1-import">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 16px;">
+                                <div class="col-11 d-flex justify-content-end">
+                                    <i onclick="setOrigemClick(1)" data-bs-toggle="modal" data-bs-target="#addRowModal"
+                                        style="font-size: 26px; font-weight: bold;"
+                                        class="fa fa-plus adicionarAnexo"></i>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div style="border: 1px solid #B2804A; border-radius: 12px; margin-top:10px;">
+                                        <table id="cfg-fotos-lista1" class="lista-jogadores">
+                                            <tbody>
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-4">
+
+                        <div class="container-fluid panel-equipe">
+                            <div class="row">
+                                <div class="col-6 panel-equipe-title" style="color: red; margin-top: -24px;">
+                                    Desconto de Tempo
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-end">
+                                        <button id="btn-t2-cancelar" onclick="cancelarTabela(2)"
+                                            class="btn-simples d-none" style="margin-right: 8px;">Cancelar</button>
+                                        <button id="btn-t2-gravar" onclick="salvarTabela(2)" class="btn-simples"
+                                            style="margin-top: -24px; border-radius: 12px;">Gravar</button>
+                                        <button id="btn-t2-export" class="btn-simples"
+                                            style="margin-left: 8px; margin-top: -24px; border-radius: 12px;">Exportar</button>
+                                        <button id="btn-t2-import" class="btn-simples"
+                                            style="margin-left: 8px; margin-top: -24px; border-radius: 12px;">Importar</button>
+                                        <input type="file" class="d-none" accept=".json" id="input-file-2-import">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 16px;">
+                                <div class="col-11 d-flex justify-content-end">
+                                    <i onclick="setOrigemClick(2)" data-bs-toggle="modal"
+                                        style="font-size: 26px; font-weight: bold;" data-bs-target="#addRowModal"
+                                        class="fa fa-plus adicionarAnexo"></i>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div style="border: 1px solid #B2804A; border-radius: 12px; margin-top:10px;">
+                                        <table id="cfg-fotos-lista2" class="lista-jogadores">
+                                            <tbody>
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-4">
+
+                        <div class="container-fluid panel-equipe">
+                            <div class="row">
+                                <div class="col-6 panel-equipe-title" style="color: red;margin-top: -24px;">
+                                    Intervalo
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex justify-content-end">
+                                        <button id="btn-t3-cancelar" onclick="cancelarTabela(3)"
+                                            class="btn-simples d-none" style="margin-right: 8px;">Cancelar</button>
+                                        <button id="btn-t3-gravar" onclick="salvarTabela(3)" class="btn-simples"
+                                            style="margin-top: -24px; border-radius: 12px;">Gravar</button>
+                                        <button id="btn-t3-export" class="btn-simples"
+                                            style="margin-left: 8px; margin-top: -24px; border-radius: 12px;">Exportar</button>
+                                        <button id="btn-t3-import" class="btn-simples"
+                                            style="margin-left: 8px; margin-top: -24px; border-radius: 12px;">Importar</button>
+                                        <input type="file" class="d-none" accept=".json" id="input-file-3-import">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 16px;">
+                                <div class="col-11 d-flex justify-content-end">
+                                    <i onclick="setOrigemClick(3)" data-bs-toggle="modal"
+                                        style="font-size: 26px; font-weight: bold;" data-bs-target="#addRowModal"
+                                        class="fa fa-plus adicionarAnexo"></i>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div style="border: 1px solid #B2804A; border-radius: 12px; margin-top:10px;">
+                                        <table id="cfg-fotos-lista3" class="lista-jogadores">
+                                            <tbody>
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- <div class="row" style="margin-top: 16px">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button class="btn-acoes">Cancelar</button>
+                                <button class="btn-acoes" style="margin-left: 8px;">Confirmar</button>
+                            </div>
+                        </div> -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+<!-- Modal para visualizar anexo -->
+<div class="modal fade" id="showAnexoModal" tabindex="-1" aria-labelledby="showAnexoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showAnexoModalLabel">Visualizar anexos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+
+                <div id="anexoArquivoVideoSessao" class="mb-3">
+                    <label for="anexoArquivoVideo" class="form-label">Vídeo em anexo</label>
+                    <video id="anexoArquivoVideo" width="100%" height="300px" controls>
+                        <source type="video/mp4">
+                    </video>
+                </div>
+
+                <div id="anexoArquivoImagemSessao" class="mb-3">
+                    <label for="anexoArquivoImagem" class="form-label">Imagem em anexo</label>
+                    <img id="anexoArquivoImagem" width="100%" height="300px" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para adicionar nova linha -->
+<div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="addRowModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRowModalLabel">Adicionar Novo Anexo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-3">
+                    <label for="anexoArquivo" class="form-label">Arquivo anexo</label>
+                    <input type="file" class="form-control" id="anexoArquivo" accept="image/jpeg, image/png, video/mp4">
+                </div>
+
+                <div class="mb-3">
+                    <label for="duracaoSegundos" class="form-label">Duração (em segundos)</label>
+                    <input type="number" class="form-control" id="duracaoSegundos" min="0">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btn-adicionar-anexo">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Definição de Variaveis -->
+<script>
+    const sqlite3 = require('sqlite3').verbose();
+    const fsTemp = require('fs');
+    const pathModule = require('path');
+    const { ipcRenderer } = require('electron');
+
+    // Helper para obter caminho de recursos dinamicamente
+    function getResourcePath(subPath) {
+        const basePath = pathModule.join(__dirname, '..', 'resources', 'assets');
+        const fullPath = pathModule.join(basePath, subPath);
+        if (!fsTemp.existsSync(fullPath)) {
+            fsTemp.mkdirSync(fullPath, { recursive: true });
+        }
+        return fullPath;
+    }
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 116) {
+            // O código 116 corresponde à tecla F5
+            location.reload();
+        }
+    });
+    let widthWindowPad = 1570;
+    let heightWindowPad = 870;
+    document.body.style.zoom = 1;
+    let oldWindowWidth = widthWindowPad;
+    let oldWindowHeight = heightWindowPad;
+    function calculateScale(width) {
+        const widthIncrement = 1000;
+        const scaleIncrement = 1;
+        const maxScale = 4; // Define a escala máxima
+
+        const widthDiff = width - widthWindowPad;
+        let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
+        scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
+        console.log(scaleFactor);
+        return scaleFactor;
+    }
+
+    function adjustZoom() {
+        const baseWidth = 1570;
+        const baseHeight = 870;
+        const aspectRatio = window.innerWidth / window.innerHeight;
+        const baseAspectRatio = baseWidth / baseHeight;
+        let scale
+        if (aspectRatio < baseAspectRatio) {
+            scale = window.innerWidth / baseWidth;
+            document.body.style.width = '100%';
+        } else {
+            scale = window.innerHeight / baseHeight;
+            // document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
+        }
+        document.body.style.zoom = scale;
+        document.body.style.height = (window.innerHeight / scale) + 'px';
+        document.body.style.alignItems = "center";
+    }
+
+
+    // Chama a função de ajuste de zoom quando o DOM estiver pronto
+    // (Será chamado no listener principal de inicialização abaixo)
+
+    // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+    window.addEventListener("resize", function () {
+        document.body.style.zoom = 1; // Reset zoom
+        adjustZoom();
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // 1. Garantir path do Banco de Dados
+            const p = await ipcRenderer.invoke('get-db-path');
+            if (p) dbPath = p;
+            console.log('[Config Fotos] DB Path resolvido:', dbPath);
+
+            // 2. Ajustar Zoom
+            adjustZoom();
+
+            // 3. Carregar Dados
+            getConfigFotos(tabelaJogo);
+            getConfigFotos(tabelaIntervalo);
+            getConfigFotos(tabelaDesconto);
+
+        } catch (err) {
+            console.error('Erro fatal na inicialização:', err);
+        }
+    });
+</script>
+
+<!-- Funções auxiliares -->
+<script>
+
+    document.getElementById('btn-t1-export').addEventListener('click', function () {
+        ipcRenderer.send('exportar-t1');
+    })
+    document.getElementById('btn-t2-export').addEventListener('click', function () {
+        ipcRenderer.send('exportar-t2');
+    })
+    document.getElementById('btn-t3-export').addEventListener('click', function () {
+        ipcRenderer.send('exportar-t3');
+    })
+    document.getElementById('btn-t1-import').addEventListener('click', function () {
+        document.getElementById('input-file-1-import').click();
+    })
+    document.getElementById('btn-t2-import').addEventListener('click', function () {
+        document.getElementById('input-file-2-import').click();
+    })
+    document.getElementById('btn-t3-import').addEventListener('click', function () {
+        document.getElementById('input-file-3-import').click();
+    })
+    document.getElementById('input-file-2-import').addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Pega o arquivo selecionado
+        getJson(file).then(function (jsonData) {
+            asyncVideos(2, jsonData);
+        })
+    })
+    document.getElementById('input-file-1-import').addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Pega o arquivo selecionado
+        getJson(file).then(function (jsonData) {
+            asyncVideos(1, jsonData);
+        })
+    })
+    document.getElementById('input-file-3-import').addEventListener('change', (event) => {
+        const file = event.target.files[0]; // Pega o arquivo selecionado
+        getJson(file).then(function (jsonData) {
+            asyncVideos(3, jsonData);
+        })
+    })
+
+    function getJson(file) {
+        return new Promise(function (resolve, reject) {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        const jsonData = JSON.parse(e.target.result);
+                        resolve(jsonData);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.readAsText(file); // Lê o arquivo como texto
+            }
+        })
+
+    }
+
+    function asyncVideos(tabelaID, dados) {
+        if (!dbPath) return;
+        var sqlite3 = require('sqlite3').verbose();
+        var db = new sqlite3.Database(dbPath);
+        delete_ = `
+                DELETE FROM config_video_foto WHERE tabela_id = ${tabelaID};
+                `;
+        db.run(delete_, function (err) {
+            if (err) console.log(err);
+        });
+        dados.forEach(item => {
+            // Converter Base64 arquivo_data para Buffer (BLOB) se existir
+            let arquivo_data = null;
+            if (item.arquivo_data) {
+                arquivo_data = Buffer.from(item.arquivo_data, 'base64');
+            }
+
+            const query = `
+                    INSERT INTO config_video_foto (
+                        tabela_id,
+                        caminho_arquivo,
+                        tipo_arquivo,
+                        duracao,
+                        arquivo_data
+                    ) VALUES (?, ?, ?, ?, ?)`;
+
+            db.run(query, [
+                item.tabela_id,
+                item.caminho_arquivo,
+                item.tipo_arquivo,
+                item.duracao,
+                arquivo_data
+            ], function (err) {
+                if (err) console.log(err);
+            });
+        });
+        db.close();
+        setTimeout(function () {
+            window.location.reload();
+        }, 500);
+    }
+    function removeSecondTbody(id) {
+        var tabelas = document.querySelectorAll(id);
+        for (var i = 0; i < tabelas.length; i++) {
+            var tbodies = tabelas[i].getElementsByTagName('tbody');
+            if (tbodies.length >= 2) {
+                tabelas[i].removeChild(tbodies[1]);
+            }
+        }
+    }
+    function getIntFormat(valueString) {
+        var valueInt = parseInt(valueString);
+        if (isNaN(valueInt)) {
+            return 0;
+        }
+        return valueInt;
+    }
+    function getFileName(fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+        return filename;
+    }
+</script>
+
+<!-- Configuracoes -->
+<script>
+
+    function search(elem) {
+        elem.value = event.key;
+    }
+
+    function limpaInputKey(elem) {
+        document.getElementById(elem).value = "";
+    }
+
+    function subtrairPontuacao(elemento, limite = 0) {
+        var pontuacao = elemento.parentElement.children[0].value;
+        if (!pontuacao || typeof pontuacao === 'undefined') {
+            pontuacao = 0;
+        }
+
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao <= limite) {
+            return;
+        }
+
+        pontuacao = pontuacao - 1;
+        elemento.parentElement.children[0].value = pontuacao;
+    }
+
+    function adicionarPontuacao(elemento, limite = 99) {
+        var pontuacao = elemento.parentElement.children[0].value;
+        if (!pontuacao || typeof pontuacao === 'undefined') {
+            pontuacao = 0;
+        }
+
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao >= limite) {
+            return;
+        }
+
+        pontuacao = pontuacao + 1;
+        elemento.parentElement.children[0].value = pontuacao;
+    }
+
+    function subtrairPontuacaoById(elementoId, limite = 0) {
+        var pontuacao = document.getElementById(elementoId).value;
+        if (!pontuacao || typeof pontuacao === 'undefined') {
+            pontuacao = 0;
+        }
+
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao <= limite) {
+            return;
+        }
+
+        pontuacao = pontuacao - 1;
+        document.getElementById(elementoId).value = pontuacao;
+    }
+
+    function adicionarPontuacaoById(elementoId, limite = 99) {
+        var pontuacao = document.getElementById(elementoId).value;
+        if (!pontuacao || typeof pontuacao === 'undefined') {
+            pontuacao = 0;
+        }
+
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao >= limite) {
+            return;
+        }
+
+        pontuacao = pontuacao + 1;
+        document.getElementById(elementoId).value = pontuacao;
+    }
+
+    function limitaInput(elemento) {
+        if (elemento.value > 99) {
+            elemento.value = 99;
+        }
+    }
+
+</script>
+
+<!-- Configuracoes: Fotos/videos-->
+<script>
+    const tabelaJogo = 1;
+    const tabelaIntervalo = 2;
+    const tabelaDesconto = 3;
+
+    var origemModalAnexo = tabelaJogo;
+    var old_list = [];
+    var current_list = [];
+    var configListaAnexo;
+    var listaAnexosTemp = [];
+
+    // Caminho do banco de dados (será resolvido via IPC no DOMContentLoaded)
+    var dbPath = null;
+    // var dbPath = require('path').join(__dirname, '..', 'scoreboard.sqlite');
+    // (async () => { ... })(); // Removido para evitar race condition
+
+    var isBuzy = false;
+
+    async function getConfigFotos(tableId) {
+        var db = new sqlite3.Database(dbPath);
+        _ = await db.serialize(() => {
+
+            var queryString = "SELECT * FROM config_video_foto";
+            if (tableId) {
+                queryString += " WHERE tabela_id = " + tableId;
+            }
+
+            db.all(queryString, (err, rows) => {
+                if (err) {
+                    console.error(err.message);
+                }
+                console.log(rows);
+                configListaAnexo = rows;
+                loadConfigFotos(tableId);
+            });
+
+        });
+        db.close();
+    }
+
+    async function saveConfigFotos(tableId, anexoAtual) {
+        return new Promise(async (resolve, reject) => {
+            if (!dbPath) { reject('No DB Path'); return; }
+            isBuzy = true;
+            const tabela_id = anexoAtual['lista'];
+            const caminho_arquivo = anexoAtual['caminho'];
+            const tipo_arquivo = anexoAtual['tipo_arquivo'];
+            const duracao = anexoAtual['duracao'];
+            const arquivo_data_base64 = anexoAtual['arquivo_data'];
+
+            // Converter Base64 para Buffer (BLOB)
+            let arquivo_data = null;
+            if (arquivo_data_base64) {
+                arquivo_data = Buffer.from(arquivo_data_base64, 'base64');
+            }
+
+            const db = new sqlite3.Database(dbPath);
+            const query = `
+                        INSERT INTO config_video_foto (
+                            tabela_id,
+                            caminho_arquivo,
+                            tipo_arquivo,
+                            duracao,
+                            arquivo_data
+                        ) VALUES (?, ?, ?, ?, ?)`;
+
+            db.run(query, [tabela_id, caminho_arquivo, tipo_arquivo, duracao, arquivo_data],
+                function (err) {
+                    if (err) {
+                        ipcRenderer.send('send-alert', 'Falha ao salvar configurações, tente novamente.');
+                        console.error(err);
+                        isBuzy = false;
+                        reject(err);
+                        return;
+                    }
+                    console.log("Inclusão na tabela config_video_foto ocorreu com sucesso.");
+                    db.close();
+                    isBuzy = false;
+                    resolve();
+                });
+        });
+
+    }
+
+    async function deleteConfigFotos(tableId) {
+        return new Promise(async (resolve, reject) => {
+            isBuzy = true;
+            const db = new sqlite3.Database(dbPath);
+            try {
+                const rows = await new Promise((resolve, reject) => {
+                    const queryString = `SELECT * FROM config_video_foto WHERE tabela_id = ${tableId}`;
+                    db.all(queryString, (err, rows) => {
+                        if (err) {
+                            console.error(err.message);
+                            reject(err);
+                            return;
+                        }
+                        resolve(rows);
+                    });
+                });
+
+                for (const element of rows) {
+                    const query_select = `SELECT * FROM config_ft_vd_temp WHERE caminho = '${element.caminho_arquivo}'`;
+                    const existingRecord = await new Promise((resolve, reject) => {
+                        db.get(query_select, (err, row) => {
+                            if (err) {
+                                console.error("Erro ao verificar registro existente:", err.message);
+                                reject(err);
+                                return;
+                            }
+                            resolve(row);
+                        });
+                    });
+                    if (!existingRecord) {
+                        const query_insert = `INSERT INTO config_ft_vd_temp (id_real, caminho, excluido) VALUES (${element.id}, '${element.caminho_arquivo}', 0)`;
+                        await new Promise((resolve, reject) => {
+                            db.run(query_insert, function (err) {
+                                if (err) {
+                                    console.error("Erro ao inserir:", err.message);
+                                    reject(err);
+                                    return;
+                                }
+                                resolve();
+                            });
+                        });
+                    }
+                }
+
+                const query = `DELETE FROM config_video_foto WHERE tabela_id = ${tableId}`;
+                await new Promise((resolve, reject) => {
+                    db.run(query, function (err) {
+                        if (err) {
+                            console.error("Erro ao deletar:", err.message);
+                            reject(err);
+                            return;
+                        }
+                        console.log("Exclusão na tabela config_video_foto ocorreu com sucesso.");
+                        db.close();
+                        isBuzy = false;
+                        resolve();
+                    });
+                });
+
+                resolve();
+            } catch (error) {
+                console.error("Erro geral:", error);
+                isBuzy = false;
+                reject(error);
+            }
+        });
+
+    }
+
+    setInterval(() => {
+        var id_1 = '#cfg-fotos-lista1';
+        var id_2 = '#cfg-fotos-lista2';
+        var id_3 = '#cfg-fotos-lista3';
+        removeSecondTbody(id_1);
+        removeSecondTbody(id_2);
+        removeSecondTbody(id_3);
+    }, 100)
+    function loadConfigFotos(tableId = null) {
+
+        var tabela = "#cfg-fotos-lista1";
+        if (tableId.toString() === tabelaIntervalo.toString()) {
+            tabela = "#cfg-fotos-lista2";
+        } else if (tableId.toString() === tabelaDesconto.toString()) {
+            tabela = "#cfg-fotos-lista3";
+        }
+
+        if (tableId) {
+            apagarLinhas(tabela, tableId);
+        } else {
+            apagarLinhas("#cfg-fotos-lista1", 1);
+            apagarLinhas("#cfg-fotos-lista2", 2);
+            apagarLinhas("#cfg-fotos-lista3", 3);
+        }
+
+        for (let i = 0; i < configListaAnexo.length; i++) {
+
+            let anexoAtual = configListaAnexo[i];
+
+            id = anexoAtual['id'];
+            lista = anexoAtual['tabela_id'];
+            caminho = anexoAtual['caminho_arquivo'];
+            tipo_arquivo = anexoAtual['tipo_arquivo'];
+            duracao = anexoAtual['duracao'];
+            const arquivo_data_blob = anexoAtual['arquivo_data'];
+
+            // Converter BLOB para Base64 se existir
+            let arquivo_data_base64 = null;
+            if (arquivo_data_blob) {
+                arquivo_data_base64 = Buffer.from(arquivo_data_blob).toString('base64');
+            }
+
+            var body = {
+                id: id,
+                lista: lista,
+                caminho: caminho,
+                tipo_arquivo: tipo_arquivo,
+                duracao: duracao,
+                arquivo_data: arquivo_data_base64
+            };
+            listaAnexosTemp.push(body);
+
+            var nome_arquivo = getFileName(caminho);
+            var duracao_segundos = duracao;
+
+            addRow(id, nome_arquivo, duracao_segundos, tabela);
+
+        }
+
+    }
+
+    function apagarLinhas(tableName, tableId) {
+        const tbody = document.querySelector(tableName + " tbody");
+        tbody.innerHTML = '';
+
+        var indexToRemove = [];
+        for (let i = 0; i < listaAnexosTemp.length; i++) {
+            const anexoAtual = listaAnexosTemp[i];
+            if (anexoAtual['lista'].toString() != tableId.toString()) {
+                continue;
+            }
+            indexToRemove.push(i);
+        }
+
+        for (let i = 0; i < indexToRemove.length; i++) {
+            const indexAtual = indexToRemove[i];
+            listaAnexosTemp.pop(indexAtual);
+        }
+
+    }
+
+    function addRow(id, nome_arquivo, duracao_segundos, tabela) {
+        const table = document.querySelector(tabela);
+        const rows = table.querySelectorAll("tr");
+
+        const newRow = createRow(id, nome_arquivo, duracao_segundos, tabela);
+        table.querySelector("tbody").appendChild(newRow);
+    }
+
+    function createRow(id, nome_arquivo, duracao_segundos, tabela) {
+
+        var timeId = "t1";
+        if (tabela === "#cfg-fotos-lista2") {
+            timeId = "t2";
+        } else if (tabela === "#cfg-fotos-lista3") {
+            timeId = "t3";
+        }
+
+        const row = document.createElement("tr");
+        row.id = timeId + "_" + id;
+        const cell1 = document.createElement("td");
+        cell1.innerHTML = '<div style="white-space: nowrap;"><i onclick="removerLinha(this)" style="color: red; font-weight: bold; font-size: 20px; margin-right: 6px; cursor:pointer;" class="fa fa-close"></i><i onclick="verAnexo(this)" style="color: green; font-weight: bold; font-size: 18px;cursor:pointer;" data-bs-toggle="modal" data-bs-target="#showAnexoModal" class="fa fa-play" style="margin-left: 6px;"></i></div>'
+        row.appendChild(cell1);
+
+        const cell2 = document.createElement("td");
+        const div2 = document.createElement("div");
+        div2.classList.add('textVerifica')
+        div2.style.border = "1px solid #C9A680";
+        div2.style.padding = "5px";
+        div2.style.borderRadius = "14px";
+        const p1 = document.createElement("div");
+        p1.style.textAlign = "center";
+        p1.textContent = nome_arquivo;
+        div2.appendChild(p1);
+        cell2.appendChild(div2);
+        row.appendChild(cell2);
+
+        const cell3 = document.createElement("td");
+        const div3 = document.createElement("div");
+        div3.style.border = "1px solid #C9A680";
+        div3.classList.add("textNumber");
+        div3.style.padding = "5px";
+        div3.style.textAlign = "center";
+        div3.style.borderRadius = "14px";
+        const p2 = document.createElement("div");
+        p2.style.textAlign = "center";
+        p2.textContent = duracao_segundos;
+        div3.appendChild(p2);
+        cell3.appendChild(div3);
+        row.appendChild(cell3);
+
+        return row;
+
+    }
+
+    function removerLinha(elem) {
+        var rowId = elem.parentElement.parentElement.parentElement.id;
+        if ($('#' + rowId + ' td div div').html() == "volei.png" || $('#' + rowId + ' td div div').html().includes("ideiasdeletra") || $('#' + rowId + ' td div div').html().includes("Ideiasdeletra")) {
+            var jquery = $.confirm({
+                title: 'Atenção!',
+                content: 'Por favor, selecione a senha de administrador para alterar a imagem.' + `
+                <div style="padding: 4px;">
+                    <div class="form-group mt-2">
+                        <input type="password" placeholder="Senha" class="pass form-control" required />
+                    </div>
+                </div>`,
+                type: 'red',
+                buttons: {
+                    cancel: {
+                        text: 'Cancelar',
+                        btnClass: 'btn-danger',
+                    },
+                    confirm: {
+                        text: 'Confirmar',
+                        btnClass: 'btn-success',
+                        action: function () {
+                            var alerta = null;
+                            const pass = document.querySelector('.pass').value
+                            ipcRenderer.send('validPassword', pass);
+                            ipcRenderer.on('validPassword', (event, valid) => {
+                                ipcRenderer.removeAllListeners('validPassword');
+                                if (valid) {
+                                    console.log(elem);
+
+                                    console.log(rowId);
+                                    document.querySelector("#" + rowId).remove();
+                                    rowId = rowId.replace('t1_', '').replace('t2_', '').replace('t3_', '');
+
+                                    var index = -1;
+                                    index = getIndexAnexo(rowId);
+                                    if (index === -1) {
+                                        return;
+                                    }
+                                    // Deletar imediatamente do banco de dados
+                                    const anexo = listaAnexosTemp[index];
+                                    if (anexo && anexo.id) {
+                                        deleteFromDatabaseById(anexo.id);
+                                    }
+                                    listaAnexosTemp.splice(index, 1);
+                                } else {
+                                    alerta = $.alert({
+                                        title: 'Erro',
+                                        content: 'Senha Incorreta',
+                                    })
+                                }
+                            })
+                        },
+                    },
+
+                }
+            });
+
+        } else {
+            console.log(elem);
+
+            console.log(rowId);
+            document.querySelector("#" + rowId).remove();
+            rowId = rowId.replace('t1_', '').replace('t2_', '').replace('t3_', '');
+
+            var index = -1;
+            index = getIndexAnexo(rowId);
+            if (index === -1) {
+                return;
+            }
+            // Deletar imediatamente do banco de dados
+            const anexo = listaAnexosTemp[index];
+            if (anexo && anexo.id) {
+                deleteFromDatabaseById(anexo.id);
+            }
+            listaAnexosTemp.splice(index, 1);
+        }
+
+
+    }
+
+    // Função para deletar um registro imediatamente do banco de dados
+    function deleteFromDatabaseById(recordId) {
+        if (!dbPath) return;
+        const db = new sqlite3.Database(dbPath);
+        const query = `DELETE FROM config_video_foto WHERE id = ?`;
+        db.run(query, [recordId], function (err) {
+            if (err) {
+                console.error('Erro ao deletar do banco:', err);
+            } else {
+                console.log('Registro deletado do banco de dados:', recordId);
+            }
+            db.close();
+        });
+    }
+
+    function setOrigemClick(origem) {
+        origemModalAnexo = origem;
+    }
+
+    function getIndexAnexo(rowId) {
+        var index = -1;
+        for (let i = 0; i < listaAnexosTemp.length; i++) {
+            const anexoAtual = listaAnexosTemp[i];
+            console.log(anexoAtual);
+            if (anexoAtual['id'].toString() != rowId.toString()) {
+                continue;
+            }
+            index = i;
+            break;
+        }
+        return index;
+    }
+
+    function verAnexo(elem) {
+        var rowId = elem.parentElement.parentElement.parentElement.id;
+        rowId = rowId.replace('t1_', '').replace('t2_', '').replace('t3_', '');
+
+        index = getIndexAnexo(rowId);
+        if (index === -1) {
+            return;
+        }
+
+        const anexo = listaAnexosTemp[index];
+        // Usar data URL do BLOB se disponível, senão usar caminho (retro-compatibilidade)
+        let mediaSrc = anexo['caminho'];
+        if (anexo['arquivo_data']) {
+            mediaSrc = `data:${anexo['tipo_arquivo']};base64,${anexo['arquivo_data']}`;
+        }
+
+        if (anexo['tipo_arquivo'] === 'video/mp4') {
+            document.querySelector("#anexoArquivoVideoSessao").style.display = "";
+            document.querySelector("#anexoArquivoImagemSessao").style.display = "none";
+            document.querySelector("#anexoArquivoVideo source").setAttribute('src', mediaSrc);
+            document.querySelector("#anexoArquivoVideo").load();
+
+        } else {
+            document.querySelector("#anexoArquivoImagemSessao").style.display = "";
+            document.querySelector("#anexoArquivoVideoSessao").style.display = "none";
+            document.querySelector("#anexoArquivoImagem").setAttribute('src', mediaSrc);
+        }
+    }
+
+    function salvarImagem(caminho_arquivo, tabela_id) {
+
+        var newPathFile = getResourcePath('images/temp/config_fotos') + '/';
+        if (caminho_arquivo.includes('volei.png')) {
+            var newPathFile = "../resources/images/temp/config_fotos/";
+        }
+        var pasta = "";
+
+        if (tabela_id === tabelaJogo) {
+            pasta = "lista_01/";
+        } else if (tabela_id === tabelaIntervalo) {
+            pasta = "lista_02/";
+        } else {
+            pasta = "lista_03/";
+        }
+        newPathFile += pasta;
+        newPathFile += getFileName(caminho_arquivo);
+
+        var body = {
+            imagePrefixo: getFileName(caminho_arquivo).toString(),
+            path: caminho_arquivo,
+            newPath: 'images/temp/config_fotos/' + pasta.replace('/', '')
+        };
+        ipcRenderer.send('salvarArquivo', body);
+        return newPathFile;
+
+    }
+
+    function cancelarTabela(tableId) {
+        getConfigFotos(tableId);
+    }
+
+    async function salvarTabela(tableId) {
+        try {
+            // Deletar registros antigos com a função deleteConfigFotos(tableId)
+            await deleteConfigFotos(tableId);
+            // Iterar sobre os anexos e salvar configuração atualizada (BLOB já está no listaAnexosTemp)
+            for (let i = 0; i < listaAnexosTemp.length; i++) {
+                const anexoAtual = listaAnexosTemp[i];
+                if (anexoAtual['lista'] !== tableId || !anexoAtual['caminho']) {
+                    continue;
+                }
+                // Não precisa mais copiar arquivo - dados binários já estão em arquivo_data
+                await saveConfigFotos(anexoAtual['lista'], anexoAtual);
+            }
+
+            // Consultar registros atualizados e imprimir
+            const db = new sqlite3.Database(dbPath);
+            current_list = await new Promise((resolve, reject) => {
+                const queryString = `SELECT * FROM config_video_foto WHERE tabela_id = ${tableId}`;
+                db.all(queryString, (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows);
+                });
+            });
+            old_list = await new Promise((resolve, reject) => {
+                const queryString = `SELECT * FROM config_ft_vd_temp`;
+                db.all(queryString, (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows);
+                });
+            });
+            var element_diferent = compare_arr_rows(current_list, old_list);
+            console.log(element_diferent);
+            const _ = await new Promise((resolve, reject) => {
+                const queryString = `DELETE FROM config_ft_vd_temp`;
+                db.all(queryString, (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows);
+                });
+            });
+            db.close();
+        } catch (error) {
+            console.error("Erro geral:", error);
+        }
+        ipcRenderer.send('reload');
+    }
+    function verificarArquivo(arquivo) {
+        return new Promise((resolve, reject) => {
+            ipcRenderer.send('verificarArquivo', arquivo);
+            ipcRenderer.on('arquivoVerificado', function (event, val) {
+                resolve(val);
+            });
+        });
+    }
+    document.querySelector('button#btn-adicionar-anexo').addEventListener('click', async function () {
+        var tabela = "#cfg-fotos-lista1";
+        if (origemModalAnexo === tabelaIntervalo) {
+            tabela = "#cfg-fotos-lista2";
+        } else if (origemModalAnexo === tabelaDesconto) {
+            tabela = "#cfg-fotos-lista3";
+        }
+
+        const newId = Math.random().toString(16).slice(12);
+        const file = document.querySelector('#anexoArquivo').files[0];
+        var duracao = document.querySelector('#duracaoSegundos').value;
+        if (!duracao || duracao == '' || duracao == null || duracao == undefined) {
+            duracao = 0;
+        }
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'video/mp4')) {
+            try {
+                // Ler arquivo nativamente usando FileReader (ideal para buffers maiores sem quebrar memória)
+                const base64Data = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file);
+                });
+
+                var body = {
+                    id: newId,
+                    lista: origemModalAnexo,
+                    caminho: file.name, // Extrai nome nativo do arquivo
+                    tipo_arquivo: file.type,
+                    duracao: duracao,
+                    arquivo_data: base64Data // Dados binários em Base64
+                };
+
+                listaAnexosTemp.push(body);
+                document.querySelector('#anexoArquivo').value = null;
+                document.querySelector('#duracaoSegundos').value = null;
+                addRow(newId, file.name, duracao, tabela);
+            } catch (error) {
+                console.error('Erro ao ler arquivo:', error);
+                ipcRenderer.send('send-alert', 'Erro ao ler arquivo: ' + error.message);
+            }
+        } else {
+            ipcRenderer.send('send-alert', 'Por favor, selecione um arquivo de formato .jpg, .png, .mp4 ou .mov');
+            return;
+        }
+    });
+
+    function compare_arr_rows(recente, antigo) {
+        if (recente.length > 0) {
+            const idsRecentes = recente.map(item => item.caminho_arquivo);
+            return antigo.filter(item => !idsRecentes.includes(item.caminho));
+        }
+        if (recente.length == 0) {
+            return antigo;
+        }
+        return [];
+    }
+</script>
+
+<script>
+    // window.onload = function () {
+    //     getConfigFotos(tabelaJogo);
+    //     getConfigFotos(tabelaIntervalo);
+    //     getConfigFotos(tabelaDesconto);
+    // }
+
+    function openTab(tabName, elem) {
+        window.location.href = tabName + ".html";
+    }
+
+    function retornar() {
+        if (confirm("Você tem certeza que deseja reiniciar tudo?\n\n" +
+            "Clique em OK para salvar as alterações e reiniciar.\n" +
+            "Clique em Cancelar caso não deseje reiniciar.")) {
+            ipcRenderer.send("closeWindowConfig", true);
+        } else {
+            ipcRenderer.send("closeWindowConfig", false);
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

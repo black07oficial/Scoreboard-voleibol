@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Configurações</title>
+    <!-- Captura global de erros -->
+    <script src="../resources/js/error-capture.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../resources/css/config.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Configuration Css -->
+    <link rel="stylesheet" href="../resources/css/configuration.css">
+    <style>
+        @font-face {
+            font-family: 'Gobold';
+            src: url('../resources/fonts/gobold_bold.otf') format('truetype');
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body {
+            /* overflow: hidden; */
+            font-family: 'Gobold';
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+        }
+
+        .modal-backdrop.show {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row" style="height: 93%;">
+        <div class="col-12">
+
+            <div id="opcoesPrincipais" style="margin-top: 12px; margin-left: 10px;">
+                <button class="tab-button selected">Jogo setup</button>
+                <button class="tab-button" onclick="openTab('config_equipas', this)">Equipas</button>
+                <button class="tab-button" onclick="openTab('config_monitores', this)">Monitores</button>
+                <button class="tab-button" onclick="openTab('config_fotos', this)">Vídeo/Fotos</button>
+                <button class="tab-button" onclick="openTab('config_shortcuts', this)">Shortcuts</button>
+                <button class="tab-button" onclick="openTab('config_cores', this)">Cores</button>
+                <button class="tab-button" onclick="openTab('config_sons', this)">Sons</button>
+                <button class="tab-button" onclick="openTab('config_banner_color', this)">Banner Color</button>
+                <button class="tab-button" onclick="retornar();">Sair</button>
+            </div>
+
+            <div id="Setup" class="tab-panel">
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <div class="row w-50">
+                                <div class="col-6">
+                                    <span class="option-label">Tempo de Jogo</span>
+                                </div>
+                                <div class="col-6">
+                                    <select id="config_setup-tempo-jogo"
+                                        style="background-color:#EAE1D0; border-radius:14px; padding: 7px; font-size: 20px; font-weight:bold; border: none;">
+                                        <option value="crescente" selected>Crescente</option>
+                                        <option value="decrescente">Decrescente</option>
+                                        <option value="hora_local">Hora Local</option>
+                                    </select>
+                                </div>
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <div class="row mt-3">
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                Minutos :
+                                            </div>
+                                            <div class="group-class">
+                                                <input id="config_setup-duracao-jogo-min" type="number" value="15"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border: none;">
+
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div>
+                                                Segundos :
+                                            </div>
+                                            <div class="group-class">
+                                                <input id="config_setup-duracao-jogo-seg" type="number" value="00"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border: none;">
+
+                                                <i onclick="adicionarPontuacaoById('config_setup-duracao-jogo-seg')"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacaoById('config_setup-duracao-jogo-seg')"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-none">
+                                    <div style="border-bottom: #050200 2px solid; width: 100%; margin-top: 20px;">
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end">
+                                    <span class="option-label">Desconto de Tempo</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mt-3">
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-desconto-min" type="number" value="1"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:2px; border: none;">
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-desconto-seg" type="number" value="0"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:2px; border: none;">
+                                                <i onclick="adicionarPontuacaoById('config_setup-desconto-seg')"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacaoById('config_setup-desconto-seg')"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end">
+                                    <span class="option-label">Intervalo de jogo</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mt-3">
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-intervalo-min" type="number" value="1"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border: none;">
+
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-intervalo-seg" type="number" value="0"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border:none;">
+
+                                                <i onclick="adicionarPontuacaoById('config_setup-intervalo-seg')"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacaoById('config_setup-intervalo-seg')"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end">
+                                    <div class="label-checkbox" style="white-space: nowrap; margin-left:-5px;">
+                                        <span>Tempo para o fim Desconto Tempo</span>
+                                    </div>
+                                    <input id="config_setup-buzinar-faltar" type="checkbox"
+                                        style="accent-color: #000; width: 25px;height: 25px; border-radius:2px; margin-left: 10px;"
+                                        checked>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mt-3">
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-faltar-min" type="number" value="0"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border: none;">
+
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-faltar-seg" type="number" value="0"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="0"
+                                                    max="99" pattern="\d{1,2}" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border:none;">
+
+                                                <i onclick="adicionarPontuacaoById('config_setup-faltar-seg')"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacaoById('config_setup-faltar-seg')"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end">
+                                    <div class="label-checkbox" style="white-space: nowrap; margin-left:-5px;">
+                                        <span>Tempo para o fim do Intervalo</span>
+                                    </div>
+                                    <input id="config_setup-tocar-finalizar-desconto" type="checkbox"
+                                        style="accent-color: #000; width: 25px;height: 25px; border-radius:2px; margin-left: 10px;"
+                                        checked>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mt-3">
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-faltar-min-int" type="number" value="0"
+                                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}"
+                                                    maxlength="2" maxlength="2" oninput="limitaValor(this)"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border: none;">
+
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-faltar-seg-int" type="number" value="0"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="0"
+                                                    max="99" pattern="\d{1,2}" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border:none;">
+
+                                                <i onclick="adicionarPontuacaoById('config_setup-faltar-seg-int')"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacaoById('config_setup-faltar-seg-int')"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div style="border-bottom: #050200 2px solid; width: 100%; margin-top: 20px;">
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end">
+                                    <span class="option-label">Aquecimento de jogo</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mt-3">
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-aquecimento-min" type="number" value="1"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="0"
+                                                    max="99" pattern="\d{1,2}" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:2px; border: none;">
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-aquecimento-seg" type="number" value="0"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="0"
+                                                    max="99" pattern="\d{1,2}" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:2px; border: none;">
+                                                <i onclick="adicionarPontuacaoById('config_setup-aquecimento-seg')"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacaoById('config_setup-aquecimento-seg')"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-none">
+                                    <div style="border-bottom: #050200 2px solid; width: 100%; margin-top: 20px;">
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end d-none">
+                                    <div class="label-checkbox">
+                                        <span>Tempo de ataque</span>
+                                    </div>
+                                    <input id="mostrar_ataque" type="checkbox"
+                                        style="accent-color: #000; width: 25px;height: 25px; border-radius:2px; margin-left: 29px;"
+                                        checked>
+                                </div>
+                                <div class="col-6 d-none">
+                                    <div class="row mt-3">
+                                        <div class="col-6"></div>
+                                        <div class="col-6 d-none" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-faltar-min" type="number" value="0"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="0"
+                                                    max="99" pattern="\d{1,2}" maxlength="2" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border: none;">
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-tempo-ataque" type="number" value="0"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="0"
+                                                    max="99" pattern="\d{1,2}" maxlength="2" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border:none;">
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 d-flex justify-content-start align-items-end mt-3 d-none">
+                                    <div class="label-checkbox">
+                                        <span>Tocar ao finalizar</span>
+                                    </div>
+                                    <input id="tocar_qd_finalizar_atq" type="checkbox"
+                                        style="accent-color: #000; width: 25px;height: 25px; border-radius:2px; margin-left: 12px;"
+                                        checked>
+                                </div>
+                                <div class="col-6 d-none"></div>
+                                <div class="col-6 d-flex justify-content-start align-items-end mt-3 d-none">
+                                    <div class="label-checkbox">
+                                        <span>Tempo do Slide de Equipa</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 d-none">
+                                    <div class="row mt-3">
+                                        <div class="col-6"></div>
+                                        <div class="col-6" style="display: flex; flex-direction: column;">
+                                            <div class="group-class">
+                                                <input id="config_setup-tempo-slide" type="number" value="1"
+                                                    onblur="limitaInput(this);" oninput="limitaValor(this)" min="1"
+                                                    max="99" pattern="\d{1,2}" maxlength="2"
+                                                    style="background-color:#EAE1D0; border-radius:4px; border:none;">
+                                                <i onclick="adicionarPontuacao(this)"
+                                                    class="acres fa fa-caret-up btn-acrescimo"></i>
+                                                <i onclick="subtrairPontuacao(this)"
+                                                    class="down fa fa-caret-down btn-subtracao"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div style="border-bottom: #050200 2px solid; width: 100%; margin-top: 20px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-2">
+                            <span class="option-label">Tempo de ataque</span>
+                        </div>
+                        <div class="col-4">
+                            <div id="painelTempoAtaque">
+                                <input id="config_setup-tempo-ataque" type="number" value="00"
+                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                    style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                <i onclick="adicionarPontuacao(this)" class="fa fa-caret-up btn-acrescimo"></i>
+                                <i onclick="subtrairPontuacao(this)" class="fa fa-caret-down btn-subtracao"></i>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row d-none" style="margin-top: 8px;">
+                        <!-- <div class="col-2">
+                            <span class="option-label">Duração de Jogo</span>
+                        </div>
+                        <div class="col-6">
+                            <div id="painelTempoJogo">
+                                Minutos :
+                                <input id="config_setup-duracao-jogo-min" type="number" value="15"
+                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                    style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                <i onclick="adicionarPontuacao(this)" class="fa fa-caret-up btn-acrescimo"></i>
+                                <i onclick="subtrairPontuacao(this)" class="fa fa-caret-down btn-subtracao"></i>
+
+                                <span style="margin-left: 8px;">Segundos : </span>
+                                <input id="config_setup-duracao-jogo-seg" type="number" value="00"
+                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                    style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                <i onclick="adicionarPontuacaoById('config_setup-duracao-jogo-seg')"
+                                    class="fa fa-caret-up btn-acrescimo"></i>
+                                <i onclick="subtrairPontuacaoById('config_setup-duracao-jogo-seg')"
+                                    class="fa fa-caret-down btn-subtracao"></i>
+                            </div>
+                        </div> -->
+                        <div class="col-2" style="display: none;">
+                            <span class="option-label">Mostrar no écran</span>
+                        </div>
+                        <div class="col-2" style="display: none;">
+                            <div style="color: #693C15">
+                                <input type="radio" id="config_setup-mostrar-ecran-tempo" name="opcoes" value="T"
+                                    checked>
+                                <label for="config_setup-mostrar-ecran-tempo">Tempo</label><br>
+
+                                <input type="radio" id="config_setup-mostrar-ecran-logo" name="opcoes" value="L">
+                                <label for="config_setup-mostrar-ecran-logo">Logo</label><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-none" style="margin-top: 2px;">
+                        <!-- <div class="col-2">
+                            <span class="option-label" style="font-size: 16px;">Desconto de tempo</span>
+                        </div>
+                        <div class="col-6">
+                            <div id="painelDescontoTempo">
+                                Minutos:
+                                <div class="group-class">
+                                    <input id="config_setup-desconto-min" type="number" value="1"
+                                        onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                        
+                                        style="background-color:#EAE1D0; border-radius:2px; border: none;">
+                                    <div class="group-class-in">
+                                    </div>
+                                    <i onclick="adicionarPontuacao(this)"
+                                        class="acres fa fa-caret-up btn-acrescimo"></i>
+                                    <i onclick="subtrairPontuacao(this)"
+                                        class="down fa fa-caret-down btn-subtracao"></i>
+                                </div>
+
+                                <span style="margin-left: 8px;">Segundos : </span>
+                                <div class="group-class">
+                                    <input id="config_setup-desconto-seg" type="number" value="0"
+                                        onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                        style="background-color:#EAE1D0; border-radius:2px; border: none;">
+                                    <div class="group-class-in">
+                                    </div>
+                                    <i onclick="adicionarPontuacaoById('config_setup-desconto-seg')"
+                                        class="acres fa fa-caret-up btn-acrescimo"></i>
+                                    <i onclick="subtrairPontuacaoById('config_setup-desconto-seg')"
+                                        class="down fa fa-caret-down btn-subtracao"></i>
+
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row d-none" style="margin-top: 8px;">
+                        <!-- <div class="col-2">
+                            <span class="option-label" style="font-size: 16px;">Intervalo de jogo</span>
+                        </div>
+                        <div class="col-6">
+                            <div id="painelIntervaloJogo">
+                                Minutos:
+                                <input id="config_setup-intervalo-min" type="number" value="1"
+                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                    style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                <i onclick="adicionarPontuacao(this)" class="fa fa-caret-up btn-acrescimo"></i>
+                                <i onclick="subtrairPontuacao(this)" class="fa fa-caret-down btn-subtracao"></i>
+
+                                <span style="margin-left: 8px;">Segundos : </span>
+                                <input id="config_setup-intervalo-seg" type="number" value="0"
+                                    onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                    style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                <i onclick="adicionarPontuacaoById('config_setup-intervalo-seg')"
+                                    class="fa fa-caret-up btn-acrescimo"></i>
+                                <i onclick="subtrairPontuacaoById('config_setup-intervalo-seg')"
+                                    class="fa fa-caret-down btn-subtracao"></i>
+                            </div>
+                        </div> -->
+                        <div class="col-12 p-2 d-none">
+                            <!-- <div class="d-flex justify-content-start">
+                                <input id="config_setup-buzinar-faltar" type="checkbox"
+                                    style="accent-color: #000; width: 25px;height: 25px; border-radius:2px;" checked>
+                                <div class="label-checkbox">
+                                    <span>Toque o buzinar quando faltar</span>
+                                </div>
+                                <div id="painelBuzinaFalta" style="padding-left: 18px;">
+                                    Minutos :
+                                    <input id="config_setup-faltar-min" type="number" value="00"
+                                        onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                        style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                    <i onclick="adicionarPontuacao(this)" class="fa fa-caret-up btn-acrescimo"></i>
+                                    <i onclick="subtrairPontuacao(this)" class="fa fa-caret-down btn-subtracao"></i>
+
+                                    <span style="margin-left: 8px;">Segundos : </span>
+                                    <input id="config_setup-faltar-seg" type="number" value="15"
+                                        onblur="limitaInput(this);" min="0" max="99" pattern="\d{1,2}" maxlength="2"
+                                        style="background-color:#EAE1D0; border-radius:2px; border: 1px solid #422816;">
+                                    <i onclick="adicionarPontuacaoById('config_setup-faltar-seg')"
+                                        class="fa fa-caret-up btn-acrescimo"></i>
+                                    <i onclick="subtrairPontuacaoById('config_setup-faltar-seg')"
+                                        class="fa fa-caret-down btn-subtracao"></i>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 8px;">
+
+                    </div>
+                    <div class="row" style="margin-top: 8px;">
+                        <div class="col-2">
+                        </div>
+                        <div class="col-6 d-none">
+                            <div class="d-flex justify-content-start">
+                                <input id="config_setup-buzinar-iniciar" type="checkbox"
+                                    style="accent-color: #000; width: 25px;height: 25px; border-radius:2px;" checked>
+                                <div class="label-checkbox">
+                                    <span>Toque o buzinar ao iniciar</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 16px">
+                        <div class="col-10 d-flex justify-content-end">
+                            <button id="btn-cancelar-config_setup" class="btn-acoes d-none">Cancelar</button>
+                            <button id="btn-confirma-config_setup" class="btn-acoes"
+                                style="margin-left: -25px;">Confirmar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Definição de Variaveis -->
+    <script>
+        const sqlite3 = require('sqlite3').verbose();
+        const { ipcRenderer } = require('electron');
+        let dbPath = require('path').join(__dirname, '..', 'scoreboard.sqlite');
+        (async () => { try { const p = await ipcRenderer.invoke('get-db-path'); if (p) dbPath = p; } catch (e) { } })();
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode === 116) {
+                // O código 116 corresponde à tecla F5
+                location.reload();
+            }
+        });
+        let widthWindowPad = 1570;
+        let heightWindowPad = 870;
+        document.body.style.zoom = 1;
+        let oldWindowWidth = widthWindowPad;
+        let oldWindowHeight = heightWindowPad;
+        function calculateScale(width) {
+            const widthIncrement = 1000;
+            const scaleIncrement = 1;
+            const maxScale = 4; // Define a escala máxima
+
+            const widthDiff = width - widthWindowPad;
+            let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
+            scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
+            console.log(scaleFactor);
+            return scaleFactor;
+        }
+
+        // function adjustZoom() {
+        //     const newWindowWidth = window.innerWidth;
+        //     const newWindowHeight = window.innerHeight;
+        //     let scale = calculateScale(newWindowWidth);
+        //     const minZoom = 0.5; // Define o zoom mínimo
+        //     if (newWindowWidth > 1570 && newWindowWidth < 2280) {
+        //         scale = 2.5
+        //     }
+        //     if (newWindowWidth > 2280 && newWindowWidth < 3500) {
+        //         scale = 2.6
+        //     }
+        //     if (newWindowWidth > 3500 && newWindowWidth < 4500) {
+        //         scale = 2.8
+        //     }
+        //     if (newWindowWidth > 4500 && newWindowWidth < 6500) {
+        //         scale = 3
+        //     }
+        //     if (newWindowWidth != oldWindowWidth) {
+        //         let widthZoomFactor = 1 + ((newWindowWidth - oldWindowWidth) / (scale * oldWindowWidth));
+        //         let newZoom = parseFloat(document.body.style.zoom || 1) * widthZoomFactor;
+        //         newZoom = Math.max(newZoom, minZoom); // Limita o zoom ao mínimo definido
+        //         document.body.style.zoom = newZoom;
+
+        //         if (document.body.style.zoom < 0.9) {
+        //             document.querySelector("html").style.alignItems = "center";
+        //         } else {
+        //             document.querySelector("html").style.alignItems = "start";
+        //         }
+        //     }
+
+        //     if (newWindowHeight != oldWindowHeight) {
+        //         let heightZoomFactor = 1 + ((newWindowHeight - oldWindowHeight) / (scale * oldWindowHeight));
+        //         let newZoom = parseFloat(document.body.style.zoom || 1) * heightZoomFactor;
+        //         newZoom = Math.max(newZoom, minZoom); // Limita o zoom ao mínimo definido
+        //         document.body.style.zoom = newZoom;
+
+        //         if (document.body.style.zoom < 0.9) {
+        //             document.querySelector("html").style.alignItems = "center";
+        //         } else {
+        //             document.querySelector("html").style.alignItems = "start";
+        //         }
+        //     }
+
+        //     oldWindowWidth = newWindowWidth;
+        //     oldWindowHeight = newWindowHeight;
+
+        // }
+        function adjustZoom() {
+            const baseWidth = 1570;
+            const baseHeight = 870;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const baseAspectRatio = baseWidth / baseHeight;
+            let scale
+            if (aspectRatio < baseAspectRatio) {
+                scale = window.innerWidth / baseWidth;
+                document.body.style.width = '100%';
+            } else {
+                scale = window.innerHeight / baseHeight;
+                // document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
+            }
+            document.body.style.zoom = scale;
+            document.body.style.height = (window.innerHeight / scale) + 'px';
+            document.body.style.alignItems = "center";
+        }
+
+        // Chama a função de ajuste de zoom quando o DOM estiver pronto
+        document.addEventListener("DOMContentLoaded", function () {
+            adjustZoom();
+        });
+
+        // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+        window.addEventListener("resize", function () {
+            widthWindowPad = 1570;
+            heightWindowPad = 870;
+            document.body.style.zoom = 1;
+            oldWindowWidth = widthWindowPad;
+            oldWindowHeight = heightWindowPad;
+            adjustZoom();
+        });
+
+    </script>
+
+    <!-- Funções auxiliares -->
+    <script>
+        function getIntFormat(valueString) {
+            var valueInt = parseInt(valueString);
+            if (isNaN(valueInt)) {
+                return 0;
+            }
+            return valueInt;
+        }
+    </script>
+
+    <!-- Configuracoes -->
+    <script>
+
+        function search(elem) {
+            elem.value = event.key;
+        }
+
+        function limpaInputKey(elem) {
+            document.getElementById(elem).value = "";
+        }
+
+        function subtrairPontuacao(elemento, limite = 0) {
+            var pontuacao = elemento.parentElement.children[0].value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao <= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao - 1;
+            elemento.parentElement.children[0].value = pontuacao;
+        }
+
+        function adicionarPontuacao(elemento, limite = 99) {
+            var pontuacao = elemento.parentElement.children[0].value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao >= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao + 1;
+            elemento.parentElement.children[0].value = pontuacao;
+        }
+
+        function subtrairPontuacaoById(elementoId, limite = 0) {
+            var pontuacao = document.getElementById(elementoId).value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao <= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao - 1;
+            document.getElementById(elementoId).value = pontuacao;
+        }
+
+        function adicionarPontuacaoById(elementoId, limite = 99) {
+            var pontuacao = document.getElementById(elementoId).value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao >= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao + 1;
+            document.getElementById(elementoId).value = pontuacao;
+        }
+        function limitaValor(input) {
+            if (input.value <= 0) {
+                input.value = 0;
+            } else if (input.value > 99) {
+                input.value = 99;
+            }
+        }
+        setInterval(function () {
+            if (document.querySelector('#config_setup-tempo-slide').value < 1) {
+                document.querySelector('#config_setup-tempo-slide').value = 1;
+            }
+        }, 100)
+        function limitaInput(elemento) {
+            if (elemento.value > 99) {
+                elemento.value = 99;
+            }
+        }
+
+    </script>
+
+    <!-- Configuracoes: Jogo Setup -->
+    <script>
+
+        var configSetup;
+        async function getConfigSetup() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configSetup = rows;
+                    setConfigSetup();
+                    // console.log(rows); 
+                });
+            });
+            db.close();
+        }
+
+        function setConfigSetup() {
+
+            console.log(configSetup);
+
+            // Mapear valor do banco para o select: C=crescente, D=decrescente, H=hora_local
+            const tempoJogoDb = configSetup[0]["tempo_jogo"];
+            let tempoJogoValue = "crescente";
+            if (tempoJogoDb === "D") {
+                tempoJogoValue = "decrescente";
+            } else if (tempoJogoDb === "H") {
+                tempoJogoValue = "hora_local";
+            }
+            document.querySelector("#config_setup-tempo-jogo").value = tempoJogoValue;
+            document.querySelector("#config_setup-tempo-ataque").value = configSetup[0]["tempo_ataque"];
+            document.querySelector("#config_setup-tempo-slide").value = configSetup[0]["slide_tempo"];
+
+            document.querySelector("#config_setup-duracao-jogo-min").value = configSetup[0]["duracao_jogo_minutos"];
+            document.querySelector("#config_setup-duracao-jogo-seg").value = configSetup[0]["duracao_jogo_segundos"];
+
+            document.querySelector("#config_setup-desconto-min").value = configSetup[0]["desconto_tempo_minutos"];
+            document.querySelector("#config_setup-desconto-seg").value = configSetup[0]["desconto_tempo_segundos"];
+
+            document.querySelector("#config_setup-aquecimento-min").value = configSetup[0]["aquecimento_jogo_minutos"];
+            document.querySelector("#config_setup-aquecimento-seg").value = configSetup[0]["aquecimento_jogo_segundos"];
+
+            document.querySelector("#config_setup-intervalo-min").value = configSetup[0]["intervalo_tempo_minutos"];
+            document.querySelector("#config_setup-intervalo-seg").value = configSetup[0]["intervalo_tempo_segundos"];
+
+            // var buzinaIniciar = configSetup[0]["toque_buzinar_iniciar"] === 1 ? true : false;
+            // document.querySelector("#config_setup-buzinar-iniciar").checked = buzinaIniciar;
+
+            var buzinaFaltar = configSetup[0]["toque_buzinar_final"] === 1 ? true : false;
+            var intervaloFaltar = configSetup[0]["tocar_ao_finalizar_desconto"] === 1 ? true : false;
+            var mostrarAtaque = configSetup[0]["mostrar_ataque"] === 1 ? true : false;
+            var fimAtaque = configSetup[0]["tocar_ao_finalizar_ataque"] === 1 ? true : false;
+            document.querySelector("#config_setup-buzinar-faltar").checked = buzinaFaltar;
+            document.querySelector("#config_setup-tocar-finalizar-desconto").checked = intervaloFaltar;
+            document.querySelector("#tocar_qd_finalizar_atq").checked = fimAtaque;
+            document.querySelector("#mostrar_ataque").checked = mostrarAtaque;
+
+            var mostrarEcran = configSetup[0]["mostrar_ecran"];
+            if (mostrarEcran === "T") {
+                document.querySelector("#config_setup-mostrar-ecran-tempo").checked = true;
+                document.querySelector("#config_setup-mostrar-ecran-logo").checked = false;
+            } else {
+                document.querySelector("#config_setup-mostrar-ecran-tempo").checked = false;
+                document.querySelector("#config_setup-mostrar-ecran-logo").checked = true;
+            }
+
+            document.querySelector("#config_setup-faltar-min").value = configSetup[0]["tempo_final_minutos"];
+            document.querySelector("#config_setup-faltar-seg").value = configSetup[0]["tempo_final_segundos"];
+            document.querySelector("#config_setup-faltar-min-int").value = configSetup[0]["tempo_final_minutos_int"];
+            document.querySelector("#config_setup-faltar-seg-int").value = configSetup[0]["tempo_final_segundos_int"];
+
+        }
+
+        function saveConfigSetup() {
+            // Mapear valor do select para o banco: crescente=C, decrescente=D, hora_local=H
+            const tempoJogoSelect = document.querySelector("#config_setup-tempo-jogo").value;
+            let tempo_jogo = "C";
+            if (tempoJogoSelect === "decrescente") {
+                tempo_jogo = "D";
+            } else if (tempoJogoSelect === "hora_local") {
+                tempo_jogo = "H";
+            }
+
+            const data = {
+                tempo_jogo: tempo_jogo,
+                mostrar_ecran: document.querySelector("#config_setup-mostrar-ecran-tempo").checked ? "T" : "L",
+                slide_tempo: document.querySelector("#config_setup-tempo-slide").value,
+                toque_buzinar_iniciar: document.querySelector("#config_setup-buzinar-iniciar").checked ? 1 : 0,
+                toque_buzinar_final: document.querySelector("#config_setup-buzinar-faltar").checked ? 1 : 0,
+                tocar_ao_finalizar_desconto: document.querySelector("#config_setup-tocar-finalizar-desconto").checked ? 1 : 0,
+                duracao_jogo_minutos: getIntFormat(document.querySelector("#config_setup-duracao-jogo-min").value),
+                duracao_jogo_segundos: getIntFormat(document.querySelector("#config_setup-duracao-jogo-seg").value),
+                tempo_ataque: getIntFormat(document.querySelector("#config_setup-tempo-ataque").value),
+                desconto_tempo_minutos: getIntFormat(document.querySelector("#config_setup-desconto-min").value),
+                desconto_tempo_segundos: getIntFormat(document.querySelector("#config_setup-desconto-seg").value),
+                aquecimento_jogo_minutos: getIntFormat(document.querySelector("#config_setup-aquecimento-min").value),
+                aquecimento_jogo_segundos: getIntFormat(document.querySelector("#config_setup-aquecimento-seg").value),
+                tempo_final_minutos: getIntFormat(document.querySelector("#config_setup-faltar-min").value),
+                tempo_final_segundos: getIntFormat(document.querySelector("#config_setup-faltar-seg").value),
+                tempo_final_minutos_int: getIntFormat(document.querySelector("#config_setup-faltar-min-int").value),
+                tempo_final_segundos_int: getIntFormat(document.querySelector("#config_setup-faltar-seg-int").value),
+                intervalo_tempo_minutos: getIntFormat(document.querySelector("#config_setup-intervalo-min").value),
+                intervalo_tempo_segundos: getIntFormat(document.querySelector("#config_setup-intervalo-seg").value),
+                mostrar_ataque: document.querySelector("#mostrar_ataque").checked ? 1 : 0,
+                tocar_ao_finalizar_ataque: document.querySelector("#tocar_qd_finalizar_atq").checked ? 1 : 0,
+                jogadores_por_pagina: 10 // Default config
+            };
+
+            // Enviar para o Main Process salvar
+            ipcRenderer.send('save-config-setup', data);
+
+            // Ouvir resposta
+            ipcRenderer.once('save-config-setup-success', () => {
+                getConfigSetup();
+                ipcRenderer.send('reload');
+                // alert("Configurações salvas com sucesso.");
+            });
+
+            ipcRenderer.once('save-config-setup-error', (event, error) => {
+                ipcRenderer.send('send-alert', 'Falha ao salvar configurações: ' + error);
+            });
+        }
+
+        document.getElementById('btn-cancelar-config_setup').addEventListener('click', function () {
+            setConfigSetup();
+        });
+
+        document.getElementById('btn-confirma-config_setup').addEventListener('click', function () {
+            saveConfigSetup();
+        });
+
+    </script>
+
+    <script>
+        window.onload = function () {
+            getConfigSetup();
+        }
+
+        function openTab(tabName, elem) {
+            window.location.href = tabName + ".html";
+        }
+
+        function retornar() {
+            if (confirm("Você tem certeza que deseja reiniciar tudo?\n\n" +
+                "Clique em OK para salvar as alterações e reiniciar.\n" +
+                "Clique em Cancelar caso não deseje reiniciar.")) {
+                ipcRenderer.send("closeWindowConfig", true);
+            } else {
+                ipcRenderer.send("closeWindowConfig", false);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Configurações</title>
+    <!-- Captura global de erros -->
+    <script src="../resources/js/error-capture.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../resources/css/custom.css">
+    <link rel="stylesheet" href="../resources/css/config.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Configuration Css -->
+    <link rel="stylesheet" href="../resources/css/configuration.css">
+
+</head>
+<style>
+    @font-face {
+        font-family: 'Gobold';
+        src: url('../resources/fonts/gobold_bold.otf') format('truetype');
+    }
+
+    html {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    body {
+        /* overflow: hidden; */
+        font-family: 'Gobold';
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+    }
+
+    input[type="file"] {
+        direction: rtl;
+    }
+
+    .btn-simples {
+        background-color: #EAE1D0 !important;
+        border-radius: 12px !important;
+        border: none !important;
+        padding: 7px 10px !important
+    }
+
+    .input-simple {
+        border: none !important;
+        padding: 7px 10px !important;
+        border-radius: 12px !important;
+    }
+
+    .modal-backdrop.show {
+        width: 100% !important;
+        height: 100% !important;
+    }
+</style>
+
+<body>
+    <div class="row" style="height: 93%;">
+        <div class="col-12">
+
+            <div id="opcoesPrincipais" style="margin-top: 12px; margin-left: 10px;">
+                <button class="tab-button" onclick="openTab('configuracoes', this)">Jogo setup</button>
+                <button class="tab-button" onclick="openTab('config_equipas', this)">Equipas</button>
+                <button class="tab-button" onclick="openTab('config_monitores', this)">Monitores</button>
+                <button class="tab-button" onclick="openTab('config_fotos', this)">Vídeo/Fotos</button>
+                <button class="tab-button" onclick="openTab('config_shortcuts', this)">Shortcuts</button>
+                <button class="tab-button" onclick="openTab('config_cores', this)">Cores</button>
+                <button class="tab-button selected">Sons</button>
+                <button class="tab-button" onclick="openTab('config_banner_color', this)">Banner Color</button>
+                <button class="tab-button" onclick="retornar();">Voltar</button>
+            </div>
+            <div id="Sons" class="tab-panel">
+                <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+                    <div class="d-flex justify-content-center">
+                        <div class="row" style="width: 70%;">
+                            <div class="col-12">
+                                <div class="row mt-4">
+                                    <div class="col-4 d-none" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Fim do Tempo de Jogo:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 d-none">
+                                        <input id="inputEnd" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input>
+                                    </div>
+                                    <div class="col-4 d-none">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayEnd" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeEnd" class="btn-simples"
+                                                onclick="changeAudio('End');">Change</button>
+                                            <button id="btnDefaultEnd" class="btn-simples"
+                                                onclick="setDefaultAudio(this,'end_timeout');">Default</button>
+                                            <button id="btnClearEnd" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-4" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Buzina:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="inputBuzzer" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayBuzzer" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeBuzzer" class="btn-simples"
+                                                onclick="changeAudio('Buzzer');">Change</button>
+                                            <button id="btnDefaultBuzzer" class="btn-simples"
+                                                onclick="setDefaultAudio(this, 'buzzer');">Default</button>
+                                            <button id="btnClearBuzzer" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 d-none">
+                                    <div class="col-4" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Fim do tempo de jogo:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="inputHalf" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayHalf" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeHalf" class="btn-simples"
+                                                onclick="changeAudio('Half');">Change</button>
+                                            <button id="btnDefaultHalf" class="btn-simples"
+                                                onclick="setDefaultAudio(this, 'end_period');">Default</button>
+                                            <button id="btnClearHalf" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-4 d-none" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Fim do tempo de ataque:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 d-none">
+                                        <input id="inputShot" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input>
+                                    </div>
+                                    <div class="col-4 d-none">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayShot" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeShot" class="btn-simples"
+                                                onclick="changeAudio('Shot');">Change</button>
+                                            <button id="btnDefaultShot" class="btn-simples"
+                                                onclick="setDefaultAudio(this, 'buzzer');">Default</button>
+                                            <button id="btnClearShot" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-4" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Fim do tempo de desconto/intervalo:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="inputStart" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayStart" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeStart" class="btn-simples"
+                                                onclick="changeAudio('Start');">Change</button>
+                                            <button id="btnDefaultStart" class="btn-simples"
+                                                onclick="setDefaultAudio(this, 'horn');">Default</button>
+                                            <button id="btnClearStart" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-4" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Tempo para o fim do desconto/intervalo:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="inputTimeout" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayTimeout" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeTimeout" class="btn-simples"
+                                                onclick="changeAudio('Timeout');">Change</button>
+                                            <button id="btnDefaultTimeout" class="btn-simples"
+                                                onclick="setDefaultAudio(this, 'timeout_warning');">Default</button>
+                                            <button id="btnClearTimeout" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 d-none">
+                                    <div class="col-4" style="margin-left: -100px;">
+                                        <div style="text-align: right;">
+                                            <b>Fim do tempo de intervalo:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="inputStart1" class="input-simple" type="text" style="width: 100%;"
+                                            readonly></input></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="d-flex gap-2">
+                                            <button id="btnPlayStart1" class="btn-simples"
+                                                onclick="playAudio(this);">Play</button>
+                                            <button id="btnChangeStart1" class="btn-simples"
+                                                onclick="changeAudio('End');">Change</button>
+                                            <button id="btnDefaultStart1" class="btn-simples"
+                                                onclick="setDefaultAudio(this, 'end_timeout');">Default</button>
+                                            <button id="btnClearStart1" class="btn-simples"
+                                                onclick="setClearAudio(this);">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 d-none justify-content-start">
+                                <table style="width: 100%; display: none;">
+                                    <tbody>
+                                        <tr id="Shot" style="margin-top: 12px;">
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <input id="inputEndFile" type="file" onchange="fileChange(this)" style="display:none"
+                                    accept=".wav"></input>
+                                <input id="inputBuzzerFile" type="file" onchange="fileChange(this)" style="display:none"
+                                    accept=".wav"></input>
+                                <input id="inputHalfFile" type="file" onchange="fileChange(this)" style="display:none"
+                                    accept=".wav"></input>
+                                <input id="inputShotFile" type="file" onchange="fileChange(this)" style="display:none"
+                                    accept=".wav"></input>
+                            </div>
+                            <div class="col-12 d-none justify-content-start">
+                                <table style="width: 100%;">
+                                    <tbody>
+                                        <tr id="End" style="margin-top: 12px;">
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <input id="inputStartFile" type="file" onchange="fileChange(this)" style="display:none"
+                                    accept=".mp3"></input>
+                                <input id="inputTimeoutFile" type="file" onchange="fileChange(this)"
+                                    style="display:none" accept=".mp3"></input>
+                                <input id="inputEndFile" type="file" onchange="fileChange(this)" style="display:none"
+                                    accept=".mp3"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <audio type="hidden" id="somAudio"></audio>
+                    <div class="row" style="margin-top: 70px">
+                        <div class="col-10 d-flex justify-content-end">
+                            <button id="btn-cancelar-config" class="btn-acoes d-none">Cancelar</button>
+                            <button id="btn-confirma-config" class="btn-acoes"
+                                style="margin-left: 8px;">Confirmar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    </div>
+    </div>
+    <!-- Definição de Variaveis -->
+    <script>
+        const sqlite3 = require('sqlite3').verbose();
+        const fsTemp = require('fs');
+        const pathModule = require('path');
+        const { ipcRenderer } = require('electron');
+        let dbPath = null;
+        // let dbPath = require('path').join(__dirname, '..', 'scoreboard.sqlite');
+        // (async () => { ... })(); // Removido para evitar race condition
+
+        // Helper para obter caminho de recursos dinamicamente
+        function getResourcePath(subPath) {
+            const basePath = pathModule.join(__dirname, '..', 'resources', 'assets');
+            const fullPath = pathModule.join(basePath, subPath);
+            if (!fsTemp.existsSync(fullPath)) {
+                fsTemp.mkdirSync(fullPath, { recursive: true });
+            }
+            return fullPath;
+        }
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode === 116) {
+                // O código 116 corresponde à tecla F5
+                location.reload();
+            }
+        });
+        let widthWindowPad = 1570;
+        let heightWindowPad = 870;
+        document.body.style.zoom = 1;
+        let oldWindowWidth = widthWindowPad;
+        let oldWindowHeight = heightWindowPad;
+        function calculateScale(width) {
+            const widthIncrement = 1000;
+            const scaleIncrement = 1;
+            const maxScale = 4; // Define a escala máxima
+
+            const widthDiff = width - widthWindowPad;
+            let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
+            scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
+            console.log(scaleFactor);
+            return scaleFactor;
+        }
+
+        function adjustZoom() {
+            const baseWidth = 1570;
+            const baseHeight = 870;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const baseAspectRatio = baseWidth / baseHeight;
+            let scale
+            if (aspectRatio < baseAspectRatio) {
+                scale = window.innerWidth / baseWidth;
+                document.body.style.width = '100%';
+            } else {
+                scale = window.innerHeight / baseHeight;
+                // document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
+            }
+            document.body.style.zoom = scale;
+            document.body.style.height = (window.innerHeight / scale) + 'px';
+            document.body.style.alignItems = "center";
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            adjustZoom();
+        });
+        window.addEventListener("resize", function () {
+            widthWindowPad = 1570;
+            heightWindowPad = 870;
+            document.body.style.zoom = 1;
+            oldWindowWidth = widthWindowPad;
+            oldWindowHeight = heightWindowPad;
+            adjustZoom();
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // 1. Garantir path do Banco de Dados
+                const p = await ipcRenderer.invoke('get-db-path');
+                if (p) dbPath = p;
+                console.log('[Config Sons] DB Path resolvido:', dbPath);
+
+                // 2. Ajustar Zoom
+                adjustZoom();
+
+                // 3. Carregar Dados
+                getConfigSons();
+
+            } catch (err) {
+                console.error('Erro fatal na inicialização:', err);
+            }
+        });
+    </script>
+
+    <!-- Funções auxiliares -->
+    <script>
+        function getIntFormat(valueString) {
+            var valueInt = parseInt(valueString);
+            if (isNaN(valueInt)) {
+                return 0;
+            }
+            return valueInt;
+        }
+    </script>
+
+    <!-- Configuracoes -->
+    <script>
+
+        function search(elem) {
+            elem.value = event.key;
+        }
+
+        function limpaInputKey(elem) {
+            document.getElementById(elem).value = "";
+        }
+
+        function subtrairPontuacao(elemento, limite = 0) {
+            var pontuacao = elemento.parentElement.children[0].value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao <= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao - 1;
+            elemento.parentElement.children[0].value = pontuacao;
+        }
+
+        function adicionarPontuacao(elemento, limite = 99) {
+            var pontuacao = elemento.parentElement.children[0].value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao >= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao + 1;
+            elemento.parentElement.children[0].value = pontuacao;
+        }
+
+        function subtrairPontuacaoById(elementoId, limite = 0) {
+            var pontuacao = document.getElementById(elementoId).value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao <= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao - 1;
+            document.getElementById(elementoId).value = pontuacao;
+        }
+
+        function adicionarPontuacaoById(elementoId, limite = 99) {
+            var pontuacao = document.getElementById(elementoId).value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao >= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao + 1;
+            document.getElementById(elementoId).value = pontuacao;
+        }
+
+        function limitaInput(elemento) {
+            if (elemento.value > 99) {
+                elemento.value = 99;
+            }
+        }
+
+    </script>
+
+    <!-- Configuracoes: Sons -->
+    <script>
+
+        var configSons;
+        var listaConfiguracoes = [];
+
+        const origem_banco = 1;
+        const origem_edicao = 0;
+
+        async function getConfigSons() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_sons", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configSons = rows;
+                    setConfigSons();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigSons() {
+
+            var config = configSons;
+
+            listaConfiguracoes = {
+                // hom: {
+                //     origem: origem_banco,
+                //     valor: config[0]["hom"] ? config[0]["hom"] : ""
+                // },
+                buzzer: {
+                    origem: origem_banco,
+                    valor: config[0]["buzzer"] ? config[0]["buzzer"] : ""
+                },
+                end_period: {
+                    origem: origem_banco,
+                    valor: config[0]["end_period"] ? config[0]["end_period"] : ""
+                },
+                shot_clock: {
+                    origem: origem_banco,
+                    valor: config[0]["shot_clock"] ? config[0]["shot_clock"] : ""
+                },
+                start_timeout: {
+                    origem: origem_banco,
+                    valor: config[0]["start_timeout"] ? config[0]["start_timeout"] : ""
+                },
+                timeout_warning: {
+                    origem: origem_banco,
+                    valor: config[0]["timeout_warning"] ? config[0]["timeout_warning"] : ""
+                },
+                end_timeout: {
+                    origem: origem_banco,
+                    valor: config[0]["end_timeout"] ? config[0]["end_timeout"] : ""
+                }
+            };
+
+            // document.querySelector("#inputHom").value = getFileName(listaConfiguracoes["end_timeout"]["valor"]);
+            document.querySelector("#inputBuzzer").value = getFileName(listaConfiguracoes["buzzer"]["valor"]);
+            document.querySelector("#inputHalf").value = getFileName(listaConfiguracoes["end_period"]["valor"]);
+            document.querySelector("#inputShot").value = getFileName(listaConfiguracoes["shot_clock"]["valor"]);
+            document.querySelector("#inputStart").value = getFileName(listaConfiguracoes["start_timeout"]["valor"]);
+            document.querySelector("#inputTimeout").value = getFileName(listaConfiguracoes["timeout_warning"]["valor"]);
+            document.querySelector("#inputEnd").value = getFileName(listaConfiguracoes["end_timeout"]["valor"]);
+            // document.querySelector("#inputEndDesconto").value = getFileName(listaConfiguracoes["start_timeout"]["valor"]);
+            console.log(listaConfiguracoes);
+        }
+
+        function exibirAudioNome(audioName) {
+            if (audioName) {
+                audioName = audioName.toString().replaceAll("../resources/sound/", "");
+                audioName = audioName.replaceAll("../resources/sound/temp/config_sons/", "");
+                return audioName;
+            } else {
+                return "";
+            }
+        }
+
+        async function saveConfiguracoes() {
+
+            const db = new sqlite3.Database(dbPath);
+
+            // const hom = listaConfiguracoes["hom"]['valor'];
+            const buzzer = listaConfiguracoes["buzzer"]['valor'];
+            const end_period = listaConfiguracoes["end_period"]['valor'];
+            const shot_clock = listaConfiguracoes["shot_clock"]['valor'];
+            const start_timeout = listaConfiguracoes["start_timeout"]['valor'];
+            const timeout_warning = listaConfiguracoes["timeout_warning"]['valor'];
+            const end_timeout = listaConfiguracoes["end_timeout"]['valor'];
+
+            const query = `
+                UPDATE config_sons
+                SET 
+                    buzzer = '${buzzer}',
+                    end_period = '${end_period}',
+                    shot_clock = '${shot_clock}',
+                    start_timeout = '${start_timeout}',
+                    timeout_warning = '${timeout_warning}',
+                    end_timeout = '${end_timeout}'
+                WHERE id = 1
+            `;
+
+            _ = await db.run(query,
+                function (err) {
+                    if (err) {
+                        // alert("Falha ao salvar configurações, tente novamente.");
+                        ipcRenderer.send('send-alert', 'Falha ao salvar configurações, tente novamente.');
+                        console.error(err);
+                        return;
+                    }
+                    // alert("Configurações salvas com sucesso.");
+                    getConfigSons();
+                });
+
+            db.close();
+            ipcRenderer.send('reload');
+        }
+
+        function changeAudio(elem) {
+            document.querySelector("#input" + elem + "File").click();
+        }
+
+        function fileChange(elem) {
+
+            if (!elem.files.length) {
+                // alert('Por favor, selecione um arquivo.');
+                ipcRenderer.send('send-alert', 'Por favor, selecione um arquivo.');
+                document.querySelector("#" + elem.id.replace('File', '')).value = "Selecione um arquivo";
+                return;
+            }
+
+            const file = elem.files[0];
+            if (!file.type === 'image/mp3') {
+                // alert('Por favor, selecione um arquivo de imagem .mp3');
+                ipcRenderer.send('send-alert', 'Por favor, selecione um arquivo de imagem .mp3');
+                document.querySelector("#" + elem.id.replace('File', '')).value = "Selecione um arquivo";
+                return;
+            }
+
+            document.querySelector("#" + elem.id.replace('File', '')).value = file.name;
+
+            // const itemName = elem.id.replace('input', '').replace('File', '').toString().toLowerCase();
+            var itemName = getItemName(elem.id);
+            listaConfiguracoes[itemName]['origem'] = origem_edicao;
+            listaConfiguracoes[itemName]['valor'] = file.path;
+
+        }
+
+        function playAudio(elem) {
+            const fileInput = document.querySelector("#input" + elem.id.replace('btnPlay', '') + "File");
+            const itemName = getItemName(fileInput.id);
+            const filePath = listaConfiguracoes[itemName]['valor'];
+
+            if (!filePath || typeof filePath === "undefined") {
+                return;
+            }
+
+            const somAudio = document.querySelector("#somAudio");
+            somAudio.setAttribute("src", filePath);
+
+            if (!somAudio.paused) {
+                return;
+            }
+
+            somAudio.play();
+        }
+
+        function setDefaultAudio(elem, audioDefaultName) {
+            // const itemName = elem.id.replace('btnDefault', '').toString().toLowerCase();
+            const fileInput = document.querySelector("#input" + elem.id.replace('btnDefault', '') + "File");
+            const inputName = document.querySelector("#input" + elem.id.replace('btnDefault', ''));
+
+            const itemName = getItemName(fileInput.id);
+
+            var audioName = audioDefaultName;
+            if (audioDefaultName == "horn") {
+                audioName = audioDefaultName + ".wav";
+            } else {
+                audioName = audioDefaultName + ".mp3";
+            }
+            inputName.value = audioName;
+
+            listaConfiguracoes[itemName]['origem'] = origem_banco;
+            listaConfiguracoes[itemName]['default'] = true;
+            listaConfiguracoes[itemName]['valor'] = "../resources/sound/" + audioName;
+        }
+
+        function setClearAudio(elem) {
+
+            // const itemName = elem.id.replace('btnClear', '').toString().toLowerCase();
+            const fileInput = document.querySelector("#input" + elem.id.replace('btnClear', '') + "File");
+            const inputName = document.querySelector("#input" + elem.id.replace('btnClear', ''));
+
+            const itemName = getItemName(fileInput.id);
+
+            if (configSons[0][itemName]) {
+                var audioName = configSons[0][itemName].toString();
+                audioName = getFileName(audioName);
+                inputName.value = audioName;
+            } else {
+                inputName.value = "";
+            }
+
+            var newInput = document.createElement("input");
+            newInput.type = "file";
+            newInput.id = fileInput.id;
+            newInput.name = fileInput.name;
+            newInput.style.display = "none";
+            newInput.accept = ".mp3";
+            newInput.onchange = function () {
+                fileChange(this);
+            };
+            fileInput.parentNode.replaceChild(newInput, fileInput);
+
+            listaConfiguracoes[itemName]['origem'] = origem_banco;
+            listaConfiguracoes[itemName]['valor'] = configSons[0][itemName] ? configSons[0][itemName] : "";
+
+        }
+
+        function getItemName(inputName) {
+            switch (inputName) {
+                // case "inputHomFile":
+                //     return "end_timeout";
+                case "inputBuzzerFile":
+                    return "buzzer";
+                case "inputHalfFile":
+                    return "end_period";
+                case "inputShotFile":
+                    return "shot_clock";
+                case "inputStartFile":
+                    return "start_timeout";
+                case "inputTimeoutFile":
+                    return "timeout_warning";
+                case "inputEndFile":
+                    return "end_timeout";
+                default:
+                    return "";
+            }
+        }
+
+        function getFileName(fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = filename.substring(1);
+            }
+            return filename;
+        }
+
+        function salvarAudio(filePath, itemName) {
+            var newPathFile = getResourcePath('sound/temp/config_sons') + '/';
+            if (listaConfiguracoes[itemName]['default']) {
+                newPathFile = "../resources/sound/";
+            }
+            newPathFile += getFileName(filePath);
+
+            var body = {
+                imagePrefixo: getFileName(filePath).toString().replace('.wav', ''),
+                path: filePath,
+                newPath: 'sound/temp/config_sons/'
+            };
+            ipcRenderer.send('salvarArquivo', body);
+
+            listaConfiguracoes[itemName]['valor'] = newPathFile;
+        }
+
+        document.getElementById('btn-cancelar-config').addEventListener('click', function () {
+            setConfigSons();
+        });
+
+        document.getElementById('btn-confirma-config').addEventListener('click', function () {
+            const listaTempConfiguracoes = ["buzzer", "end_period", "shot_clock",
+                "start_timeout", "timeout_warning", "end_timeout"];
+
+
+            for (let i = 0; i < listaTempConfiguracoes.length; i++) {
+                const itemName = listaTempConfiguracoes[i];
+                if (listaConfiguracoes[itemName]['valor'] === configSons[0][itemName]) {
+                    continue;
+                }
+
+                if (!listaConfiguracoes[itemName]['valor'] || typeof listaConfiguracoes[itemName]['valor'] === "undefined") {
+                    continue;
+                }
+                salvarAudio(listaConfiguracoes[itemName]['valor'], itemName);
+            }
+            saveConfiguracoes();
+
+        });
+
+    </script>
+
+    <script>
+
+        // window.onload = function () {
+        //     getConfigSons();
+        // }
+
+        function openTab(tabName, elem) {
+            window.location.href = tabName + ".html";
+        }
+
+        function retornar() {
+            if (confirm("Você tem certeza que deseja reiniciar tudo?\n\n" +
+                "Clique em OK para salvar as alterações e reiniciar.\n" +
+                "Clique em Cancelar caso não deseje reiniciar.")) {
+                ipcRenderer.send("closeWindowConfig", true);
+            } else {
+                ipcRenderer.send("closeWindowConfig", false);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

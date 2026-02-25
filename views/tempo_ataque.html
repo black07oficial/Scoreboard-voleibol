@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Tempo de ataque</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../resources/css/custom.css">
+
+    <!-- jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script> -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="renderer.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Digital Display';
+            src: url('../resources/fonts/digital_display.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Digital Dismay';
+            src: url('../resources/fonts/digital_dismay.otf') format('truetype');
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        body {
+            background-color: black !important;
+            overflow-y: hidden;
+        }
+
+        .cronometro {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 280px;
+            line-height: 280px;
+            color: rgb(255, 255, 255) !important;
+            margin-top: 32px;
+        }
+
+        #fundo-ataque {
+            font-family: 'Digital Dismay', sans-serif;
+            background-color: rgb(0, 0, 0);
+            color: red;
+            font-size: 580px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            min-height: 320px;
+            /* max-height: 1000px; */
+            /* height: 50%; */
+            width: 100%;
+            padding-top: 22px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row" style="height: 100%;">
+            <div class="col-12 d-flex justify-content-center">
+                <div style="width:80%;height: 100%;">
+                    <div class="row">
+                        <div class="painel-cronometro col-12 d-flex justify-content-center">
+                            <span class="cronometro">00:00</span>
+                        </div>
+                    </div>
+                    <div class="row" style="height: 100%;">
+                        <div class="col-12 d-flex justify-content-center" style="height: 100%;">
+                            <div id="fundo-ataque" class="d-flex justify-content-center">
+                                <span>00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const oldWindowWidth = window.innerWidth;
+        function proportionSet(prop, min) {
+            const windowWidth = 480;
+            const windowHeight = 600;
+            const referenceWidth = 480;
+            const referenceHeight = 600;
+            let proportion1 = windowWidth / referenceWidth;
+            // if (windowWidth > 1200 || windowHeight > 800) {
+            //     proportion1 = windowWidth / (referenceWidth + referenceWidth - 1350);
+            // }
+            var widthIncreaseCount = Math.floor((windowWidth - 1200) / 100);
+            var heightIncreaseCount = Math.floor((windowHeight - 800) / 100);
+            var totalReduction = (widthIncreaseCount + heightIncreaseCount) * 9.5;
+            // Se a largura for significativamente maior que a altura, reduza a proporção
+            if (windowWidth > windowHeight * 1.2) {
+                totalReduction += (windowWidth - windowHeight) / 100;
+            }
+            if (totalReduction > 0) {
+                proportion1 -= (totalReduction / 100);
+            }
+            let proportion2 = windowHeight / referenceHeight - 0.4;
+
+            let result = prop * proportion1 * proportion2;
+            result = Math.max(result, min);
+            return result;
+        }
+        function adjustStyles() {
+            const cronometro = document.querySelector(".cronometro");
+            const fundoAtaque = document.querySelector("#fundo-ataque");
+            const windowWidth = 480;
+            const windowHeight = 600;
+            // Defina um tamanho de referência (por exemplo, 1920px) para o ajuste de proporção
+            const referenceWidth = 480;
+            const referenceHeight = 600;
+            // Calcule a proporção atual em relação ao tamanho de referência
+            const proportion = windowWidth / referenceWidth;
+            const proportion2 = windowHeight / referenceHeight;
+            cronometroFontSize = proportionSet(80, 170);
+            fundoAtaqueSize = proportionSet(180, 320);
+            fundoAtaqueFontSize = proportionSet(200, 280);
+            if (windowWidth > 1720) {
+                cronometroFontSize = proportionSet(60, 170);
+                fundoAtaqueSize = proportionSet(120, 320);
+                fundoAtaqueFontSize = proportionSet(100, 280);
+            }
+            if (windowWidth > 3200) {
+                cronometroFontSize = proportionSet(40, 170);
+                fundoAtaqueSize = proportionSet(100, 320);
+                fundoAtaqueFontSize = proportionSet(80, 280);
+            }
+            if (windowWidth > 4813) {
+                cronometroFontSize = proportionSet(30, 170);
+                fundoAtaqueSize = proportionSet(80, 320);
+                fundoAtaqueFontSize = proportionSet(60, 280);
+            }
+            cronometro.style.fontSize = cronometroFontSize + "px";
+            cronometro.style.lineHeight = cronometroFontSize + "px";
+            fundoAtaque.style.fontSize = fundoAtaqueFontSize + "px";
+            fundoAtaque.style.height = fundoAtaqueSize + "px";
+        }
+
+        // Chama a função de ajuste de estilos quando a janela for redimensionada
+        function adjustZoom() {
+            const baseWidth = 480;
+            const baseHeight = 600;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const baseAspectRatio = baseWidth / baseHeight;
+            let scale
+            if (aspectRatio < baseAspectRatio) {
+                scale = window.innerWidth / baseWidth;
+                document.body.style.width = '100%';
+            } else {
+                scale = window.innerHeight / baseHeight;
+                document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
+            }
+            document.body.style.zoom = scale;
+            document.body.style.height = (window.innerHeight / scale) + 'px';
+            document.body.style.display = "flex";
+            document.body.style.alignItems = "center";
+        }
+
+
+        // Chama a função de ajuste de zoom quando o DOM estiver pronto
+        document.addEventListener("DOMContentLoaded", function () {
+            adjustZoom();
+            adjustStyles();
+        });
+
+        // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+        window.addEventListener("resize", function () {
+            adjustZoom();
+        });
+        const { ipcRenderer } = require('electron');
+        ipcRenderer.on('updatesFromControl', function (event, arg) {
+
+            switch (arg['inputOrigin']) {
+                case "#input-tempo-ataque":
+                    // if (arg['pontuacaoFormatada'].toString().charAt(0) !== "0") {
+                    if (arg['pontuacaoFormatada'] < 10) {
+                        document.querySelector("#fundo-ataque span").innerHTML = arg['pontuacaoFormatada'].toString().replace('.', ':');
+                        document.querySelector("#fundo-ataque").style.backgroundColor = "red";
+                        document.querySelector("#fundo-ataque span").style.color = "white";
+                        break;
+                    }
+                    // }
+                    // if (arg['pontuacaoFormatada'].toString().charAt(0) === "0") {
+                    //     if (arg['pontuacaoFormatada'] < 10 && arg['pontuacaoFormatada'] > 0) {
+                    //         document.querySelector("#fundo-ataque span").innerHTML = arg['pontuacaoFormatada'];
+                    //         document.querySelector("#fundo-ataque").style.backgroundColor = "red";
+                    //         document.querySelector("#fundo-ataque span").style.color = "white";
+                    //         break;
+                    //     } else {
+                    //         document.querySelector("#fundo-ataque span").innerHTML = "0" + arg['pontuacaoFormatada'];
+                    //         document.querySelector("#fundo-ataque").style.backgroundColor = "red";
+                    //         document.querySelector("#fundo-ataque span").style.color = "white";
+                    //         break;
+                    //     }
+                    // }
+                    document.querySelector("#fundo-ataque span").innerHTML = arg['pontuacaoFormatada'].toString().replace('.', ':');
+                    document.querySelector("#fundo-ataque").style.backgroundColor = "rgba(0,0,0,0)";
+                    document.querySelector("#fundo-ataque span").style.color = "red";
+                    break;
+                default:
+                // code block
+            }
+
+        });
+
+        ipcRenderer.on('updateCronometro', function (event, time) {
+            document.querySelector(".painel-cronometro span.cronometro").innerHTML = time;
+        });
+
+    </script>
+
+    <!-- Configurações: Variáveis -->
+    <script>
+        const sqlite3 = require('sqlite3').verbose();
+        const path = require('path');
+
+        // Definir caminho absoluto do banco de dados
+        let dbPath;
+        try {
+            const isPackaged = !process.execPath.includes('node_modules');
+            if (isPackaged) {
+                dbPath = path.join(path.dirname(process.execPath), 'scoreboard.sqlite');
+            } else {
+                dbPath = path.join(__dirname, '..', 'scoreboard.sqlite');
+            }
+        } catch (err) {
+            dbPath = './scoreboard.sqlite';
+        }
+    </script>
+
+    <!-- Configuracoes: Cores -->
+    <script>
+
+        var configCores;
+        async function getConfigCores() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_cores", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configCores = rows;
+                    setConfigCores();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigCores() {
+
+            console.log(configCores);
+
+            ccores_background = configCores[0]["background"] ? configCores[0]["background"] : "";
+            ccores_number_background = configCores[0]["number_background"] ? configCores[0]["number_background"] : "";
+            ccores_text_borders = configCores[0]["text_borders"] ? configCores[0]["text_borders"] : "";
+            ccores_team1_name = configCores[0]["team1_name"] ? configCores[0]["team1_name"] : "";
+            ccores_team2_name = configCores[0]["team2_name"] ? configCores[0]["team2_name"] : "";
+            ccores_main_clock = configCores[0]["main_clock"] ? configCores[0]["main_clock"] : "";
+            ccores_shot_clock = configCores[0]["shot_clock"] ? configCores[0]["shot_clock"] : "";
+            ccores_shot_clock_expiration_border = configCores[0]["shot_clock_expiration_border"] ? configCores[0]["shot_clock_expiration_border"] : "";
+            ccores_scores = configCores[0]["scores"] ? configCores[0]["scores"] : "";
+            ccores_period = configCores[0]["period"] ? configCores[0]["period"] : "";
+            ccores_shots_on_goal = configCores[0]["shots_on_goal"] ? configCores[0]["shots_on_goal"] : "";
+            ccores_fouls = configCores[0]["fouls"] ? configCores[0]["fouls"] : "";
+            ccores_penalty_player = configCores[0]["penalty_player"] ? configCores[0]["penalty_player"] : "";
+            ccores_penalty_time = configCores[0]["penalty_time"] ? configCores[0]["penalty_time"] : "";
+            ccores_display_screen_active_field = configCores[0]["display_screen_active_field"] ? configCores[0]["display_screen_active_field"] : "";
+
+            document.querySelector("body").style.backgroundColor = ccores_background;
+
+            document.querySelector(".cronometro").style.color = ccores_main_clock;
+            // document.querySelector("#fundo-ataque").style.backgroundColor = ccores_shot_clock_expiration_border;
+            // document.querySelector("#fundo-ataque span").style.color = ccores_shot_clock;
+
+        }
+
+    </script>
+
+    <!-- Configuração: Mostrar Ataque -->
+    <script>
+        var mostrarAtaque = true;
+
+        async function checkMostrarAtaque() {
+            var db = new sqlite3.Database(dbPath);
+            db.get("SELECT mostrar_ataque FROM config_jogo_setup WHERE id = 1", (err, row) => {
+                if (err) {
+                    console.error(err.message);
+                    return;
+                }
+                mostrarAtaque = row && row.mostrar_ataque === 1;
+
+                // Ocultar todo o conteúdo se mostrar_ataque estiver desativado
+                if (!mostrarAtaque) {
+                    document.querySelector('.container-fluid').style.display = 'none';
+                    document.body.style.backgroundColor = 'black';
+                } else {
+                    document.querySelector('.container-fluid').style.display = 'block';
+                }
+            });
+            db.close();
+        }
+    </script>
+
+    <!-- Configuração: Inicio -->
+    <script>
+        function StartConfigCores() {
+            getConfigCores();
+        }
+        window.onload = function () {
+            StartConfigCores();
+            checkMostrarAtaque();
+        }
+    </script>
+
+</body>
+
+</html>

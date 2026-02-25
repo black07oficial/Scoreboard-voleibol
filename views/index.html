@@ -1,0 +1,3630 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scoreboard - Painel de controle</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  <link rel="stylesheet" href="../resources/css/extras.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- jQuery -->
+  <!-- <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script> -->
+  <script type="text/javascript" src="../resources/js/jquery-3.6.4.slim.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+    crossorigin="anonymous"></script>
+
+  <!-- Popper -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+    integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    @font-face {
+      font-family: 'Digital Display';
+      src: url('../resources/fonts/digital_display.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Gobold';
+      src: url('../resources/fonts/gobold_bold.otf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Digital Dismay';
+      src: url('../resources/fonts/digital_dismay.otf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Destiny';
+      src: url('../resources/fonts/Destiny.ttf') format('truetype');
+    }
+
+    html {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    body {
+      background-color: #C6C5C3;
+      /* overflow: hidden; */
+      font-family: 'Gobold';
+      margin: 0;
+      padding: 0;
+      display: flex;
+      width: 100%;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #92652A #EBD7C9;
+    }
+
+    /* Chrome, Edge and Safari */
+    *::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+
+    *::-webkit-scrollbar-track {
+      border-radius: 0px;
+      background-color: #EBD7C9;
+      border: 1px solid #BA7F27;
+    }
+
+    *::-webkit-scrollbar-track:hover {
+      background-color: #EBD7C9;
+    }
+
+    *::-webkit-scrollbar-track:active {
+      background-color: #EBD7C9;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: #92652A;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+      background-color: #B98035;
+    }
+
+    *::-webkit-scrollbar-thumb:active {
+      background-color: #B98035;
+    }
+
+    .custom-column {
+      border: solid;
+      border-width: 0px;
+      border-right-width: 5px;
+      border-color: black;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
+    .destiny {
+      font-family: 'Destiny' !important;
+    }
+
+    .custom-button-simple {
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+
+    .btn-pink {
+      background-color: #A01E5B;
+    }
+
+    .btn-purple {
+      background-color: #82358C;
+    }
+
+    .btn-dark-purple {
+      background-color: #2F2E81
+    }
+
+    .digital_dismay {
+      font-family: 'Digital Dismay', sans-serif;
+    }
+
+    .btn-dark-green {
+      background-color: #0D6635;
+    }
+
+    .btn-red {
+      background-color: red !important;
+    }
+
+    .btn-green {
+      background-color: green !important;
+    }
+
+    .icone-time {
+      height: 150px;
+    }
+
+    .btn-opcoes {
+      min-width: 150px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin-bottom: 8px;
+    }
+
+    .btn-main {
+      min-width: 150px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      background-color: #28235B;
+    }
+
+    .btn-time {
+      min-width: 100px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      cursor: pointer;
+    }
+
+    .label-time-extra {
+      font-family: 'Digital Dismay', sans-serif;
+      font-size: 120px;
+      text-align: center;
+    }
+
+    .label-time-extra-temp {
+      font-family: 'Digital Dismay', sans-serif;
+      font-size: 150px;
+      text-align: center;
+    }
+
+    .label-time-large {
+      font-family: 'Digital Dismay', sans-serif;
+      font-size: 55px;
+      text-align: center;
+    }
+
+    .label-time-medium {
+      font-family: 'Digital Dismay', sans-serif;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    button {
+      font-size: 18px !important;
+    }
+
+    .btn-icon {
+      cursor: pointer;
+    }
+
+    .table-container {
+      max-height: 180px;
+      overflow-y: auto;
+      font-family: 'Digital Dismay', sans-serif;
+      font-size: 24px;
+    }
+
+    .table-container button {
+      font-family: sans-serif;
+    }
+
+    .table-container tr td:first-child {
+      text-align: end;
+      font-weight: bold;
+      color: black;
+    }
+
+    .table-container tr td {
+      color: red;
+    }
+
+    .tabela-exclusao {
+      width: 50%;
+    }
+
+    .tabela-exclusao-volei {
+      width: 50%;
+      margin-left: 3px;
+      margin-right: 3px;
+      background-color: #EAE1D0;
+      border: 1px solid #B2804A;
+      height: 298px;
+      padding: 20px;
+    }
+
+    .gray-text {
+      color: rgb(80, 80, 80);
+    }
+
+    .tabela-exclusao div {
+      margin-left: 3px;
+      margin-right: 3px;
+      background-color: #EAE1D0;
+      border: 1px solid #B2804A;
+      height: 180px;
+    }
+
+
+    .tabela-importacao {
+      margin-left: 3px;
+      margin-right: 3px;
+      background-color: #EAE1D0;
+      border: 1px solid #B2804A;
+      height: 80px;
+    }
+
+    #btn-adicionar-tempo-ataque {
+      z-index: 99;
+    }
+
+    #painel-more-time {
+      font-family: 'Digital Dismay', sans-serif;
+      min-width: 300px;
+      color: #925F39;
+      font-size: 24px;
+    }
+
+    #painel-fundo {
+      padding-top: 10px;
+    }
+
+    #painel-time-01,
+    #painel-time-02 {
+      margin-bottom: 10px;
+    }
+
+    /*
+    @media (max-width: 1300px) {
+      .tabela-exclusao div {
+        margin-left: 3px;
+        margin-right: 3px;
+        background-color: #EAE1D0;
+        border: 1px solid #B2804A;
+        height: 140px;
+      }
+    } */
+    .modal {
+      background-color: rgba(0, 0, 0, 0.0);
+    }
+
+    .modal-backdrop.show {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .timeout-active {
+      background-color: #14d15d !important;
+      border-radius: 10px;
+      padding: 5px;
+    }
+
+    /* Resposiveness Fixes restored to static sizes like Scoreboard-main */
+    .font-time {
+      font-size: 150px !important;
+    }
+
+    .font-points {
+      font-size: 180px !important;
+      line-height: 160px;
+    }
+
+    .font-sets {
+      font-size: 120px !important;
+      line-height: 70px;
+    }
+
+    .font-period {
+      font-size: 70px !important;
+      line-height: 60px;
+    }
+
+    .layout-bottom-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="painel-fundo" class="container-fluid">
+    <!-- Primeira linha com 3 colunas -->
+    <div class="row">
+      <div class="col-3 custom-column" style="min-width: 25%;">
+        <div id="painel-time-01" class="container-fluid">
+          <!-- Primeira linha com um botão "Opções" -->
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <button type="button" onclick="callOpcoes();"
+                class="custom-button-simple btn-dark-purple btn-opcoes bd-r-10 pd-10 ft-size-14">Opções</button>
+            </div>
+          </div>
+
+          <!-- Segunda linha com um elemento img centralizado -->
+          <div class="row mt-2">
+            <div class="col text-center">
+              <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" src="../resources/images/no-image.jpg"
+                onerror="this.style.opacity='0.3'" />
+            </div>
+          </div>
+
+          <!-- Terceira linha com um elemento h3 centralizado -->
+          <div class="row mt-2">
+            <div class="col text-center">
+              <h3 id="edit-cfg-equipes-t1-nome"></h3>
+            </div>
+          </div>
+
+          <!-- Quarta linha com três botões -->
+          <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="text-left">
+                <button id="btn-desconto-equipe1" type="button"
+                  class="custom-button-simple btn-dark-green ft-size-14 pd-7 ml-7 bd-r-10">Desconto de tempo</button>
+                <button id="btn-equipe-equipe1" type="button"
+                  class="custom-button-simple btn-purple ft-size-14 pd-7 ml-7 bd-r-10">Equipa</button>
+                <button id="btn-individual-equipe1" type="button"
+                  class="custom-button-simple btn-pink ft-size-14 pd-7 ml-7 bd-r-10">Individual</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-6 custom-column" style="min-width: 50%;">
+        <div class="container-fluid">
+
+          <!-- Area Central: Timer and Jogo -->
+          <div class="d-flex justify-content-center align-items-center w-100 position-relative py-3">
+
+            <div class="d-flex flex-column align-items-center z-2">
+              <!-- Up Buttons -->
+              <div class="d-flex justify-content-center gap-2 mb-1">
+                <button id="btn-add-time-minutes" style="width: 80px;" type="button"
+                  class="custom-button-simple btn-time btn-green bd-r-10"><i class="fa fa-caret-up"></i></button>
+                <button id="btn-add-time-seconds-2" style="width: 80px;" type="button"
+                  class="custom-button-simple btn-time btn-green bd-r-10"><i class="fa fa-caret-up"></i></button>
+                <button id="btn-add-time-seconds" style="width: 80px;" type="button"
+                  class="custom-button-simple btn-time btn-green bd-r-10"><i class="fa fa-caret-up"></i></button>
+              </div>
+
+              <!-- Timer -->
+              <p class="label-time-extra-temp m-0 text-danger" style="line-height: 1;">00:00</p>
+
+              <!-- Down Buttons -->
+              <div class="d-flex justify-content-center gap-2 mt-1">
+                <button id="btn-sub-time-minutes" type="button" class="custom-button-simple btn-time btn-red bd-r-10"
+                  style="width: 80px;"><i class="fa fa-caret-down"></i></button>
+                <button id="btn-sub-time-seconds-2" type="button" class="custom-button-simple btn-time btn-red bd-r-10"
+                  style="width: 80px;"><i class="fa fa-caret-down"></i></button>
+                <button id="btn-sub-time-seconds" type="button" class="custom-button-simple btn-time btn-red bd-r-10"
+                  style="width: 80px;"><i class="fa fa-caret-down"></i></button>
+              </div>
+            </div>
+
+            <!-- Jogo Period -->
+            <div class="position-absolute end-0 d-flex flex-column align-items-center pe-3 z-2">
+              <strong class="mb-1">Jogo</strong>
+              <button id="btn-add-periodo"
+                onclick="adicionarPontuacaoPeriodo('#input-periodo', '#label-periodo', '#btn-add-periodo', '5', 'false');"
+                type="button" class="custom-button-simple btn-green bd-r-10 w-100 mb-1" style="max-width: 60px;"><i
+                  class="fa fa-caret-up"></i></button>
+              <p id="label-periodo" class="label-time-medium m-0" style="color: black; line-height: 1; font-size:70px;">
+                1
+              </p>
+              <input id="input-periodo" type="hidden" value="1" />
+              <button id="btn-sub-periodo"
+                onclick="subtrairPontuacaoPeriodo('#input-periodo', '#label-periodo', '#btn-sub-periodo', '1', 'false');"
+                type="button" class="custom-button-simple btn-red bd-r-10 w-100 mt-1" style="max-width: 60px;"><i
+                  class="fa fa-caret-down"></i></button>
+            </div>
+
+          </div>
+
+          <div class="row pt-2">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="d-flex flex-wrap justify-content-center gap-2">
+                <button id="btn-start" type="button"
+                  class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10 flex-fill">Start/Stop</button>
+                <button id="btn-buzina" type="button"
+                  class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10 flex-fill">Buzina</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row pt-2">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+                <div class="d-flex flex-column text-center">
+                  <button id="btn-aquecimento" type="button" style="min-width: 150px;"
+                    class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10">Aquecimento</button>
+                  <span id="time-aquecimento" class="mt-1 fs-5"
+                    style="color:#925F39; font-family:'Digital Dismay', sans-serif;">00:00</span>
+                </div>
+                <div class="d-flex flex-column text-center">
+                  <button id="btn-desconto" type="button" style="min-width: 150px;"
+                    class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10">Desconto de
+                    tempo</button>
+                  <span id="time-desconto" class="mt-1 fs-5"
+                    style="color:#925F39; font-family:'Digital Dismay', sans-serif;">00:00</span>
+                </div>
+                <div class="d-flex flex-column text-center">
+                  <button id="btn-intervalo" type="button" style="min-width: 150px;"
+                    class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10">Intervalo</button>
+                  <span id="time-intervalo" class="mt-1 fs-5"
+                    style="color:#925F39; font-family:'Digital Dismay', sans-serif;">00:00</span>
+                </div>
+                <div class="d-flex flex-column text-center">
+                  <button id="btn-musica" type="button" data-bs-toggle="modal" data-bs-target="#musicModal"
+                    class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10"
+                    style="min-width: 150px; background-color: orange; color: white;"><i class="fa fa-music"></i>
+                    Música</button>
+                  <span class="mt-1 fs-5" style="visibility:hidden;">00:00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-6 d-flex justify-content-end">
+              <button id="btn-iniciar-partida" type="button"
+                class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10" style="background-color: #1A4B5A;">Ecrã
+                Público</button>
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <button id="btn-alterar-posicao" type="button"
+                class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10"
+                style="background-color: #1e1a5a;">Alterar Posição</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-3" style="min-width: 25%;">
+        <div id="painel-time-02" class="container-fluid">
+          <!-- Primeira linha com um botão "Opções" -->
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <button id="btn-sair" type="button"
+                class="custom-button-simple btn-dark-purple btn-opcoes bd-r-10 pd-10 ft-size-15"
+                style="background-color: #BD2025;">Sair <i class="fa fa-sign-out" aria-hidden="true"></i></button>
+            </div>
+          </div>
+
+          <!-- Segunda linha com um elemento img centralizado -->
+          <div class="row mt-2">
+            <div class="col text-center">
+              <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" src="../resources/images/no-image.jpg"
+                onerror="this.style.opacity='0.3'" />
+            </div>
+          </div>
+
+          <!-- Terceira linha com um elemento h3 centralizado -->
+          <div class="row mt-2">
+            <div class="col text-center">
+              <h3 id="edit-cfg-equipes-t2-nome"></h3>
+            </div>
+          </div>
+
+          <!-- Quarta linha com três botões -->
+          <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="text-left">
+                <button id="btn-desconto-equipe2" type="button"
+                  class="custom-button-simple btn-dark-green ft-size-14 pd-7 ml-7 bd-r-10">Desconto de tempo</button>
+                <button id="btn-equipe-equipe2" type="button"
+                  class="custom-button-simple btn-purple ft-size-14 pd-7 ml-7 bd-r-10">Equipa</button>
+                <button id="btn-individual-equipe2" type="button"
+                  class="custom-button-simple btn-pink ft-size-14 pd-7 ml-7 bd-r-10">Individual</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda linha com 3 colunas -->
+    <div class="d-flex flex-row">
+      <div class="custom-column" style="width: 35%;">
+
+        <div class="row">
+          <div class="col-12">
+            <div class="container-fluid" style="margin-top: -10px;">
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                  <strong>Pontos</strong>
+                </div>
+              </div>
+
+              <!-- Pontos layout team 01 -->
+              <div class="layout-bottom-panel px-2 mt-2 w-100 flex-wrap">
+                <!-- Desconto -->
+                <div class="d-flex flex-column align-items-center box-desconto">
+                  <div class="text-center mb-2" style="font-size: 14px;"><b>Desconto de Tempo</b></div>
+                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
+                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                      id="check_time1_val1" onchange="descontoTempo('check_time1_val1', 1);">
+                  </div>
+                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
+                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                      id="check_time1_val2" onchange="descontoTempo('check_time1_val2', 1);">
+                  </div>
+                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
+                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                      id="check_time1_val3" onchange="descontoTempo('check_time1_val3', 1);">
+                  </div>
+                </div>
+
+                <!-- Score -->
+                <div class="d-flex flex-column align-items-center justify-content-center px-2"
+                  style="flex:1; max-width: 250px;">
+                  <button id="btn-add-gols-time-01"
+                    onclick="adicionarPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-add-gols-time-01', 99, 'true',1);"
+                    type="button" class="custom-button-simple btn-time btn-green bd-r-10 w-100 pt-1 pb-1 mb-1"><i
+                      class="fa fa-caret-up"></i></button>
+                  <p id="label-gols-time-01" class="label-time-extra font-points m-0"
+                    style="color: orange; line-height: 1;">00</p>
+                  <input id="input-gols-time-01" type="hidden" value="0" />
+                  <button id="btn-sub-gols-time-01"
+                    onclick="subtrairPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-sub-gols-time-01');"
+                    type="button" class="custom-button-simple btn-time btn-red bd-r-10 w-100 pt-1 pb-1 mt-1"><i
+                      class="fa fa-caret-down"></i></button>
+                </div>
+
+                <!-- Sets -->
+                <div class="d-flex flex-column align-items-center box-set">
+                  <div class="text-center mb-1"><strong>Set</strong></div>
+                  <button id="btn-add-faltas-time-01"
+                    onclick="adicionarPontuacao('#input-faltas-time-01', '#label-faltas-time-01', '#btn-add-faltas-time-01');"
+                    type="button" class="custom-button-simple btn-green bd-r-10 w-100 mb-1"><i
+                      class="fa fa-caret-up"></i></button>
+                  <p id="label-faltas-time-01" class="label-time-extra font-sets m-0"
+                    style="color: yellow; line-height: 1;">00</p>
+                  <input id="input-faltas-time-01" type="hidden" value="0" />
+                  <button id="btn-sub-faltas-time-01"
+                    onclick="subtrairPontuacao('#input-faltas-time-01', '#label-faltas-time-01', '#btn-sub-faltas-time-01');"
+                    type="button" class="custom-button-simple btn-red bd-r-10 w-100 mt-1"><i
+                      class="fa fa-caret-down"></i></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row d-none" style="margin-top: 12px;">
+          <div class="col-12">
+            <div class="d-flex justify-content-between" style="margin-left: 12px; margin-right: 12px; margin-top: 8px;">
+
+              <table style="width: 100%;">
+                <tbody>
+                  <tr>
+                    <td style="vertical-align: top; text-align: right;">
+                      <strong>Exclusões</strong>
+                    </td>
+                    <td class="tabela-exclusao">
+                      <div class="table-container">
+                        <table class="table">
+                          <tbody id="tableBody1"></tbody>
+                        </table>
+                      </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                      <i onclick="setCronogramaModal('#inputExcMinutos1', '#inputExcSegundos1');"
+                        class="fa fa-plus btn-icon" data-bs-toggle="modal" data-bs-target="#addRowModal1"
+                        style="color: #1f307c; font-size: 25px;"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="custom-column" style="width: 30%;">
+        <div class="row mt-3">
+          <div class="col-12 d-flex justify-content-center" style="padding-top: 8px; font-size: 20px;">
+            <strong>Resultado Set's</strong>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 d-flex justify-content-center">
+            <div class="tabela-exclusao-volei ms-0 mx-auto w-100">
+              <div>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-4 gray-text d-flex justify-content-center" style="font-size: 20px;">
+                        Set
+                      </div>
+                      <div class=" col-8 d-flex justify-content-start" style="font-size: 20px;">
+                        Pontuação
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12" id="set">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="width: 10%; margin-left: 20px;">
+              <i class="fa fa-plus" id="btn-adicionar-set" class="btn-icon" type=" button" data-bs-toggle="modal"
+                data-bs-target="#addRowModal1" style="color: #1f307c; font-size: 25px; margin-left:-5px;"></i>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 d-none">
+          <div class="col-12 d-flex justify-content-center" style="padding-top: 8px; font-size: 20px;">
+            <strong>Tempo de Ataque</strong>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="container-fluid" style="padding-top: 18px;">
+              <div class="row d-none">
+                <div class="col-12 d-flex justify-content-center">
+                  <div class="text-left">
+                    <button id="btn-adicionar-tempo-ataque"
+                      onclick="adicionarPontuacaoTempoAtaque('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque');"
+                      type="button" class="custom-button-simple btn-time btn-green bd-r-10" style="min-width: 120px;"><i
+                        class="fa fa-caret-up"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="row d-none">
+                <div class="col-12 d-flex justify-content-center">
+                  <div class="text-left">
+                    <p id="label-tempo-ataque" class="label-time-extra"
+                      style="margin-bottom: -8px;color: #93C13D; font-size: 160px; line-height: 150px;">00</p>
+                    <div style="margin-left: 225px; margin-top: -10px;z-index:99;position:relative;">
+                      <button onclick="resetarTempoAtaque();" type="button"
+                        class="custom-button-simple btn-main ft-size-14 pd-15 bd-r-10"
+                        style="min-width: 80px !important; ">Resetar</button>
+                    </div>
+                    <input id="input-tempo-ataque" type="hidden" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="row d-none" style="margin-bottom: 10px;margin-top:-48px;">
+                <div class="col-12 d-flex justify-content-center">
+                  <div class="text-left">
+                    <button id="btn-subtrair-tempo-ataque"
+                      onclick="subtrairPontuacaoTempoAtaque('#input-tempo-ataque', '#label-tempo-ataque', '#btn-subtrair-tempo-ataque');"
+                      type="button" class="custom-button-simple btn-time btn-red bd-r-10" style="min-width: 120px;"><i
+                        class="fa fa-caret-down"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row">
+          <div class="col-12 d-flex justify-content-start" style="padding-top: 8px; margin-left: 12px;">
+            <strong>Importações </strong> (lista ou individual)
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 2px;">
+          <div class="col-12">
+            <div class="d-flex justify-content-between" style="margin-left: 12px; margin-right: 12px;">
+
+              <table style="width: 100%;">
+                <tbody>
+                  <tr>
+                    <td class="tabela-importacao">
+                      <div class="table-container">
+                        <table class="table">
+                            <tbody></tbody>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+
+      <div class="custom-column" style="width: 35%; border-right-width: 0px;">
+
+        <div class="row m-0">
+          <div class="col-12">
+            <div class="container-fluid" style="margin-top: -10px;">
+
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                  <strong>Pontos</strong>
+                </div>
+              </div>
+
+              <!-- Pontos layout team 02 -->
+              <div class="layout-bottom-panel px-2 mt-2 w-100 flex-wrap">
+                <!-- Sets -->
+                <div class="d-flex flex-column align-items-center box-set">
+                  <div class="text-center mb-1"><strong>Set</strong></div>
+                  <button id="btn-add-faltas-time-02"
+                    onclick="adicionarPontuacao('#input-faltas-time-02', '#label-faltas-time-02', '#btn-add-faltas-time-02');"
+                    type="button" class="custom-button-simple btn-green bd-r-10 w-100 mb-1"><i
+                      class="fa fa-caret-up"></i></button>
+                  <p id="label-faltas-time-02" class="label-time-extra font-sets m-0"
+                    style="color: yellow; line-height: 1;">00</p>
+                  <input id="input-faltas-time-02" type="hidden" value="0" />
+                  <button id="btn-sub-faltas-time-02"
+                    onclick="subtrairPontuacao('#input-faltas-time-02', '#label-faltas-time-02', '#btn-sub-faltas-time-02');"
+                    type="button" class="custom-button-simple btn-red bd-r-10 w-100 mt-1"><i
+                      class="fa fa-caret-down"></i></button>
+                </div>
+
+                <!-- Score -->
+                <div class="d-flex flex-column align-items-center justify-content-center px-1"
+                  style="flex:1; max-width: 250px;">
+                  <button id="btn-add-gols-time-02"
+                    onclick="adicionarPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02',99, 'true',2);"
+                    type="button" class="custom-button-simple btn-time btn-green bd-r-10 w-100 pt-1 pb-1 mb-1"><i
+                      class="fa fa-caret-up"></i></button>
+                  <p id="label-gols-time-02" class="label-time-extra font-points m-0"
+                    style="color: orange; line-height: 1;">00</p>
+                  <input id="input-gols-time-02" type="hidden" value="0" />
+                  <button id="btn-sub-gols-time-02"
+                    onclick="subtrairPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02');"
+                    type="button" class="custom-button-simple btn-time btn-red bd-r-10 w-100 pt-1 pb-1 mt-1"><i
+                      class="fa fa-caret-down"></i></button>
+                </div>
+
+                <!-- Desconto -->
+                <div class="d-flex flex-column align-items-center box-desconto">
+                  <div class="text-center mb-2" style="font-size: 14px;"><b>Desconto de Tempo</b></div>
+                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
+                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                      id="check_time2_val1" onchange="descontoTempo('check_time2_val1', 2);">
+                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                  </div>
+                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
+                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                      id="check_time2_val2" onchange="descontoTempo('check_time2_val2', 2);">
+                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                  </div>
+                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
+                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                      id="check_time2_val3" onchange="descontoTempo('check_time2_val3', 2);">
+                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row d-none" style="margin-top: 12px;">
+          <div class="col-12">
+            <div class="d-flex justify-content-between" style="margin-left: 14px; margin-right: 14px; margin-top: 8px;">
+
+              <table style="width: 100%;">
+                <tbody>
+                  <tr>
+                    <td style="vertical-align: top; text-align: right;">
+                      <i onclick="setCronogramaModal('#inputExcMinutos2', '#inputExcSegundos2');"
+                        class="fa fa-plus btn-icon" data-bs-toggle="modal" data-bs-target="#addRowModal2"
+                        style="color: #1f307c; font-size: 25px; margin-left:-5px;"></i>
+                    </td>
+                    <td class="tabela-exclusao">
+                      <div class="table-container">
+                        <table class="table">
+                          <tbody id="tableBody2"></tbody>
+                        </table>
+                      </div>
+                    </td>
+                    <td style="vertical-align: top; text-align: left;">
+                      <strong>Exclusões</strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal para adicionar nova linha -->
+    <div class="modal fade" id="addRowModal1" tabindex="-1" aria-labelledby="addRowModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addRowModalLabel">Resultado Set's</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="value1" class="form-label">Set</label>
+              <input type="number" class="form-control" id="inputExcSet" min="0">
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col">
+                  <label for="value1" class="form-label">Visitante</label>
+                  <input type="number" class="form-control" id="inputExcSet1" min="0">
+                </div>
+                <div class="col">
+                  <label for="value2" class="form-label">Visitada</label>
+                  <input type="number" class="form-control" id="inputExcSet2" min="0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="addRowBtn1">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <audio id="player-sons" src="../resources/sound/goal-horn.mp3"></audio>
+    <audio id="player-sons-at" src="../resources/sound/goal-horn.mp3"></audio>
+
+    <!-- Modal para adicionar nova linha -->
+    <div class="modal fade" id="addRowModal2" tabindex="-1" aria-labelledby="addRowModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addRowModalLabel">Adicionar Nova Exclusão</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="value1" class="form-label">Jogador</label>
+              <input type="number" class="form-control" id="inputExcJogador2" min="0">
+            </div>
+            <div class="mb-3">
+              <label for="value2" class="form-label">Tempo</label>
+              <div class="row">
+                <div class="col">
+                  <input type="number" class="form-control" id="inputExcMinutos2" min="0">
+                </div>
+                <div class="col">
+                  <input type="number" class="form-control" id="inputExcSegundos2" min="0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="addRowBtn2">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Música -->
+    <div class="modal fade" id="musicModal" tabindex="-1" aria-labelledby="musicModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background-color: #C6C5C3; color: #333;">
+          <div class="modal-header" style="border-bottom: 1px solid #B2804A; background-color: #28235B;">
+            <h5 class="modal-title" id="musicModalLabel" style="color: white;"><i class="fa fa-music"></i> Player de
+              Música</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+              aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Controles do Player -->
+            <div class="d-flex align-items-center justify-content-between mb-3 p-3"
+              style="background-color: #EAE1D0; border-radius: 10px; border: 1px solid #B2804A;">
+              <div style="flex: 1;">
+                <div id="music-title" style="font-size: 18px; font-weight: bold; color: #28235B;">Nenhuma música</div>
+                <div id="music-artist" style="font-size: 14px; color: #925F39;">Selecione uma pasta</div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <button onclick="previousMusic()" class="btn btn-sm"
+                  style="background-color: #28235B; color: white; border: none;"><i
+                    class="fa fa-step-backward"></i></button>
+                <button id="btn-play-music" onclick="togglePlayMusic()" class="btn"
+                  style="background-color: #0D6635; color: white; border: none; width: 50px; height: 50px; border-radius: 50%;"><i
+                    class="fa fa-play"></i></button>
+                <button onclick="nextMusic()" class="btn btn-sm"
+                  style="background-color: #28235B; color: white; border: none;"><i
+                    class="fa fa-step-forward"></i></button>
+              </div>
+              <div class="d-flex align-items-center gap-2" style="margin-left: 20px;">
+                <button onclick="shuffleMusic()" class="btn btn-sm"
+                  style="background-color: transparent; border: none;"><i class="fa fa-random"
+                    style="color: #925F39;"></i></button>
+                <button onclick="repeatMusic()" class="btn btn-sm"
+                  style="background-color: transparent; border: none;"><i class="fa fa-repeat"
+                    style="color: #925F39;"></i></button>
+              </div>
+            </div>
+
+            <!-- Barra de Progresso -->
+            <div class="mb-3">
+              <input type="range" id="music-progress" min="0" max="100" value="0"
+                style="width: 100%; accent-color: #92652A;">
+            </div>
+
+            <!-- Controle de Volume -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <i class="fa fa-volume-down" style="color: #925F39;"></i>
+              <input type="range" id="music-volume" min="0" max="100" value="100" oninput="setVolume(this.value)"
+                style="width: 120px; accent-color: #92652A;">
+              <span id="volume-label" style="color: #925F39; font-size: 12px;">100%</span>
+            </div>
+
+            <!-- Botão Selecionar Pasta -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <strong style="color: #28235B;">Lista de Músicas</strong>
+              <button onclick="selectMusicFolder()" class="btn btn-sm"
+                style="background-color: #0D6635; color: white;"><i class="fa fa-folder-open"></i> Selecionar
+                Pasta</button>
+            </div>
+
+            <!-- Lista de Músicas -->
+            <div id="music-list-container"
+              style="max-height: 300px; overflow-y: auto; background-color: #EAE1D0; border-radius: 10px; padding: 10px; border: 1px solid #B2804A;">
+              <div id="music-list" style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="color: #925F39; text-align: center; padding: 20px;">Nenhuma música carregada. Clique em
+                  "Selecionar Pasta" para escolher uma pasta com músicas.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 116) {
+          // O código 116 corresponde à tecla F5
+          ipcRenderer.send('reloadMain');
+          location.reload();
+        }
+      });
+      let widthWindowPad = 1570;
+      let heightWindowPad = 870;
+      document.body.style.zoom = 1;
+      let oldWindowWidth = widthWindowPad;
+      let oldWindowHeight = heightWindowPad;
+      function calculateScale(width) {
+        const widthIncrement = 1000;
+        const scaleIncrement = 1;
+        const maxScale = 4; // Define a escala máxima
+
+        const widthDiff = width - widthWindowPad;
+        let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
+        scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
+        console.log(scaleFactor);
+        return scaleFactor;
+      }
+
+      function adjustZoom() {
+        const baseWidth = 1570;
+        const baseHeight = 870;
+        const aspectRatio = window.innerWidth / window.innerHeight;
+        const baseAspectRatio = baseWidth / baseHeight;
+        let scale
+        if (aspectRatio < baseAspectRatio) {
+          scale = window.innerWidth / baseWidth;
+          document.body.style.width = '100%';
+        } else {
+          scale = window.innerHeight / baseHeight;
+          document.body.style.width = (100 / (aspectRatio * 0.5)) + '%'; // Ajuste o valor 0.5 conforme necessário
+        }
+        document.body.style.zoom = scale;
+        document.body.style.height = (window.innerHeight / scale) + 'px';
+        document.body.style.alignItems = "center";
+      }
+
+
+
+
+      // Chama a função de ajuste de zoom quando o DOM estiver pronto
+      document.addEventListener("DOMContentLoaded", function () {
+        adjustZoom();
+      });
+
+      // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+      window.addEventListener("resize", function () {
+
+        widthWindowPad = 1570;
+        heightWindowPad = 870;
+        document.body.style.zoom = 1;
+        oldWindowWidth = widthWindowPad;
+        oldWindowHeight = heightWindowPad;
+      });
+      let secondWindowRoute = "placar";
+    </script>
+
+    <script>
+      window.$ = window.jQuery = require('jquery');
+      var tempo_ataque = 0;
+      var min_periodo = 0;
+      var seg_periodo = 0;
+      var tempo_atq_cont = 0;
+      var time_1_desconto = 0;
+      var time_2_desconto = 0;
+      var lastClicked = null;
+      const { ipcRenderer } = require("electron");
+      setInterval(() => {
+        var data = {
+          time_1: time_1_desconto,
+          time_2: time_2_desconto
+        }
+        ipcRenderer.send("atualizarDesconto", data);
+      }, 100)
+      async function descontoTempo(id, time) {
+
+        if (document.getElementById(id).checked && time == 1) {
+          if (time_1_desconto >= 3) {
+            time_1_desconto = 3;
+          }
+          time_1_desconto += 1;
+        } else if (!document.getElementById(id).checked && time == 1) {
+          if (time_1_desconto <= 0) {
+            time_1_desconto = 0;
+          }
+          time_1_desconto -= 1;
+        }
+        if (document.getElementById(id).checked && time == 2) {
+          if (time_2_desconto >= 3) {
+            time_2_desconto = 3;
+          }
+          time_2_desconto += 1;
+        } else if (!document.getElementById(id).checked && time == 2) {
+          if (time_2_desconto <= 0) {
+            time_2_desconto = 0;
+          }
+          time_2_desconto -= 1;
+        }
+
+
+        // var db = new sqlite3.Database(require('path').join(__dirname, '..', 'scoreboard.sqlite'));
+        // _ = await db.serialize(() => {
+        //   db.run(`UPDATE config_desconto SET time_1 = ${time_1_desconto}, time_2 = ${time_2_desconto} WHERE id = 1;`);
+        // });
+        // db.close();
+        var data = {
+          time_1: time_1_desconto,
+          time_2: time_2_desconto
+        }
+        ipcRenderer.send("atualizarDesconto", data);
+      }
+      function resetarTempoAtaque() {
+        if (window.tempo_ataque == window.tempo_ataque + 1) {
+          window.tempo_ataque = window.tempo_ataque - 1;
+        }
+        window.tempo_atq_cont = window.tempo_ataque;
+        tempo_atq_temp = window.tempo_atq_cont;
+        var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+        second = Math.round(tempo_atq_temp);
+        second = second + decimal + 0.5;
+        second -= 1;
+        window.tempo_atq_cont = second;
+        $('#label-tempo-ataque').html(window.tempo_ataque);
+        $('#input-tempo-ataque').val(window.tempo_ataque);
+        ipcRenderer.send("atualizaAtaque", "aquecimento.html");
+        let data = {
+          inputOrigin: '#input-tempo-ataque',
+          pontuacaoFormatada: window.tempo_ataque,
+        }
+        if (secondWindowRoute != "desconto_tempo") {
+          ipcRenderer.send("alterarPontuacaoPlacar", data);
+        }
+      }
+
+      var trocaPosicao = false;
+
+      $('#btn-alterar-posicao').click(function () {
+        trocaPosicao = !trocaPosicao;
+        if (trocaPosicao) {
+          $('#btn-alterar-posicao').css('background-color', 'rgb(201 42 42)');
+        } else {
+          $('#btn-alterar-posicao').css('background-color', '#1e1a5a');
+        }
+        ipcRenderer.send("alterarPosicao", trocaPosicao);
+        ipcRenderer.send("getClickedButton", lastClicked);
+      });
+
+      function subtrairPontuacao(input, label, button, limite = 0, formata = "true") {
+        var pontuacao = $(input).val();
+        pontuacao = parseInt(pontuacao);
+
+        if (pontuacao <= limite) {
+          return;
+        }
+
+        pontuacao = pontuacao - 1;
+        if (pontuacao < 0) {
+          pontuacao = 0;
+        }
+        if (input == "#input-tempo-ataque") {
+          tempo_atq_cont = pontuacao;
+        }
+        $(input).val(pontuacao);
+
+        let data = {
+          inputOrigin: input,
+          labelOrigin: label,
+          buttonOrigin: button,
+          limiteOrigin: limite,
+          formataOrigin: formata,
+          pontuacao: pontuacao,
+        }
+
+        if (formata === "true") {
+          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
+          $(label).html(pontuacaoFormatada);
+          data["pontuacaoFormatada"] = pontuacaoFormatada;
+        } else {
+          $(label).html(pontuacao.toString());
+        }
+
+        ipcRenderer.send("alterarPontuacaoPlacar", data);
+
+      }
+
+      function adicionarPontuacao(input, label, button, limite = 99, formata = "true", pontos = null) {
+        var pontuacao = $(input).val();
+        pontuacao = parseInt(pontuacao);
+        if (pontos) {
+          lastClicked = pontos;
+          ipcRenderer.send("getClickedButton", lastClicked);
+        }
+        if (pontuacao >= limite) {
+          return;
+        }
+        pontuacao = pontuacao + 1;
+        if (input == "#input-tempo-ataque") {
+          tempo_atq_cont = pontuacao;
+        }
+        $(input).val(pontuacao);
+
+        let data = {
+          inputOrigin: input,
+          labelOrigin: label,
+          buttonOrigin: button,
+          limiteOrigin: limite,
+          formataOrigin: formata,
+          pontuacao: pontuacao,
+        }
+
+        if (formata === "true") {
+          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
+          $(label).html(pontuacaoFormatada);
+          data["pontuacaoFormatada"] = pontuacaoFormatada;
+        } else {
+          $(label).html(pontuacao.toString());
+        }
+
+        ipcRenderer.send("alterarPontuacaoPlacar", data);
+
+      }
+      // $(document).ready(function () {
+      //   setTimeout(() => {
+      //     setInterval(() => {
+
+      //       let dataPontuacao = {
+      //         inputOrigin: '#input-gols-time-01',
+      //         labelOrigin: '#label-gols-time-01',
+      //         buttonOrigin: '',
+      //         limiteOrigin: 99,
+      //         formataOrigin: "true",
+      //         pontuacaoFormatada: parseInt($('#input-gols-time-01').val()).toString().padStart(2, "0"),
+      //       }
+      //       let dataPontuacao2 = {
+      //         inputOrigin: '#input-gols-time-02',
+      //         labelOrigin: '#label-gols-time-02',
+      //         buttonOrigin: '',
+      //         limiteOrigin: 99,
+      //         formataOrigin: "true",
+      //         pontuacaoFormatada: parseInt($('#input-gols-time-02').val()).toString().padStart(2, "0"),
+      //       }
+      //       let dataPontuacao3 = {
+      //         inputOrigin: '#input-faltas-time-02',
+      //         labelOrigin: '#label-faltas-time-02',
+      //         buttonOrigin: '',
+      //         limiteOrigin: 99,
+      //         formataOrigin: "true",
+      //         pontuacaoFormatada: parseInt($('#input-faltas-time-02').val()).toString().padStart(2, "0"),
+      //       }
+      //       let dataPontuacao4 = {
+      //         inputOrigin: '#input-faltas-time-01',
+      //         labelOrigin: '#label-faltas-time-01',
+      //         buttonOrigin: '',
+      //         limiteOrigin: 99,
+      //         formataOrigin: "true",
+      //         pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString().padStart(2, "0"),
+      //       }
+      //       let dataPontuacao5 = {
+      //         inputOrigin: '#input-faltas-time-01',
+      //         labelOrigin: '#label-faltas-time-01',
+      //         buttonOrigin: '',
+      //         limiteOrigin: 99,
+      //         formataOrigin: "true",
+      //         pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString().padStart(2, "0"),
+      //       }
+      //       let dataPontuacao6 = {
+      //         inputOrigin: '#input-periodo',
+      //         labelOrigin: '#label-periodo',
+      //         buttonOrigin: '#btn-sub-periodo',
+      //         limiteOrigin: 99,
+      //         formataOrigin: "true",
+      //         pontuacaoFormatada: $('#label-periodo').val(),
+      //       }
+
+      //       ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao);
+      //       ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao2);
+      //       ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao3);
+      //       ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao4);
+      //       ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao5);
+      //       ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao6);
+
+      //     }, 1000);
+      //     setInterval(function () {
+      //       int = setInterval(function () {
+      //         if (!partidaIniciada) {
+      //           let dataPontuacao6 = {
+      //             inputOrigin: '#input-tempo-ataque',
+      //             labelOrigin: '#label-tempo-ataque',
+      //             buttonOrigin: '',
+      //             limiteOrigin: 99,
+      //             formataOrigin: "true",
+      //             pontuacaoFormatada: $('#label-tempo-ataque').html()
+      //           }
+      //           ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao6);
+      //         }
+      //       }, 100)
+      //     })
+
+
+      //   }, 2e3)
+
+      // })
+
+      function subtrairPontuacaoTempoAtaque(input, label, button, limite = 0, formata = "true") {
+        subtrairPontuacao(input, label, button, limite, formata);
+
+        if (!listaConfiguracoesSons) {
+          return;
+        }
+
+        // playAudio('#player-sons', listaConfiguracoesSons['shot_clock']);
+
+      }
+
+      function adicionarPontuacaoTempoAtaque(input, label, button, limite = 99, formata = "true") {
+        adicionarPontuacao(input, label, button, limite, formata);
+
+        if (!listaConfiguracoesSons) {
+          return;
+        }
+
+        // playAudio('#player-sons', listaConfiguracoesSons['shot_clock']);
+
+      }
+
+      function adicionarPontuacaoPeriodo(input, label, button, limite = 99, formata = "true") {
+        adicionarPontuacao(input, label, button, limite, formata);
+
+        if (!listaConfiguracoesSons) {
+          return;
+        }
+
+        // playAudio('#player-sons', listaConfiguracoesSons['end_period']);
+
+      }
+
+      function adicionarPontuacaoDefault(input, label, button, pontuacao, limite = 99, formata = "true") {
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao >= limite) {
+          return;
+        }
+
+        $(input).val(pontuacao);
+
+        let data = {
+          inputOrigin: input,
+          labelOrigin: label,
+          buttonOrigin: button,
+          limiteOrigin: limite,
+          formataOrigin: formata,
+          pontuacao: pontuacao,
+        }
+        if (formata === "true") {
+          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
+          $(label).html(pontuacaoFormatada);
+          data["pontuacaoFormatada"] = pontuacaoFormatada;
+        } else {
+          $(label).html(pontuacao.toString());
+        }
+        // setInterval(() => {
+        //   if ($(label).html() == '00') {
+        //     resetarTempoAtaque();
+        //   }
+        // }, 100)
+        ipcRenderer.send("alterarPontuacaoPlacar", data);
+      }
+
+      function subtrairPontuacaoPeriodo(input, label, button, limite = 0, formata = "true") {
+        subtrairPontuacao(input, label, button, limite, formata);
+      }
+
+      // Ported from Scoreboard-main: Visual Indicator for Timeout (Panel Background)
+      document.getElementById("btn-desconto-equipe1").addEventListener("click", () => {
+        // Quando trocaPosicao está ativa, inverter a origem para que o desconto
+        // seja associado à equipe correta no placar
+        let body = {
+          origem: trocaPosicao ? "btn-desconto-equipe2" : "btn-desconto-equipe1"
+        }
+        ipcRenderer.send("sendDescontoPainel", body);
+        // Toggle green background on team 1 panel
+        const painelTime1 = document.getElementById("painel-time-01");
+        if (painelTime1.style.backgroundColor === "rgb(57, 170, 73)") { // #39AA49 in rgb
+          painelTime1.style.backgroundColor = "";
+        } else {
+          painelTime1.style.backgroundColor = "#39AA49";
+        }
+      });
+
+      document.getElementById("btn-desconto-equipe2").addEventListener("click", () => {
+        // Quando trocaPosicao está ativa, inverter a origem para que o desconto
+        // seja associado à equipe correta no placar
+        let body = {
+          origem: trocaPosicao ? "btn-desconto-equipe1" : "btn-desconto-equipe2"
+        }
+        ipcRenderer.send("sendDescontoPainel", body);
+        // Toggle green background on team 2 panel
+        const painelTime2 = document.getElementById("painel-time-02");
+        if (painelTime2.style.backgroundColor === "rgb(57, 170, 73)") { // #39AA49 in rgb
+          painelTime2.style.backgroundColor = "";
+        } else {
+          painelTime2.style.backgroundColor = "#39AA49";
+        }
+      });
+
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+      // let linhas = document.querySelectorAll('#tableBody1 tr');
+      // let segundos = Array.from(linhas, linha => {
+      //   var second = formatSecond(linha.children[1].innerHTML)
+      //   if (!linha.diminuido) {
+      //     second -= 1;
+      //     linha.diminuido = true;
+      //   }
+      //   return second;
+      // });
+      // let linhas2 = document.querySelectorAll('#tableBody2 tr');
+      // let segundos2 = Array.from(linhas2, linha => {
+      //   var second = formatSecond(linha.children[1].innerHTML)
+      //   if (!linha.diminuido) {
+      //     second -= 1;
+      //     linha.diminuido = true;
+      //   }
+      //   return second;
+      // });
+      let exclusoesLista1 = [];
+      let exclusoesLista2 = [];
+      let intervalId;
+      let intervalId2;
+      let rodando1 = false;
+      let rodando2 = false;
+      let old_qtd1 = 0;
+      let old_qtd2 = 0;
+      // setInterval(() => {
+      //   let qtd_1 = document.querySelectorAll('#tableBody1 tr').length;
+      //   let qtd_2 = document.querySelectorAll('#tableBody2 tr').length;
+      //   if (qtd_1 == 0) {
+      //     old_qtd1 = 0;
+      //   }
+      //   if (qtd_2 == 0) {
+      //     old_qtd2 = 0;
+      //   }
+      //   if (qtd_1 !== old_qtd1) {
+      //     old_qtd1 = qtd_1;
+      //     if (intervalId !== null) {
+      //       clearInterval(intervalId);
+      //     }
+      //     linhas = document.querySelectorAll('#tableBody1 tr');
+      //     segundos = Array.from(linhas, linha => {
+      //       var second = formatSecond(linha.children[1].innerHTML)
+      //       var diferenca = tempoRestante - second;
+      //       console.log(second);
+      //       var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+      //       second = Math.round(second);
+      //       second = second + decimal + 0.1;
+      //       second -= 1;
+      //       return second;
+      //     });
+
+      //   }
+      //   if (qtd_2 !== old_qtd2) {
+      //     old_qtd2 = qtd_2;
+      //     if (intervalId2 !== null) {
+      //       clearInterval(intervalId2);
+      //     }
+      //     linhas2 = document.querySelectorAll('#tableBody2 tr');
+      //     segundos2 = Array.from(linhas2, linha => {
+      //       var second = formatSecond(linha.children[1].innerHTML)
+      //       var diferenca = tempoRestante - second;
+      //       console.log(second);
+      //       var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+      //       second = Math.round(second);
+      //       second = second + decimal + 0.1;
+      //       second -= 1;
+      //       return second;
+      //     });
+      //   }
+      // }, 50)
+
+      let intervalId1 = null;
+
+      function diminuiTempoEquipe() {
+        linhas.forEach((linha, index) => {
+          if (segundos[index] >= 0) {
+            console.log(segundos[index] + ' - ' + tempoRestante);
+            segundos[index] -= 0.1;
+            let time = formatTime(segundos[index]);
+            linha.children[1].innerHTML = time;
+          }
+          if (segundos[index] <= 0) {
+            segundos[index] = 0;
+            linha.children[1].innerHTML = '00:00';
+          }
+        });
+        linhas2.forEach((linha, index) => {
+          if (segundos2[index] >= 0) {
+            segundos2[index] -= 0.1;
+            let time = formatTime(segundos2[index]);
+            linha.children[1].innerHTML = time;
+          }
+          if (segundos2[index] <= 0) {
+            segundos2[index] = 0;
+            linha.children[1].innerHTML = '00:00';
+          }
+        });
+      }
+      let intervalIds2 = [];
+
+      function diminuiTempoEquipe2(id) {
+        // Limpa todos os intervalos existentes
+        intervalIds2.forEach(clearInterval);
+        intervalIds2 = [];
+
+        document.querySelectorAll('#' + id + ' tr').forEach((row) => {
+          let second = formatSecond(row.children[1].innerHTML);
+          // second -= 0.90;
+          // second += 0.20;
+          let intervallId = setInterval(() => {
+            if (document.querySelectorAll('#' + id + ' tr').length == 0) {
+              clearInterval(intervallId);
+            }
+            if (!pausarContagem && partidaIniciada == true) {
+              if (second >= 0) {
+                let time = formatTime(second);
+                console.log(time);
+                row.children[1].innerHTML = time;
+                second -= 0.1;
+              }
+              if (second <= 0) {
+                second = 0;
+                row.children[1].innerHTML = '00:00';
+                setTimeout(() => {
+                  // row.remove();
+                }, 2000);
+              }
+            }
+          }, 100);
+
+          // Armazena o ID do intervalo
+          intervalIds2.push(intervallId);
+        });
+      }
+
+
+
+      function formatTime(value) {
+        // if (value > 59.5) {
+        //   if (value >= 60 && value <= 60.9) {
+        //     value = 60
+        //   }
+        let minutos = Math.floor(value / 60);
+        let segundos = Math.ceil(value % 60);
+        if (segundos >= 60 && segundos <= 60.9) {
+          minutos++;
+          segundos = 0;
+        }
+        if (minutos <= 0) {
+          minutos = 0
+        }
+        if (segundos <= 0) {
+          segundos = 0
+        }
+        // Formata a saída do cronômetro
+        const minutosStr = minutos.toString().padStart(2, "0");
+        const segundosStr = segundos.toString().padStart(2, "0");
+        return minutosStr + ":" + segundosStr
+
+        // } else {
+        //   const segundos = tempoRestante.toFixed(1);
+        //   const segundosStr = segundos.toString().padStart(2, "0");
+        //   return segundosStr.toString().replace('.', ':')
+        // }
+
+      }
+      function formatSecond(value) {
+        let second = value.toString().split(':');
+        second[0] = parseInt(second[0], 10) * 60;
+        second[1] = parseInt(second[1], 10);
+        second = second[0] + second[1];
+        return second;
+      }
+      // function formatSecond(value) {
+      //   let decimal = 0;
+      //   if (tempoRestante > 0) {
+      //     decimal = '0.' + tempoRestante.toString().split('.')[1];
+      //   }
+      //   let second = value.toString().split(':');
+      //   second[0] = parseInt(second[0], 10) * 60;
+      //   second[1] = parseInt(second[1], 10);
+      //   return second[0] + second[1] + parseFloat(decimal);
+      // }
+      document.getElementById('btn-buzina').addEventListener('click', function () {
+
+        if (!listaConfiguracoesSons) {
+          return;
+        }
+
+        playAudio('#player-sons', listaConfiguracoesSons['buzzer']);
+
+      });
+
+      document.getElementById('btn-sair').addEventListener('click', function () {
+        ipcRenderer.send("closeApp", null);
+      });
+
+      document.getElementById("btn-aquecimento").addEventListener("click", () => {
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+        var config_setup_desconto_min_ex = config_setup_desconto_min;
+        var config_setup_desconto_seg_ex = config_setup_desconto_seg;
+        if (config_setup_desconto_min < 10) {
+          config_setup_desconto_min_ex = "0" + config_setup_desconto_min
+        }
+        if (config_setup_desconto_seg < 10) {
+          config_setup_desconto_seg_ex = "0" + config_setup_desconto_seg
+        }
+        document.querySelector("#time-desconto").innerHTML = config_setup_desconto_min_ex + ":" + config_setup_desconto_seg_ex
+        var config_setup_intervalo_min_ex = config_setup_intervalo_min;
+        var config_setup_intervalo_seg_ex = config_setup_intervalo_seg;
+        if (config_setup_intervalo_min < 10) {
+          config_setup_intervalo_min_ex = "0" + config_setup_intervalo_min
+        }
+        if (config_setup_intervalo_seg < 10) {
+          config_setup_intervalo_seg_ex = "0" + config_setup_intervalo_seg
+        }
+        document.querySelector("#time-intervalo").innerHTML = config_setup_intervalo_min_ex + ":" + config_setup_intervalo_seg_ex
+        if (secondWindowRoute != "aquecimento") {
+          secondWindowRoute = "aquecimento";
+          ipcRenderer.send("openSecondWindow", "aquecimento.html");
+        } else {
+          ipcRenderer.send("openSecondWindow", "placar.html");
+          ipcRenderer.send("openSecondWindow", "aquecimento.html");
+        }
+      });
+
+      document.getElementById("btn-desconto").addEventListener("click", () => {
+
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+        var config_setup_intervalo_min_ex = config_setup_intervalo_min;
+        var config_setup_intervalo_seg_ex = config_setup_intervalo_seg;
+        if (config_setup_intervalo_min < 10) {
+          config_setup_intervalo_min_ex = "0" + config_setup_intervalo_min
+        }
+        if (config_setup_intervalo_seg < 10) {
+          config_setup_intervalo_seg_ex = "0" + config_setup_intervalo_seg
+        }
+        document.querySelector("#time-intervalo").innerHTML = config_setup_intervalo_min_ex + ":" + config_setup_intervalo_seg_ex
+        var config_setup_aquecimento_min_ex = config_setup_aquecimento_min;
+        var config_setup_aquecimento_seg_ex = config_setup_aquecimento_seg;
+        if (config_setup_aquecimento_min < 10) {
+          config_setup_aquecimento_min_ex = "0" + config_setup_aquecimento_min
+        }
+        if (config_setup_aquecimento_seg < 10) {
+          config_setup_aquecimento_seg_ex = "0" + config_setup_aquecimento_seg
+        }
+        document.querySelector("#time-aquecimento").innerHTML = config_setup_aquecimento_min_ex + ":" + config_setup_aquecimento_seg_ex
+        if (secondWindowRoute != "desconto_tempo") {
+          secondWindowRoute = "desconto_tempo";
+          ipcRenderer.send("openSecondWindow", "desconto_tempo.html");
+          let tempo = document.querySelector(".label-time-extra-temp").innerHTML;
+          let cronometro = {
+            inputOrigin: '.cronometro',
+            pontuacaoFormatada: tempo
+          }
+          // if (secondWindowRoute == "desconto_tempo") {
+          setTimeout(() => {
+            ipcRenderer.send("alterarPontuacaoPlacar", cronometro);
+          }, 1000)
+        } else {
+          ipcRenderer.send("openSecondWindow", "placar.html");
+          ipcRenderer.send("openSecondWindow", "desconto_tempo.html");
+          let tempo = document.querySelector(".label-time-extra-temp").innerHTML;
+          let cronometro = {
+            inputOrigin: '.cronometro',
+            pontuacaoFormatada: tempo
+          }
+          // if (secondWindowRoute == "desconto_tempo") {
+          setTimeout(() => {
+            ipcRenderer.send("alterarPontuacaoPlacar", cronometro);
+          }, 1000)
+        }
+
+      });
+
+      document.getElementById("btn-intervalo").addEventListener("click", () => {
+
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+        var config_setup_desconto_min_ex = config_setup_desconto_min;
+        var config_setup_desconto_seg_ex = config_setup_desconto_seg;
+        if (config_setup_desconto_min < 10) {
+          config_setup_desconto_min_ex = "0" + config_setup_desconto_min
+        }
+        if (config_setup_desconto_seg < 10) {
+          config_setup_desconto_seg_ex = "0" + config_setup_desconto_seg
+        }
+        document.querySelector("#time-desconto").innerHTML = config_setup_desconto_min_ex + ":" + config_setup_desconto_seg_ex
+        var config_setup_aquecimento_min_ex = config_setup_aquecimento_min;
+        var config_setup_aquecimento_seg_ex = config_setup_aquecimento_seg;
+        if (config_setup_aquecimento_min < 10) {
+          config_setup_aquecimento_min_ex = "0" + config_setup_aquecimento_min
+        }
+        if (config_setup_aquecimento_seg < 10) {
+          config_setup_aquecimento_seg_ex = "0" + config_setup_aquecimento_seg
+        }
+        document.querySelector("#time-aquecimento").innerHTML = config_setup_aquecimento_min_ex + ":" + config_setup_aquecimento_seg_ex
+        if (secondWindowRoute != "intervalo") {
+          secondWindowRoute = "intervalo";
+          ipcRenderer.send("openSecondWindow", "intervalo.html");
+        } else {
+          ipcRenderer.send("openSecondWindow", "placar.html");
+          ipcRenderer.send("openSecondWindow", "intervalo.html");
+        }
+
+      });
+
+      document.getElementById("btn-equipe-equipe1").addEventListener("click", async () => {
+
+        if (secondWindowRoute != "equipe01") {
+          secondWindowRoute = "equipe01";
+          ipcRenderer.send("openSecondWindow", "equipe01.html");
+        }
+
+        await sleep(1500);
+
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+
+      });
+
+      document.getElementById("btn-equipe-equipe2").addEventListener("click", async () => {
+
+        if (secondWindowRoute != "equipe02") {
+          secondWindowRoute = "equipe02";
+          ipcRenderer.send("openSecondWindow", "equipe02.html");
+        }
+
+        await sleep(1500);
+
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+
+      });
+
+      //Não foi alterado nome de ID para poder facilitar
+      document.getElementById("btn-iniciar-partida").addEventListener("click", () => {
+        if (secondWindowRoute != "placar") {
+          var config_setup_intervalo_min_ex = config_setup_intervalo_min;
+          var config_setup_intervalo_seg_ex = config_setup_intervalo_seg;
+          if (config_setup_intervalo_min < 10) {
+            config_setup_intervalo_min_ex = "0" + config_setup_intervalo_min
+          }
+          if (config_setup_intervalo_seg < 10) {
+            config_setup_intervalo_seg_ex = "0" + config_setup_intervalo_seg
+          }
+          document.querySelector("#time-intervalo").innerHTML = config_setup_intervalo_min_ex + ":" + config_setup_intervalo_seg_ex
+          var config_setup_desconto_min_ex = config_setup_desconto_min;
+          var config_setup_desconto_seg_ex = config_setup_desconto_seg;
+          if (config_setup_desconto_min < 10) {
+            config_setup_desconto_min_ex = "0" + config_setup_desconto_min
+          }
+          if (config_setup_desconto_seg < 10) {
+            config_setup_desconto_seg_ex = "0" + config_setup_desconto_seg
+          }
+          document.querySelector("#time-desconto").innerHTML = config_setup_desconto_min_ex + ":" + config_setup_desconto_seg_ex
+          var config_setup_aquecimento_min_ex = config_setup_aquecimento_min;
+          var config_setup_aquecimento_seg_ex = config_setup_aquecimento_seg;
+          if (config_setup_aquecimento_min < 10) {
+            config_setup_aquecimento_min_ex = "0" + config_setup_aquecimento_min
+          }
+          if (config_setup_aquecimento_seg < 10) {
+            config_setup_aquecimento_seg_ex = "0" + config_setup_aquecimento_seg
+          }
+          document.querySelector("#time-aquecimento").innerHTML = config_setup_aquecimento_min_ex + ":" + config_setup_aquecimento_seg_ex
+          secondWindowRoute = "placar";
+          ipcRenderer.send("openSecondWindow", "placar.html");
+        }
+      });
+
+      document.getElementById("btn-individual-equipe1").addEventListener("click", async () => {
+
+        if (secondWindowRoute != "individual01") {
+          secondWindowRoute = "individual01";
+          ipcRenderer.send("openSecondWindow", "individual01.html");
+        }
+
+        await sleep(1500);
+
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+
+      });
+
+      document.getElementById("btn-individual-equipe2").addEventListener("click", async () => {
+
+        if (secondWindowRoute != "individual02") {
+          secondWindowRoute = "individual02";
+          ipcRenderer.send("openSecondWindow", "individual02.html");
+        }
+
+        await sleep(1500);
+
+        if (!pausarContagem) {
+          pausarContagem = true;
+        }
+
+      });
+
+      function callOpcoes() {
+        // if (confirm("Atenção, todo o painel será reiniciado, deseja continuar?")) {
+        // window.location.href = "configuracoes.html";
+        ipcRenderer.send("openWindowConfig", "configuracoes.html");
+        // }
+      }
+
+      const addRowBtn1 = document.getElementById("addRowBtn1");
+      const addRowBtn2 = document.getElementById("addRowBtn2");
+
+      let itemsExclusoesTotal1 = 0;
+      let itemsExclusoesTotal2 = 0;
+      let exclusoesLista = [];
+
+      function addRow(table, value1, value2) {
+        // const newRow = document.getElementById(table).insertRow();
+
+        var table = document.getElementById(table);
+        var listaTabela = table.id === "tableBody1" ? "lista-time-1" : "lista-time-2";
+        var prefixoLinha = table.id === "tableBody1" ? "excList1Row_" : "excList2Row_";
+
+        var novoId = table.id === "tableBody1" ? itemsExclusoesTotal1 : itemsExclusoesTotal2;
+
+        var newRow = table.insertRow();
+        newRow.id = prefixoLinha + novoId;
+
+        // Adiciona as células com os valores
+        newRow.insertCell(0).innerText = value1;
+        newRow.insertCell(1).innerText = value2;
+
+        let body = [];
+        body['exclusoes'] = {
+          jogador: value1,
+          tempo: value2,
+          rowId: prefixoLinha + novoId,
+          tabela: listaTabela
+        };
+
+        exclusoesLista.push(body);
+        let response = {
+          tabela: listaTabela,
+          lista: exclusoesLista
+        }
+
+        ipcRenderer.send("sendNovaExclusao", response);
+
+        // Adiciona o ícone de excluir e o evento para excluir a linha
+        const deleteCell = newRow.insertCell(2);
+        deleteCell.innerHTML = '<button class="btn btn-danger" onclick="removerLinha(this)" style="padding: 1px 8px; font-size: 15px !important; margin-top:-5px;"><i class="fa fa-trash"></i></button>';
+
+        if (table.id === "tableBody1") {
+          itemsExclusoesTotal1++;
+        } else {
+          itemsExclusoesTotal2++;
+        }
+
+        // deleteCell.firstChild.addEventListener("click", () => newRow.remove());
+      }
+
+      function removerLinha(elem) {
+        var rowId = elem.parentElement.parentElement.id;
+        var tableId = elem.parentElement.parentElement.parentElement.id;
+        var listaTabela = tableId === "tableBody1" ? "lista-time-1" : "lista-time-2";
+
+        $("#" + rowId).remove();
+        var indexToRemove = -1;
+        for (let i = 0; i < exclusoesLista.length; i++) {
+          let excAtual = exclusoesLista[i];
+          if (excAtual['exclusoes']['tabela'] != listaTabela) {
+            continue;
+          }
+
+          if (excAtual['exclusoes']['rowId'] === rowId) {
+            indexToRemove = i;
+          }
+        }
+        if (indexToRemove != -1) {
+          exclusoesLista.splice(indexToRemove, 1);
+        }
+
+        let response = {
+          tabela: listaTabela,
+          lista: exclusoesLista
+        }
+
+        ipcRenderer.send("sendNovaExclusao", response);
+        // itemsExclusoesTotal1--;
+      }
+      var setsList = [];
+      // Adiciona uma nova linha ao clicar no botão "Adicionar" na modal
+      addRowBtn1.addEventListener("click", () => {
+        var set = $('#inputExcSet').val();
+        var time1 = $('#inputExcSet1').val();
+        var time2 = $('#inputExcSet2').val();
+        addRowSet(set, time1, time2);
+        ipcRenderer.send("sendNovoSet", setsList)
+      });
+      function removerLinhaSet(id, element) {
+        $(element).remove();
+        setsList.forEach(element => {
+          if (element.id == id) {
+            setsList.splice(setsList.indexOf(element), 1);
+          }
+        });
+        ipcRenderer.send("sendNovoSet", setsList)
+      }
+      function addRowSet(set, time1, time2) {
+        var id = 1;
+        if (setsList.length == 5) {
+          return;
+        }
+        setsList.forEach(element => {
+          id += 1;
+        });
+        if (set > 5 || set < 1) {
+          // alert("Quantidade de sets inválida");
+          ipcRenderer.send('send-alert', 'Quantidade de sets inválida');
+          return
+        }
+        if (time1 == "" || time2 == "") {
+          ipcRenderer.send('send-alert', 'Adicione o tempo dos sets');
+          return
+        }
+        if (time1.toString().charAt(0) === '0' && time1.toString().length > 1) {
+          time1 = time1.toString().substring(1);
+        }
+        if (time2.toString().charAt(0) === '0' && time1.toString().length > 1) {
+          time2 = time2.toString().substring(1);
+        }
+        if (set.toString().charAt(0) === '0') {
+          set = set.toString().substring(1);
+        }
+        if (time1 < 10) {
+          time1 = '0' + time1
+        }
+        if (time2 < 10) {
+          time2 = '0' + time2
+        }
+        if (set < 10) {
+          set = '0' + set
+        }
+        var arr = {
+          id: id,
+          set: set,
+          time1: time1,
+          time2: time2
+        };
+        var setRepetido = false;
+        setsList.forEach(element => {
+          if (set == element.set) {
+            setRepetido = true;
+          }
+        })
+        if (setRepetido) {
+          // alert("Set repetido");
+          ipcRenderer.send('send-alert', 'Set repetido');
+          return;
+        }
+        setsList.push(arr);
+        var html = '';
+        setsList.forEach(element => {
+          html += `
+          <div class="row" style="border-bottom: 1px solid rgb(201, 166, 128);" id="set${element.id}">
+            <div class="col-4 gray-text d-flex justify-content-center digital_dismay"
+              style="font-size: 30px;">
+              ${element.set}
+            </div>
+            <div class=" col-8 d-flex justify-content-center" style="gap: 20px;">
+              <div class="digital_dismay" style="font-size: 30px; color: red;">
+                <b>${element.time1}</b>
+              </div>
+              <div class="digital_dismay" style="font-size: 30px;">
+                <b>${element.time2}</b>
+              </div>
+              <div class="digital_dismay" style="font-size: 30px;">
+                <b><i class="fa fa-trash" style="cursor: pointer; color: red;" onclick="removerLinhaSet(${element.id}, '#set'+${element.id})"></i></b>
+              </div>
+            </div>
+          </div>
+          `;
+        })
+        $('#set').html(html);
+      }
+      addRowBtn2.addEventListener("click", () => {
+        let value1;
+        let value_min;
+        let value_sec;
+        let value2;
+        if (document.getElementById("inputExcJogador2").value < 10) {
+          value1 = '0' + document.getElementById("inputExcJogador2").value;
+        } else {
+          value1 = document.getElementById("inputExcJogador2").value;
+        }
+        if (document.getElementById("inputExcMinutos2").value < 10) {
+          value_min = '0' + document.getElementById("inputExcMinutos2").value;
+        } else {
+          value_min = document.getElementById("inputExcMinutos2").value;
+        }
+        if (document.getElementById("inputExcSegundos2").value < 10) {
+          value_sec = '0' + document.getElementById("inputExcSegundos2").value;
+        } else {
+          value_sec = document.getElementById("inputExcSegundos2").value;
+        }
+        value2 = value_min + ":" + value_sec;
+        if (!value1 || !value2 || value1 == 0 || value2 == '00:00') {
+          // alert("Preencha todos os campos!");
+          ipcRenderer.send('send-alert', 'Preencha todos os campos!');
+          return;
+        }
+        if (value1 && value2) {
+          addRow("tableBody2", value1, value2);
+          clearInterval(intervalId2);
+          $("#addRowModal").modal("hide");
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if ($('.modal').hasClass('show')) {
+          return;
+        }
+        if (!event.key || $('#addRowModal1').hasClass('show')) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_team1_score_add_1.includes(event.key) || ckey_team1_score_add_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-add-gols-time-01").click();
+          return;
+        }
+
+        if (ckey_team1_score_rem_1.includes(event.key) || ckey_team1_score_rem_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-sub-gols-time-01").click();
+          return;
+        }
+
+        if (ckey_team1_fouls_add_1.includes(event.key) || ckey_team1_fouls_add_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-add-faltas-time-01").click();
+          return;
+        }
+
+        if (ckey_team1_fouls_rem_1.includes(event.key) || ckey_team1_fouls_rem_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-sub-faltas-time-01").click();
+          return;
+        }
+
+        if (ckey_shotclock_reset.includes(event.key) || ckey_shotclock_reset.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          resetarTempoAtaque();
+          return;
+        }
+
+        if (ckey_goal_team_1.includes(event.key) || ckey_goal_team_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_goal_team_2.includes(event.key) || ckey_goal_team_2.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_team2_score_add_1.includes(event.key) || ckey_team2_score_add_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-add-gols-time-02").click();
+          return;
+        }
+
+        if (ckey_team2_score_rem_1.includes(event.key) || ckey_team2_score_rem_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-sub-gols-time-02").click();
+          return;
+        }
+
+        if (ckey_team2_fouls_add_1.includes(event.key) || ckey_team2_fouls_add_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-add-faltas-time-02").click();
+          return;
+        }
+
+        if (ckey_team2_fouls_rem_1.includes(event.key) || ckey_team2_fouls_rem_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-sub-faltas-time-02").click();
+          return;
+        }
+
+        if (ckey_period_add_1.includes(event.key) || ckey_period_add_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-add-periodo").click();
+          return;
+        }
+
+        if (ckey_period_rem_1.includes(event.key) || ckey_period_rem_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-sub-periodo").click();
+          return;
+        }
+
+        if (ckey_other_clear_value.includes(event.key) || ckey_other_clear_value.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_other_new_game.includes(event.key) || ckey_other_new_game.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-iniciar-partida").click();
+          return;
+        }
+
+        if (ckey_other_hom_sound.includes(event.key) || ckey_other_hom_sound.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          if (!listaConfiguracoesSons) {
+            return;
+          }
+
+          playAudio('#player-sons', listaConfiguracoesSons['hom']);
+
+          return;
+        }
+
+        if (ckey_other_buzzer_sound.includes(event.key) || ckey_other_buzzer_sound.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-buzina").click();
+          return;
+        }
+
+        if (ckey_main_start_stop.includes(event.key) || ckey_main_start_stop.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          $("#btn-start").click();
+          return;
+        }
+
+        if (ckey_main_reset_time.includes(event.key) || ckey_main_reset_time.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          pausarContagem = false;
+          tempoRestante = 0;
+          zeraCronometro = true;
+          return;
+        }
+
+        if (ckey_main_rem_penalty.includes(event.key) || ckey_main_rem_penalty.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_main_timeout_1.includes(event.key) || ckey_main_timeout_1.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_main_timeout_2.includes(event.key) || ckey_main_timeout_2.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+
+        if (ckey_main_show_period.includes(event.key) || ckey_main_show_period.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          return;
+        }
+        if (ckey_visitada_ad.includes(event.key) || ckey_visitada_ad.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          if (time_1_desconto == 0) {
+            $('#check_time1_val1').click();
+            return
+          }
+          if (time_1_desconto == 1) {
+            if (!$('#check_time1_val1').is(':checked')) {
+              $('#check_time1_val1').click();
+              if ($('#check_time1_val2').is(':checked')) {
+                $('#check_time1_val2').click();
+              }
+              if ($('#check_time1_val3').is(':checked')) {
+                $('#check_time1_val3').click();
+              }
+              return
+            }
+            $('#check_time1_val2').click();
+            return
+          }
+          if (time_1_desconto == 2) {
+            if (!$('#check_time1_val1').is(':checked')) {
+              $('#check_time1_val1').click();
+              if ($('#check_time1_val3').is(':checked')) {
+                $('#check_time1_val3').click();
+              }
+              return
+            }
+            $('#check_time1_val3').click();
+            return
+          }
+          return
+        }
+        if (ckey_visitada_dim.includes(event.key) || ckey_visitada_dim.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          if (time_1_desconto == 1) {
+            if ($('#check_time1_val3').is(':checked')) {
+              $('#check_time1_val3').click();
+              return
+            }
+            if ($('#check_time1_val2').is(':checked')) {
+              $('#check_time1_val2').click();
+              return
+            }
+            if ($('#check_time1_val1').is(':checked')) {
+              $('#check_time1_val1').click();
+              return
+            }
+
+
+            $('#check_time1_val1').click();
+            return
+          }
+          if (time_1_desconto == 2) {
+            if ($('#check_time1_val3').is(':checked')) {
+              $('#check_time1_val3').click();
+              return
+            }
+            if ($('#check_time1_val2').is(':checked')) {
+              $('#check_time1_val2').click();
+              return
+            }
+            if ($('#check_time1_val1').is(':checked')) {
+              $('#check_time1_val1').click();
+              return
+            }
+            $('#check_time1_val2').click();
+            return
+          }
+          if (time_1_desconto == 3) {
+            if (!$('#check_time1_val1').is(':checked')) {
+              $('#check_time1_val1').click();
+              if ($('#check_time1_val3').is(':checked')) {
+                $('#check_time1_val3').click();
+              }
+              return
+            }
+            $('#check_time1_val3').click();
+            return
+          }
+          return
+        }
+        if (ckey_visitante_ad.includes(event.key) || ckey_visitante_ad.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          if (time_2_desconto == 0) {
+            $('#check_time2_val1').click();
+            return
+          }
+          if (time_2_desconto == 1) {
+            if (!$('#check_time2_val1').is(':checked')) {
+              $('#check_time2_val1').click();
+              if ($('#check_time2_val2').is(':checked')) {
+                $('#check_time2_val2').click();
+              }
+              if ($('#check_time2_val3').is(':checked')) {
+                $('#check_time2_val3').click();
+              }
+              return
+            }
+            $('#check_time2_val2').click();
+            return
+          }
+          if (time_2_desconto == 2) {
+            if (!$('#check_time2_val1').is(':checked')) {
+              $('#check_time2_val1').click();
+              if ($('#check_time2_val3').is(':checked')) {
+                $('#check_time2_val3').click();
+              }
+              return
+            }
+            $('#check_time2_val3').click();
+            return
+          }
+          return
+        }
+        if (ckey_visitante_dim.includes(event.key) || ckey_visitante_dim.includes(event.key.toLowerCase())) {
+          event.preventDefault();
+          console.log(event.key)
+          if (time_2_desconto == 1) {
+            if ($('#check_time2_val3').is(':checked')) {
+              $('#check_time2_val3').click();
+              return
+            }
+            if ($('#check_time2_val2').is(':checked')) {
+              $('#check_time2_val2').click();
+              return
+            }
+            if ($('#check_time2_val1').is(':checked')) {
+              $('#check_time2_val1').click();
+              return
+            }
+            $('#check_time2_val1').click();
+            return
+          }
+          if (time_2_desconto == 2) {
+            if ($('#check_time2_val3').is(':checked')) {
+              $('#check_time2_val3').click();
+              return
+            }
+            if ($('#check_time2_val2').is(':checked')) {
+              $('#check_time2_val2').click();
+              return
+            }
+            if ($('#check_time2_val1').is(':checked')) {
+              $('#check_time2_val1').click();
+              return
+            }
+            $('#check_time2_val2').click();
+            return
+          }
+          if (time_2_desconto == 3) {
+            if (!$('#check_time2_val1').is(':checked')) {
+              $('#check_time2_val1').click();
+              if ($('#check_time2_val3').is(':checked')) {
+                $('#check_time2_val3').click();
+              }
+              return
+            }
+            $('#check_time2_val3').click();
+          }
+          return
+        }
+      });
+
+    </script>
+
+    <script>
+      tempoRestanteOld = 0;
+      function setCronogramaModal(elemMinutos, elemSegundos) {
+        let cronometroAtualModal = document.querySelector('.label-time-extra').innerHTML;
+        cronometroAtualModal = cronometroAtualModal.replaceAll(" ", "");
+        cronometroAtualModal = cronometroAtualModal.split(":");
+
+        $(elemMinutos).val('');
+        $(elemSegundos).val('');
+      }
+
+      document.getElementById("btn-start").addEventListener("click", async () => {
+        var config_setup_intervalo_min_ex = config_setup_intervalo_min;
+        var config_setup_intervalo_seg_ex = config_setup_intervalo_seg;
+        if (config_setup_intervalo_min < 10) {
+          config_setup_intervalo_min_ex = "0" + config_setup_intervalo_min
+        }
+        if (config_setup_intervalo_seg < 10) {
+          config_setup_intervalo_seg_ex = "0" + config_setup_intervalo_seg
+        }
+        document.querySelector("#time-intervalo").innerHTML = config_setup_intervalo_min_ex + ":" + config_setup_intervalo_seg_ex
+        var config_setup_desconto_min_ex = config_setup_desconto_min;
+        var config_setup_desconto_seg_ex = config_setup_desconto_seg;
+        if (config_setup_desconto_min < 10) {
+          config_setup_desconto_min_ex = "0" + config_setup_desconto_min
+        }
+        if (config_setup_desconto_seg < 10) {
+          config_setup_desconto_seg_ex = "0" + config_setup_desconto_seg
+        }
+        document.querySelector("#time-desconto").innerHTML = config_setup_desconto_min_ex + ":" + config_setup_desconto_seg_ex
+        var config_setup_aquecimento_min_ex = config_setup_aquecimento_min;
+        var config_setup_aquecimento_seg_ex = config_setup_aquecimento_seg;
+        if (config_setup_aquecimento_min < 10) {
+          config_setup_aquecimento_min_ex = "0" + config_setup_aquecimento_min
+        }
+        if (config_setup_aquecimento_seg < 10) {
+          config_setup_aquecimento_seg_ex = "0" + config_setup_aquecimento_seg
+        }
+        if (secondWindowRoute != "placar") {
+
+          document.querySelector("#time-aquecimento").innerHTML = config_setup_aquecimento_min_ex + ":" + config_setup_aquecimento_seg_ex
+          secondWindowRoute = "placar";
+          ipcRenderer.send("openSecondWindow", "placar.html");
+        }
+        if (partidaIniciada) {
+          pausarContagem = !pausarContagem;
+        }
+        else {
+          partidaIniciada = true;
+
+          // Verificar se é modo hora local
+          if (config_setup_tempo_jogo === "H") {
+            // Modo Hora Local - exibe a hora atual do sistema
+            iniciarHoraLocal();
+          } else {
+            var _isContagemRegressiva = config_setup_tempo_jogo === "D";
+            var _tempoPartidaSegundos;
+            _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+            _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+
+            if (config_setup_buzinar_iniciar) {
+
+              if (!listaConfiguracoesSons) {
+                return;
+              }
+
+              // playAudio('#player-sons', listaConfiguracoesSons['buzzer']);
+
+            }
+
+            iniciarCronometro(_tempoPartidaSegundos, _isContagemRegressiva);
+          }
+          // alert("Nova partida iniciada!");
+          if (secondWindowRoute != "placar") {
+            secondWindowRoute = "placar";
+            ipcRenderer.send("openSecondWindow", "placar.html");
+
+            let countTentativas = 0;
+            setInterval(function () {
+              let cronometroAtual = document.querySelector('.label-time-extra').innerHTML;
+              ipcRenderer.send("alterarCronometro", cronometroAtual);
+              if (countTentativas >= 3) {
+                return;
+              }
+              countTentativas++;
+            }, 1000);
+
+          }
+        }
+
+
+
+      });
+      document.getElementById('btn-add-time-minutes').addEventListener('click', function () {
+
+        tempoRestante += 60;
+        if (pausarContagem) {
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          // }
+        }
+      });
+
+      document.getElementById('btn-sub-time-minutes').addEventListener('click', function () {
+        if (tempoRestante < 60) {
+          return;
+        }
+        tempoRestante -= 60;
+        if (pausarContagem) {
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          // }
+        }
+      });
+
+      document.getElementById('btn-add-time-seconds').addEventListener('click', function () {
+        tempoRestante += 1;
+        if (pausarContagem) {
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          // }
+        }
+      });
+
+      document.getElementById('btn-sub-time-seconds').addEventListener('click', function () {
+        if (tempoRestante <= 0) {
+          return;
+        }
+        tempoRestante -= 1;
+        if (pausarContagem) {
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          // }
+        }
+      });
+      document.getElementById('btn-add-time-seconds-2').addEventListener('click', function () {
+        tempoRestante += 1;
+        if (pausarContagem) {
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          // }
+        }
+      });
+
+      document.getElementById('btn-sub-time-seconds-2').addEventListener('click', function () {
+        if (tempoRestante <= 0) {
+          return;
+        }
+        tempoRestante -= 1;
+        if (pausarContagem) {
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toSt()')}`);
+          // }
+        }
+      });
+
+
+    </script>
+
+    <script>
+      // Define as variáveis globais
+      let partidaIniciada = false;
+      let zeraCronometro = false;
+      let tempoTotal = 0;
+      let tempoRestante = 0;
+      let contador;
+      let isContagemRegressiva = false;
+      let pausarContagem = true;
+
+      // Define o elemento HTML onde o cronômetro será exibido
+      // const cronometro = document.getElementsByName("label-time-extra");
+
+      // Variável para armazenar o intervalo da hora local
+      let horaLocalInterval = null;
+
+      // Função para iniciar o modo Hora Local
+      function iniciarHoraLocal() {
+        pausarContagem = true; // Não usar o cronômetro normal
+
+        // Limpa qualquer intervalo anterior
+        if (horaLocalInterval) {
+          clearInterval(horaLocalInterval);
+        }
+
+        // Função para atualizar a hora local
+        function atualizarHoraLocal() {
+          const agora = new Date();
+          const horas = agora.getHours().toString().padStart(2, "0");
+          const minutos = agora.getMinutes().toString().padStart(2, "0");
+          const horaFormatada = `${horas}:${minutos}`;
+
+          // Atualiza o display local
+          document.querySelector('.label-time-extra-temp').innerHTML = horaFormatada;
+
+          // Envia para o placar público
+          ipcRenderer.send("alterarCronometro", horaFormatada);
+        }
+
+        // Atualiza imediatamente
+        atualizarHoraLocal();
+
+        // Atualiza a cada segundo
+        horaLocalInterval = setInterval(atualizarHoraLocal, 1000);
+      }
+
+      // Define a função que inicia o cronômetro
+      function iniciarCronometro(tempo, contagemRegressiva = false) {
+        pausarContagem = false;
+        tempoTotal = tempo;
+        isContagemRegressiva = contagemRegressiva;
+        tempo_atq = false;
+        tempo_atq_finalizado = false;
+        toque_atq = true;
+        aguarde = false;
+        setInterval(function () {
+          playAudio('#player-sons-at', '../resources/sound/buzzer.mp3', 0.001);
+        }, 700);
+        tmp_esp = true;
+        if (isContagemRegressiva) {
+          tempoRestante = tempo;
+          if (tempoRestante >= 60) {
+            tempoRestante = tempo;
+          }
+        } else {
+          tempoRestante = 0;
+        }
+        // setTimeout(function () {
+        //   console.log('dale');
+        //   linhas = document.querySelectorAll('#tableBody1 tr');
+        //   segundos = Array.from(linhas, linha => {
+        //     var second = formatSecond(linha.children[1].innerHTML)
+        //     var diferenca = tempoRestante - second;
+        //     console.log(second);
+        //     var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+        //     second = Math.round(second);
+
+        //     if (tempoRestante == tempo) {
+        //       second = second + decimal + 0.9
+        //     } else {
+        //       second = second + decimal + 0.1
+        //     }
+        //     second -= 1;
+        //     return second;
+        //   });
+        //   linhas2 = document.querySelectorAll('#tableBody2 tr');
+        //   segundos2 = Array.from(linhas2, linha => {
+        //     var second = formatSecond(linha.children[1].innerHTML)
+        //     var diferenca = tempoRestante - second;
+        //     console.log(second);
+        //     var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+        //     second = Math.round(second);
+        //     if (tempoRestante == tempo) {
+        //       second = second + decimal + 0.9
+        //     } else {
+        //       second = second + decimal + 0.1
+        //     }
+        //     second -= 1;
+        //     return second;
+        //   });
+        // }, 1e3)
+
+        // tempo_atq_temp = window.tempo_atq_cont;
+        // var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+        // second = Math.round(tempo_atq_temp);
+        // second = second + decimal + 0.5;
+        // window.tempo_atq_cont = second;
+        // if (tempoRestante == tempoTotal && isContagemRegressiva) {
+        //   tempoRestante += 1.8;
+        // }
+        // window.tempo_atq_finalizado = false;
+        // setTimeout(function () {
+        //   window.tempo_atq_finalizado = false;
+        //   tempo_atq = true;
+        // }, 150)
+        contador = setInterval(function () {
+          // if (zeraCronometro || (isContagemRegressiva && tempoRestante <= 0) || (!isContagemRegressiva && tempoRestante >= tempoTotal)) {
+          //   window.tempo_atq_cont = Math.round(window.tempo_ataque);
+          //   tempoRestante = tempoTotal;
+          //   if (tempoRestante > 59.9) {
+          //     let minutos = Math.floor(tempoRestante / 60);
+          //     let segundos = Math.ceil(tempoRestante % 60);
+          //     if (segundos >= 60 && segundos <= 60.9) {
+          //       minutos++;
+          //       segundos = 0;
+          //     }
+          //     const minutosStr = minutos.toString().padStart(2, "0");
+          //     const segundosStr = segundos.toString().padStart(2, "0");
+          //     document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          //     ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          //   } else {
+          //     const segundos = tempoRestante.toFixed(1);
+          //     const segundosStr = segundos.toString().padStart(2, "0");
+          //     document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //     ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          //   }
+          //   console.log(window.tempo_atq_cont);
+          //   $('#label-tempo-ataque').html(window.tempo_ataque);
+          //   $('#input-tempo-ataque').val(window.tempo_ataque);
+          //   let data = {
+          //     inputOrigin: '#input-tempo-ataque',
+          //     pontuacaoFormatada: window.tempo_ataque,
+          //   }
+          //   if (secondWindowRoute != "desconto_tempo") {
+          //     ipcRenderer.send("alterarPontuacaoPlacar", data);
+          //   }
+          //   clearInterval(contador);
+          //   // document.querySelector('.label-time-extra-temp').innerHTML = "00:00";
+          //   // ipcRenderer.send("alterarCronometro", "00:00");
+          //   zeraCronometro = false;
+          //   pausarContagem = false;
+          //   partidaIniciada = false;
+          //   if (!listaConfiguracoesSons) {
+          //     return;
+          //   }
+          //   // aguarde = true;
+          //   playAudio('#player-sons', listaConfiguracoesSons['end_timeout']);
+          //   return;
+          // }
+          atualizarCronometroDec();
+          // atualizarTempoAtaque();
+        }, 100);
+        // Define o contador com a função setInterval()
+
+
+      }
+
+      // Define a função que atualiza o cronômetro a cada segundo
+      function atualizarCronometroDec() {
+        // Verifica se o cronômetro chegou ao fim
+
+        if (!pausarContagem) {
+          // Atualiza o tempo restante de acordo com a contagem
+          aguarde = false;
+          if (isContagemRegressiva) {
+            tempoRestanteOld = tempoRestante
+            tempoRestante -= 0.1;
+            diminuiTempoEquipe();
+          } else {
+            tempoRestanteOld = tempoRestante
+            tempoRestante += 0.1;
+          }
+          if (tempoRestante <= 0) {
+            tempoRestante = 0;
+          }
+          // Calcula os minutos e segundos restantes
+          // const minutos = Math.floor(tempoRestante / 60);
+          // if (tempoRestante >= 60) {
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.floor(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+          // } else {
+          //   const segundos = tempoRestante.toFixed(1);
+          //   const segundosStr = segundos.toString().padStart(2, "0");
+          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+          // }
+        }
+      }
+      // Ocultar botões de segundos-2 (modo sub-60s desativado) — aplicado uma única vez no carregamento
+      document.addEventListener('DOMContentLoaded', function () {
+        $('#btn-sub-time-seconds-2').addClass('d-none');
+        $('#btn-add-time-seconds-2').addClass('d-none');
+        $('#btn-sub-time-minutes').removeClass('d-none');
+        $('#btn-add-time-minutes').removeClass('d-none');
+        $('#btn-sub-time-seconds').removeClass('d-none');
+        $('#btn-add-time-seconds').removeClass('d-none');
+      });
+      function atualizarTempoAtaque() {
+        if (!pausarContagem) {
+          // if (window.tempo_atq_cont == window.tempo_ataque) {
+          //   window.tempo_atq_cont -= 0.4;
+          // }
+          if (window.tempo_atq_cont > 0) {
+            if (aguarde)
+              aguarde = false;
+            tempo_atq = true;
+            if (tempo_atq) {
+              if (tempo_atq_finalizado) {
+                tempo_atq_finalizado = false;
+              }
+            }
+            window.tempo_atq_cont -= 0.1;
+          }
+
+          tempo_atq_temp = tempo_atq_cont.toFixed(1);
+          if (window.tempo_atq_cont < 10) {
+            window.tempo_atq_cont = window.tempo_atq_cont.toFixed(1);
+            // if (window.tempo_atq_cont < 10) {
+            $('#label-tempo-ataque').html(window.tempo_atq_cont.toString().replace('.', ':'));
+            $('#input-tempo-ataque').val(window.tempo_atq_cont);
+          } else {
+            tempo_atq_temp = Math.round(window.tempo_atq_cont.toFixed(1)).toFixed(0);
+            // if (window.tempo_atq_cont < 10) {
+            $('#label-tempo-ataque').html(tempo_atq_temp);
+            $('#input-tempo-ataque').val(tempo_atq_temp);
+          }
+
+          //   // $('#input-tempo-ataque').val(window.tempo_atq_cont);
+          // } else {
+          //   $('#label-tempo-ataque').html(window.tempo_atq_cont);
+          //   $('#input-tempo-ataque').val(window.tempo_atq_cont);
+          // }
+          if (window.tempo_atq_cont <= 0) {
+            $('#input-tempo-ataque').val(0);
+            $('#label-tempo-ataque').html('00');
+            window.tempo_atq_cont = 0;
+            tempo_atq = false;
+          }
+          if (tempo_atq_finalizado == false && tempo_atq == false) {
+            if (config_setup_tocar_ao_finalizar_ataque == 1) {
+              // aguarde = true;
+              playAudio('#player-sons', listaConfiguracoesSons['shot_clock']);
+            }
+            if (!tempo_atq_finalizado) {
+              tempo_atq_finalizado = true;
+            }
+          }
+          if (window.tempo_atq_cont < 10) {
+            ipcRenderer.send("atualizaAtaque", "aquecimento.html");
+            let data = {
+              inputOrigin: '#input-tempo-ataque',
+              pontuacaoFormatada: window.tempo_atq_cont == 0 ? '00' : window.tempo_atq_cont,
+            }
+            if (secondWindowRoute != "desconto_tempo") {
+              ipcRenderer.send("alterarPontuacaoPlacar", data);
+            }
+          } else {
+            ipcRenderer.send("atualizaAtaque", "aquecimento.html");
+            let data = {
+              inputOrigin: '#input-tempo-ataque',
+              pontuacaoFormatada: tempo_atq_temp,
+            }
+            if (secondWindowRoute != "desconto_tempo") {
+              ipcRenderer.send("alterarPontuacaoPlacar", data);
+            }
+          }
+
+        }
+      }
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+
+        setTimeout(() => {
+
+          // }
+          let data_ataque = {
+            inputOrigin: '#input-tempo-ataque',
+            pontuacaoFormatada: window.tempo_ataque,
+          }
+          // if (secondWindowRoute != "desconto_tempo") {
+          ipcRenderer.send("alterarPontuacaoPlacar", data_ataque);
+          // }
+        }, 1000)
+      })
+
+      ipcRenderer.on('updateAquecimento', function (event, time) {
+        document.querySelector("#time-aquecimento").innerHTML = time;
+      });
+
+      ipcRenderer.on('updateDesconto', function (event, time) {
+        console.log(time)
+        document.querySelector("#time-desconto").innerHTML = time;
+      });
+
+      ipcRenderer.on('updateIntervalo', function (event, time) {
+        document.querySelector("#time-intervalo").innerHTML = time;
+      });
+
+      ipcRenderer.on('getInformacoesPartida', function (event, args) {
+        let data = informacoesPartida();
+        ipcRenderer.send("sendInformacoesPartida", data);
+      });
+
+      function informacoesPartida() {
+        let data = {
+          time01: {
+            gols: document.querySelector("#input-gols-time-01").value.toString().padStart(2, "0"),
+            faltas: document.querySelector("#input-faltas-time-01").value.toString().padStart(2, "0")
+          },
+          time02: {
+            gols: document.querySelector("#input-gols-time-02").value.toString().padStart(2, "0"),
+            faltas: document.querySelector("#input-faltas-time-02").value.toString().padStart(2, "0")
+          },
+          periodo: document.querySelector('#input-periodo').value.toString(),
+          ataque: document.querySelector('#input-tempo-ataque').value.toString().padStart(2, "0"),
+          cronometro: document.querySelector('.label-time-extra-temp').innerHTML.toString().replace(" ", "")
+        }
+        return data;
+      }
+
+      function playAudio(elemId, filePath, volume = 1) {
+        if (!filePath || typeof filePath === "undefined") {
+          return;
+        }
+
+        const somAudio = document.querySelector(elemId);
+        if (!somAudio) return;
+
+        somAudio.setAttribute("src", filePath);
+
+        if (!somAudio.paused) {
+          return;
+        }
+
+        somAudio.volume = volume;
+        somAudio.play().catch(function (err) {
+          console.warn('[playAudio] Erro ao reproduzir áudio:', err);
+        });
+      }
+
+    </script>
+
+    <!-- Helper para caminho do banco de dados (ASAR-aware) -->
+    <script src="../resources/js/db-path.js"></script>
+
+    <!-- Configurações: Variáveis -->
+    <script>
+      const sqlite3 = require('sqlite3').verbose();
+      // getDbPath() é definido em db-path.js e retorna o caminho correto do DB
+    </script>
+
+    <!-- Configurações: Equipe -->
+    <script>
+
+      var configEquipaTime01;
+      var configEquipaTime02;
+      async function getConfigEquipaTime(id) {
+        var db = new sqlite3.Database(getDbPath());
+        _ = await db.serialize(() => {
+          db.all("SELECT * FROM config_equipas_times where id =" + id, (err, rows) => {
+            if (err) {
+              console.error(err.message);
+            }
+            console.log(rows);
+            // configuration = rows;
+            if (id === "1") {
+              configEquipaTime01 = rows;
+            } else {
+              configEquipaTime02 = rows;
+            }
+            loadConfigEquipaTime(id);
+          });
+        });
+        db.close();
+      }
+
+      function loadConfigEquipaTime(equipeId) {
+        var configuration = equipeId === "1" ? configEquipaTime01 : configEquipaTime02;
+
+        // Verificar se os dados existem
+        if (configuration && configuration.length > 0 && configuration[0]) {
+          var imgElement = document.querySelector("#img-cfg-equipes-t" + equipeId + "-logo");
+          var nomeElement = document.querySelector("#edit-cfg-equipes-t" + equipeId + "-nome");
+
+          if (imgElement) {
+            const logoData = configuration[0]["logo_data"];
+            if (logoData && logoData.length > 0) {
+              const base64 = Buffer.from(logoData).toString('base64');
+              imgElement.setAttribute('src', 'data:image/png;base64,' + base64);
+            } else if (configuration[0]["logo_caminho"]) {
+              imgElement.setAttribute('src', resolveImageSrcForDisplay(configuration[0]["logo_caminho"]));
+            }
+          }
+          if (nomeElement && configuration[0]["nome"]) {
+            nomeElement.innerHTML = configuration[0]["nome"];
+          }
+        } else {
+          console.log("Configuração da equipe " + equipeId + " não encontrada no banco de dados");
+        }
+      }
+
+    </script>
+
+    <!-- Configuracoes: Jogo Setup -->
+    <script>
+      ipcRenderer.on('reloadAll', function (event, args) {
+        let dataPontuacao = {
+          inputOrigin: '#input-gols-time-01',
+          labelOrigin: '#label-gols-time-01',
+          buttonOrigin: '',
+          limiteOrigin: 99,
+          formataOrigin: "true",
+          pontuacaoFormatada: parseInt($('#input-gols-time-01').val()).toString().padStart(2, "0"),
+        }
+        let dataPontuacao2 = {
+          inputOrigin: '#input-gols-time-02',
+          labelOrigin: '#label-gols-time-02',
+          buttonOrigin: '',
+          limiteOrigin: 99,
+          formataOrigin: "true",
+          pontuacaoFormatada: parseInt($('#input-gols-time-02').val()).toString().padStart(2, "0"),
+        }
+        let dataPontuacao3 = {
+          inputOrigin: '#input-faltas-time-02',
+          labelOrigin: '#label-faltas-time-02',
+          buttonOrigin: '',
+          limiteOrigin: 99,
+          formataOrigin: "true",
+          pontuacaoFormatada: parseInt($('#input-faltas-time-02').val()).toString().padStart(2, "0"),
+        }
+        let dataPontuacao4 = {
+          inputOrigin: '#input-faltas-time-01',
+          labelOrigin: '#label-faltas-time-01',
+          buttonOrigin: '',
+          limiteOrigin: 99,
+          formataOrigin: "true",
+          pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString().padStart(2, "0"),
+        }
+        let dataPontuacao5 = {
+          inputOrigin: '#input-faltas-time-01',
+          labelOrigin: '#label-faltas-time-01',
+          buttonOrigin: '',
+          limiteOrigin: 99,
+          formataOrigin: "true",
+          pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString().padStart(2, "0"),
+        }
+        let dataPontuacao6 = {
+          inputOrigin: '#input-periodo',
+          labelOrigin: '#label-periodo',
+          buttonOrigin: '#btn-sub-periodo',
+          limiteOrigin: 99,
+          formataOrigin: "true",
+          pontuacao: $('#label-periodo').html(),
+        }
+        // let dataPontuacao7 = {
+        //   inputOrigin: '#input-tempo-ataque',
+        //   labelOrigin: '#label-tempo-ataque',
+        //   buttonOrigin: '',
+        //   limiteOrigin: 99,
+        //   formataOrigin: "true",
+        //   pontuacaoFormatada: $('#label-tempo-ataque').html()
+        // }
+        ipcRenderer.send("alterarCronometro", document.querySelector('.label-time-extra-temp').innerHTML);
+        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao);
+        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao2);
+        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao3);
+        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao4);
+        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao5);
+        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao6);
+        ipcRenderer.send("sendNovoSet", setsList);
+        console.log(lastClicked);
+        ipcRenderer.send("getClickedButton", lastClicked);
+        ipcRenderer.send("alterarPosicao", trocaPosicao);
+        // ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao7);
+        getConfigSons();
+        getConfigEquipaTime("1");
+        getConfigEquipaTime("2");
+        getConfigShortcuts();
+        getConfigSetupReload();
+      });
+      var configSetup;
+      async function getConfigSetup() {
+        var db = new sqlite3.Database(getDbPath());
+        _ = await db.serialize(() => {
+          db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
+            if (err) {
+              console.error(err.message);
+            }
+            configSetup = rows;
+            setConfigSetup();
+          });
+        });
+        db.close();
+      }
+      async function getConfigSetupReload() {
+        var db = new sqlite3.Database(getDbPath());
+        _ = await db.serialize(() => {
+          db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
+            if (err) {
+              console.error(err.message);
+            }
+            configSetup = rows;
+            setConfigSetupReload();
+          });
+        });
+        db.close();
+      }
+
+      function setConfigSetup() {
+        tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
+        window.tempo_atq_cont = tempo_ataque;
+        adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+        config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
+        config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
+        config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
+        var _tempoPartidaSegundos;
+        _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+        _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+        tempoRestante = _tempoPartidaSegundos;
+        if (tempoRestante >= 60) {
+          if (tempoRestante >= 60 && tempoRestante <= 60.9) {
+            tempoRestante = 60
+          }
+          let minutos = Math.floor(tempoRestante / 60);
+          let segundos = Math.ceil(tempoRestante % 60);
+          if (segundos >= 60 && segundos <= 60.9) {
+            minutos++;
+            segundos = 0;
+          }
+          const minutosStr = minutos.toString().padStart(2, "0");
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+        } else {
+          const segundos = tempoRestante.toFixed(1);
+          const segundosStr = segundos.toString().padStart(2, "0");
+          document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+          ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+        }
+
+        config_setup_desconto_min = configSetup[0]["desconto_tempo_minutos"];
+        config_setup_desconto_seg = configSetup[0]["desconto_tempo_segundos"];
+        config_setup_intervalo_min = configSetup[0]["intervalo_tempo_minutos"];
+        config_setup_intervalo_seg = configSetup[0]["intervalo_tempo_segundos"];
+        config_setup_aquecimento_min = configSetup[0]["aquecimento_jogo_minutos"];
+        config_setup_aquecimento_seg = configSetup[0]["aquecimento_jogo_segundos"];
+        config_setup_tocar_ao_finalizar_ataque = configSetup[0]["tocar_ao_finalizar_ataque"];
+        var config_setup_desconto_min_ex = config_setup_desconto_min;
+        var config_setup_desconto_seg_ex = config_setup_desconto_seg;
+        if (config_setup_desconto_min < 10) {
+          config_setup_desconto_min_ex = "0" + config_setup_desconto_min
+        }
+        if (config_setup_desconto_seg < 10) {
+          config_setup_desconto_seg_ex = "0" + config_setup_desconto_seg
+        }
+        document.querySelector("#time-desconto").innerHTML = config_setup_desconto_min_ex + ":" + config_setup_desconto_seg_ex
+        var config_setup_intervalo_min_ex = config_setup_intervalo_min;
+        var config_setup_intervalo_seg_ex = config_setup_intervalo_seg;
+        if (config_setup_intervalo_min < 10) {
+          config_setup_intervalo_min_ex = "0" + config_setup_intervalo_min
+        }
+        if (config_setup_intervalo_seg < 10) {
+          config_setup_intervalo_seg_ex = "0" + config_setup_intervalo_seg
+        }
+        document.querySelector("#time-intervalo").innerHTML = config_setup_intervalo_min_ex + ":" + config_setup_intervalo_seg_ex
+        var config_setup_aquecimento_min_ex = config_setup_aquecimento_min;
+        var config_setup_aquecimento_seg_ex = config_setup_aquecimento_seg;
+        if (config_setup_aquecimento_min < 10) {
+          config_setup_aquecimento_min_ex = "0" + config_setup_aquecimento_min
+        }
+        if (config_setup_aquecimento_seg < 10) {
+          config_setup_aquecimento_seg_ex = "0" + config_setup_aquecimento_seg
+        }
+        document.querySelector("#time-aquecimento").innerHTML = config_setup_aquecimento_min_ex + ":" + config_setup_aquecimento_seg_ex
+        var buzinaIniciar = configSetup[0]["toque_buzinar_iniciar"] === 1 ? true : false;
+        config_setup_buzinar_iniciar = buzinaIniciar;
+        var buzinaFaltar = configSetup[0]["toque_buzinar_final"] === 1 ? true : false;
+        config_setup_buzinar_faltar = buzinaFaltar;
+        var mostrarEcran = configSetup[0]["mostrar_ecran"];
+        if (mostrarEcran === "T") {
+          config_setup_mostrar_ecran_tempo = true;
+          config_setup_mostrar_ecran_logo = false;
+        } else {
+          config_setup_mostrar_ecran_tempo = false;
+          config_setup_mostrar_ecran_logo = true;
+        }
+
+        config_setup_faltar_min = configSetup[0]["tempo_final_minutos"];
+        config_setup_faltar_seg = configSetup[0]["tempo_final_segundos"];
+
+      }
+      function setConfigSetupReload() {
+        tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
+        config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
+        config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
+        config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
+        var _tempoPartidaSegundos;
+        _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+        _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+        tempoTotal = _tempoPartidaSegundos;
+        // if (!partidaIniciada) {
+        //   var _tempoPartidaSegundos;
+        //   _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+        //   _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+        //   tempoRestante = _tempoPartidaSegundos;
+        //   if (tempoRestante >= 60) {
+        //     window.tempo_atq_cont = tempo_ataque;
+        //     adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+        //     if (tempoRestante >= 60 && tempoRestante <= 60.9) {
+        //       tempoRestante = 60
+        //     }
+        //     let minutos = Math.floor(tempoRestante / 60);
+        //     let segundos = Math.ceil(tempoRestante % 60);
+        //     if (segundos >= 60 && segundos <= 60.9) {
+        //       minutos++;
+        //       segundos = 0;
+        //     }
+        //     const minutosStr = minutos.toString().padStart(2, "0");
+        //     const segundosStr = segundos.toString().padStart(2, "0");
+        //     document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+        //     ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+        //   } else {
+        //     const segundos = tempoRestante.toFixed(1);
+        //     const segundosStr = segundos.toString().padStart(2, "0");
+        //     document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+        //     ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+        //   }
+        // }
+        config_setup_desconto_min = configSetup[0]["desconto_tempo_minutos"];
+        config_setup_desconto_seg = configSetup[0]["desconto_tempo_segundos"];
+        config_setup_intervalo_min = configSetup[0]["intervalo_tempo_minutos"];
+        config_setup_intervalo_seg = configSetup[0]["intervalo_tempo_segundos"];
+        config_setup_aquecimento_min = configSetup[0]["aquecimento_jogo_minutos"];
+        config_setup_aquecimento_seg = configSetup[0]["aquecimento_jogo_segundos"];
+        config_setup_tocar_ao_finalizar_ataque = configSetup[0]["tocar_ao_finalizar_ataque"];
+        var config_setup_desconto_min_ex = config_setup_desconto_min;
+        var config_setup_desconto_seg_ex = config_setup_desconto_seg;
+        if (config_setup_desconto_min < 10) {
+          config_setup_desconto_min_ex = "0" + config_setup_desconto_min
+        }
+        if (config_setup_desconto_seg < 10) {
+          config_setup_desconto_seg_ex = "0" + config_setup_desconto_seg
+        }
+        document.querySelector("#time-desconto").innerHTML = config_setup_desconto_min_ex + ":" + config_setup_desconto_seg_ex
+        var config_setup_intervalo_min_ex = config_setup_intervalo_min;
+        var config_setup_intervalo_seg_ex = config_setup_intervalo_seg;
+        if (config_setup_intervalo_min < 10) {
+          config_setup_intervalo_min_ex = "0" + config_setup_intervalo_min
+        }
+        if (config_setup_intervalo_seg < 10) {
+          config_setup_intervalo_seg_ex = "0" + config_setup_intervalo_seg
+        }
+        document.querySelector("#time-intervalo").innerHTML = config_setup_intervalo_min_ex + ":" + config_setup_intervalo_seg_ex
+        var config_setup_aquecimento_min_ex = config_setup_aquecimento_min;
+        var config_setup_aquecimento_seg_ex = config_setup_aquecimento_seg;
+        if (config_setup_aquecimento_min < 10) {
+          config_setup_aquecimento_min_ex = "0" + config_setup_aquecimento_min
+        }
+        if (config_setup_aquecimento_seg < 10) {
+          config_setup_aquecimento_seg_ex = "0" + config_setup_aquecimento_seg
+        }
+        document.querySelector("#time-aquecimento").innerHTML = config_setup_aquecimento_min_ex + ":" + config_setup_aquecimento_seg_ex
+        var buzinaIniciar = configSetup[0]["toque_buzinar_iniciar"] === 1 ? true : false;
+        config_setup_buzinar_iniciar = buzinaIniciar;
+        var buzinaFaltar = configSetup[0]["toque_buzinar_final"] === 1 ? true : false;
+        config_setup_buzinar_faltar = buzinaFaltar;
+        var mostrarEcran = configSetup[0]["mostrar_ecran"];
+        if (mostrarEcran === "T") {
+          config_setup_mostrar_ecran_tempo = true;
+          config_setup_mostrar_ecran_logo = false;
+        } else {
+          config_setup_mostrar_ecran_tempo = false;
+          config_setup_mostrar_ecran_logo = true;
+        }
+        config_setup_faltar_min = configSetup[0]["tempo_final_minutos"];
+        config_setup_faltar_seg = configSetup[0]["tempo_final_segundos"];
+      }
+
+    </script>
+
+    <!-- Configuracoes: Sons -->
+    <script>
+
+      var configSons;
+      var listaConfiguracoesSons;
+
+      async function getConfigSons() {
+        var db = new sqlite3.Database(getDbPath());
+        _ = await db.serialize(() => {
+          db.all("SELECT * FROM config_sons", (err, rows) => {
+            if (err) {
+              console.error(err.message);
+            }
+            configSons = rows;
+            setConfigSons();
+          });
+        });
+        db.close();
+      }
+
+      function setConfigSons() {
+
+        listaConfiguracoesSons = {
+          hom: configSons[0]["hom"] ? configSons[0]["hom"] : "",
+          buzzer: configSons[0]["buzzer"] ? configSons[0]["buzzer"] : "",
+          end_period: configSons[0]["end_period"] ? configSons[0]["end_period"] : "",
+          shot_clock: configSons[0]["shot_clock"] ? configSons[0]["shot_clock"] : "",
+          start_timeout: configSons[0]["start_timeout"] ? configSons[0]["start_timeout"] : "",
+          timeout_warning: configSons[0]["timeout_warning"] ? configSons[0]["timeout_warning"] : "",
+          end_timeout: configSons[0]["end_timeout"] ? configSons[0]["end_timeout"] : ""
+        };
+
+        console.log(listaConfiguracoesSons);
+      }
+
+    </script>
+
+    <!-- Configuracoes: Shortcuts -->
+    <script>
+
+      var configShortcuts;
+      async function getConfigShortcuts() {
+        var db = new sqlite3.Database(getDbPath());
+        _ = await db.serialize(() => {
+          db.all("SELECT * FROM config_shortcuts", (err, rows) => {
+            if (err) {
+              console.error(err.message);
+            }
+            configShortcuts = rows;
+            setConfigShortcuts();
+          });
+        });
+        db.close();
+      }
+
+      function setConfigShortcuts() {
+
+        console.log(configShortcuts);
+
+        ckey_team1_score_add_1 = configShortcuts[0]["team1_score_add_1"] ? configShortcuts[0]["team1_score_add_1"] : "";
+        ckey_team1_score_rem_1 = configShortcuts[0]["team1_score_rem_1"] ? configShortcuts[0]["team1_score_rem_1"] : "";
+        ckey_team1_fouls_add_1 = configShortcuts[0]["team1_fouls_add_1"] ? configShortcuts[0]["team1_fouls_add_1"] : "";
+        ckey_team1_fouls_rem_1 = configShortcuts[0]["team1_fouls_rem_1"] ? configShortcuts[0]["team1_fouls_rem_1"] : "";
+
+        ckey_shotclock_reset = configShortcuts[0]["shotclock_reset"] ? configShortcuts[0]["shotclock_reset"] : "";
+
+        ckey_goal_team_1 = "";
+        // ckey_goal_team_1 = configShortcuts[0]["goal_team_1"] ? configShortcuts[0]["goal_team_1"] : "";
+        ckey_goal_team_2 = "";
+        // ckey_goal_team_2 = configShortcuts[0]["goal_team_2"] ? configShortcuts[0]["goal_team_2"] : "";
+
+        ckey_team2_score_add_1 = configShortcuts[0]["team2_score_add_1"] ? configShortcuts[0]["team2_score_add_1"] : "";
+        ckey_team2_score_rem_1 = configShortcuts[0]["team2_score_rem_1"] ? configShortcuts[0]["team2_score_rem_1"] : "";
+        ckey_team2_fouls_add_1 = configShortcuts[0]["team2_fouls_add_1"] ? configShortcuts[0]["team2_fouls_add_1"] : "";
+        ckey_team2_fouls_rem_1 = configShortcuts[0]["team2_fouls_rem_1"] ? configShortcuts[0]["team2_fouls_rem_1"] : "";
+
+        ckey_period_add_1 = configShortcuts[0]["period_add_1"] ? configShortcuts[0]["period_add_1"] : "";
+        ckey_period_rem_1 = configShortcuts[0]["period_rem_1"] ? configShortcuts[0]["period_rem_1"] : "";
+
+        ckey_other_clear_value = "";
+        // ckey_other_clear_value = configShortcuts[0]["other_clear_value"] ? configShortcuts[0]["other_clear_value"] : "";
+        // ckey_other_new_game = configShortcuts[0]["other_new_game"] ? configShortcuts[0]["other_new_game"] : "";
+        ckey_other_new_game = "";
+        ckey_other_hom_sound = configShortcuts[0]["other_hom_sound"] ? configShortcuts[0]["other_hom_sound"] : "";
+        ckey_other_buzzer_sound = configShortcuts[0]["other_buzzer_sound"] ? configShortcuts[0]["other_buzzer_sound"] : "";
+
+        ckey_main_start_stop = configShortcuts[0]["main_start_stop"] ? configShortcuts[0]["main_start_stop"] : "";
+        ckey_main_reset_time = configShortcuts[0]["main_reset_time"] ? configShortcuts[0]["main_reset_time"] : "";
+
+        ckey_main_rem_penalty = "";
+        // ckey_main_rem_penalty = configShortcuts[0]["main_rem_penalty"] ? configShortcuts[0]["main_rem_penalty"] : "";
+        ckey_main_timeout_1 = "";
+        // ckey_main_timeout_1 = configShortcuts[0]["main_timeout_1"] ? configShortcuts[0]["main_timeout_1"] : "";
+
+        // ckey_main_timeout_2 = configShortcuts[0]["main_timeout_2"] ? configShortcuts[0]["main_timeout_2"] : "";
+        ckey_main_timeout_2 = "";
+        // ckey_main_show_period = configShortcuts[0]["main_show_period"] ? configShortcuts[0]["main_show_period"] : "";
+        ckey_main_show_period = "";
+
+        ckey_visitada_ad = configShortcuts[0]["desconto_tempo_visitada_ad"] ? configShortcuts[0]["desconto_tempo_visitada_ad"] : "";
+        ckey_visitada_dim = configShortcuts[0]["desconto_tempo_visitada_dim"] ? configShortcuts[0]["desconto_tempo_visitada_dim"] : "";
+        ckey_visitante_ad = configShortcuts[0]["desconto_tempo_visitante_ad"] ? configShortcuts[0]["desconto_tempo_visitante_ad"] : "";
+        ckey_visitante_dim = configShortcuts[0]["desconto_tempo_visitante_dim"] ? configShortcuts[0]["desconto_tempo_visitante_dim"] : "";
+      }
+
+    </script>
+
+    <!-- Configuração: Inicio -->
+    <script>
+      function StartConfigEquipes() {
+        getConfigEquipaTime("1");
+        getConfigEquipaTime("2");
+      }
+      function StartConfigSetup() {
+        getConfigSetup();
+      }
+      function StartConfigSons() {
+        getConfigSons();
+      }
+      function StarConfigShortcuts() {
+        getConfigShortcuts();
+      }
+      window.onload = function () {
+        StartConfigEquipes();
+        StartConfigSetup();
+        StartConfigSons();
+        StarConfigShortcuts();
+
+        // alert("Atenção!\n\nAntes de iniciar uma nova partida, verifique\nas confições salvas.")
+      }
+    </script>
+
+    <!-- Music Player Script -->
+    <script>
+      // ======== Music Player ========
+      let musicPlayer = {
+        audio: new Audio(),
+        playlist: [],
+        currentIndex: 0,
+        isPlaying: false,
+        isShuffled: false,
+        isRepeat: false,
+        folderPath: localStorage.getItem('musicFolderPath') || null
+      };
+
+      // Carregar playlist salva
+      if (musicPlayer.folderPath) {
+        loadMusicFromFolder(musicPlayer.folderPath);
+      }
+
+      function selectMusicFolder() {
+        ipcRenderer.send('select-music-folder');
+      }
+
+      ipcRenderer.on('music-folder-selected', (event, folderPath) => {
+        if (folderPath) {
+          musicPlayer.folderPath = folderPath;
+          localStorage.setItem('musicFolderPath', folderPath);
+          loadMusicFromFolder(folderPath);
+        }
+      });
+
+      ipcRenderer.on('music-files-loaded', (event, files) => {
+        musicPlayer.playlist = files;
+        if (files.length > 0) {
+          musicPlayer.currentIndex = 0;
+          updateMusicDisplay();
+          document.getElementById('music-artist').textContent = files.length + ' músicas encontradas';
+          renderMusicList();
+        } else {
+          document.getElementById('music-title').textContent = 'Nenhuma música';
+          document.getElementById('music-artist').textContent = 'Pasta vazia';
+          document.getElementById('music-list').innerHTML = '<div style="color: #888; text-align: center; padding: 20px;">Pasta vazia ou sem arquivos de áudio.</div>';
+        }
+      });
+
+      function loadMusicFromFolder(folderPath) {
+        ipcRenderer.send('load-music-files', folderPath);
+      }
+
+      function renderMusicList() {
+        const listContainer = document.getElementById('music-list');
+        if (!listContainer) return;
+
+        listContainer.innerHTML = '';
+
+        musicPlayer.playlist.forEach((filePath, index) => {
+          const fileName = filePath.split(/[/\\]/).pop().replace(/\.[^/.]+$/, '');
+          const isCurrentSong = index === musicPlayer.currentIndex;
+
+          const item = document.createElement('div');
+          item.id = 'music-item-' + index;
+          item.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background-color: ${isCurrentSong ? '#0D6635' : '#C6C5C3'};
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: 1px solid #B2804A;
+          `;
+          item.onmouseover = function () { if (!isCurrentSong) this.style.backgroundColor = '#EAE1D0'; };
+          item.onmouseout = function () { if (!isCurrentSong) this.style.backgroundColor = '#C6C5C3'; };
+          item.onclick = function () { playMusicByIndex(index); };
+
+          item.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+              <span style="color: #925F39; font-size: 12px; min-width: 25px;">${(index + 1).toString().padStart(2, '0')}</span>
+              <span style="color: ${isCurrentSong ? 'white' : '#28235B'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${fileName}</span>
+            </div>
+            <button onclick="event.stopPropagation(); playMusicByIndex(${index});" class="btn btn-sm" style="background-color: transparent; border: none; color: ${isCurrentSong ? 'white' : '#0D6635'};">
+              <i class="fa ${isCurrentSong && musicPlayer.isPlaying ? 'fa-pause' : 'fa-play'}"></i>
+            </button>
+          `;
+
+          listContainer.appendChild(item);
+        });
+      }
+
+      function playMusicByIndex(index) {
+        musicPlayer.currentIndex = index;
+        playCurrentTrack();
+        renderMusicList();
+      }
+
+      function updateMusicDisplay() {
+        if (musicPlayer.playlist.length > 0) {
+          const currentFile = musicPlayer.playlist[musicPlayer.currentIndex];
+          const fileName = currentFile.split(/[/\\]/).pop().replace(/\.[^/.]+$/, '');
+          document.getElementById('music-title').textContent = fileName;
+        }
+      }
+
+      function togglePlayMusic() {
+        if (musicPlayer.playlist.length === 0) {
+          selectMusicFolder();
+          return;
+        }
+        if (musicPlayer.isPlaying) {
+          musicPlayer.audio.pause();
+          musicPlayer.isPlaying = false;
+          document.querySelector('#btn-play-music i').className = 'fa fa-play';
+        } else {
+          if (!musicPlayer.audio.src || musicPlayer.audio.ended) {
+            musicPlayer.audio.src = 'file://' + musicPlayer.playlist[musicPlayer.currentIndex];
+          }
+          musicPlayer.audio.play();
+          musicPlayer.isPlaying = true;
+          document.querySelector('#btn-play-music i').className = 'fa fa-pause';
+        }
+      }
+
+      function previousMusic() {
+        if (musicPlayer.playlist.length === 0) return;
+        musicPlayer.currentIndex = (musicPlayer.currentIndex - 1 + musicPlayer.playlist.length) % musicPlayer.playlist.length;
+        playCurrentTrack();
+      }
+
+      function nextMusic() {
+        if (musicPlayer.playlist.length === 0) return;
+        if (musicPlayer.isShuffled) {
+          musicPlayer.currentIndex = Math.floor(Math.random() * musicPlayer.playlist.length);
+        } else {
+          musicPlayer.currentIndex = (musicPlayer.currentIndex + 1) % musicPlayer.playlist.length;
+        }
+        playCurrentTrack();
+      }
+
+      function playCurrentTrack() {
+        musicPlayer.audio.src = 'file://' + musicPlayer.playlist[musicPlayer.currentIndex];
+        musicPlayer.audio.play();
+        musicPlayer.isPlaying = true;
+        document.querySelector('#btn-play-music i').className = 'fa fa-pause';
+        updateMusicDisplay();
+        renderMusicList();
+      }
+
+      function shuffleMusic() {
+        musicPlayer.isShuffled = !musicPlayer.isShuffled;
+        document.querySelector('[onclick="shuffleMusic()"] i').style.color = musicPlayer.isShuffled ? '#007bff' : '#333';
+      }
+
+      function repeatMusic() {
+        musicPlayer.isRepeat = !musicPlayer.isRepeat;
+        musicPlayer.audio.loop = musicPlayer.isRepeat;
+        document.querySelector('[onclick="repeatMusic()"] i').style.color = musicPlayer.isRepeat ? '#007bff' : '#333';
+      }
+
+      function setVolume(value) {
+        musicPlayer.audio.volume = value / 100;
+        document.getElementById('music-volume').value = value;
+        document.getElementById('volume-label').textContent = value + '%';
+      }
+
+      function increaseVolume() {
+        let currentVolume = Math.round(musicPlayer.audio.volume * 100);
+        let newVolume = Math.min(currentVolume + 10, 100);
+        setVolume(newVolume);
+      }
+
+      function decreaseVolume() {
+        let currentVolume = Math.round(musicPlayer.audio.volume * 100);
+        let newVolume = Math.max(currentVolume - 10, 0);
+        setVolume(newVolume);
+      }
+
+      musicPlayer.audio.addEventListener('timeupdate', () => {
+        if (musicPlayer.audio.duration) {
+          const progress = (musicPlayer.audio.currentTime / musicPlayer.audio.duration) * 100;
+          document.getElementById('music-progress').value = progress;
+        }
+      });
+
+      document.getElementById('music-progress')?.addEventListener('input', (e) => {
+        if (musicPlayer.audio.duration) {
+          musicPlayer.audio.currentTime = (e.target.value / 100) * musicPlayer.audio.duration;
+        }
+      });
+
+      musicPlayer.audio.addEventListener('ended', () => {
+        if (!musicPlayer.isRepeat) {
+          nextMusic();
+        }
+      });
+    </script>
+
+    <!-- Controles de Apresentação de Jogadores -->
+    <script src="../resources/js/presentation-controls.js"></script>
+
+</body>
+
+</html>

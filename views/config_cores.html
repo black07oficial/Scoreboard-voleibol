@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard - Configurações</title>
+    <!-- Captura global de erros -->
+    <script src="../resources/js/error-capture.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="../resources/css/config.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="../resources/css/custom.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Configuration Css -->
+    <link rel="stylesheet" href="../resources/css/configuration.css">
+    <style>
+        @font-face {
+            font-family: 'Gobold';
+            src: url('../resources/fonts/gobold_bold.otf') format('truetype');
+        }
+
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body {
+            /* overflow: hidden; */
+            font-family: 'Gobold';
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+        }
+
+        .modal-backdrop.show {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        input::-webkit-color-swatch-wrapper {
+            padding: 0;
+            /* Remove o preenchimento padrão */
+            border: none;
+            /* Remove a borda padrão */
+            border-radius: 25%;
+            /* Arredonde as bordas para criar um círculo */
+        }
+
+        input {
+            border: none;
+            background-color: transparent;
+            width: 45px;
+            height: 45px;
+        }
+
+        input::-webkit-color-swatch {
+            border-radius: 25%;
+            /* Arredonde as bordas para criar um círculo */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row" style="height: 93%;">
+        <div class="col-12">
+
+            <div id="opcoesPrincipais" style="margin-top: 12px; margin-left: 10px;">
+                <button class="tab-button" onclick="openTab('configuracoes', this)">Jogo setup</button>
+                <button class="tab-button" onclick="openTab('config_equipas', this)">Equipas</button>
+                <button class="tab-button" onclick="openTab('config_monitores', this)">Monitores</button>
+                <button class="tab-button" onclick="openTab('config_fotos', this)">Vídeo/Fotos</button>
+                <button class="tab-button" onclick="openTab('config_shortcuts', this)">Shortcuts</button>
+                <button class="tab-button selected">Cores</button>
+                <button class="tab-button" onclick="openTab('config_sons', this)">Sons</button>
+                <button class="tab-button" onclick="openTab('config_banner_color', this)">Banner
+                    Color</button>
+                <button class="tab-button" onclick="retornar();">Voltar</button>
+            </div>
+
+            <div id="Cores" class="tab-panel">
+                <div class="container-fluid" style="height: 93%; padding-left: 0; padding-right: 0;">
+                    <div class="d-flex justify-content-center">
+                        <div class="row" style="width: 50% !important;">
+                            <div class="col-4 d-flex justify-content-start">
+                                <div class="row">
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Fundo
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor1" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Período
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor10" type="color">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Nome
+                                                equipe visitante
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor5" type="color">
+                                        </div>
+                                    </div>
+                                </div>
+                                <table style="width: 100%; display: none;">
+                                    <tbody>
+                                        <tr style="display: none;">
+                                            <td><span style="font-weight: bold; margin-right: 12px;">Number
+                                                    background:
+                                                </span></td>
+                                            <td><input id="inputColor2" type="color"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="font-weight: bold; margin-right: 12px;">Text and
+                                                    borders:
+                                                </span></td>
+                                            <td><input id="inputColor3" type="color"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-4 d-flex justify-content-start">
+                                <div class="row">
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Tempo Principal
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor6" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Pontos
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor9" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Nome
+                                                equipe visitada
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor4" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column mt-5 d-none">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Tempo de Ataque
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor7" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column mt-5 d-none">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Tempo de Ataque Expiration
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor8" type="color">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-4 d-flex justify-content-start">
+                                <div class="row">
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Set
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor12" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column mt-5">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Fundo Gestor
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColorGestorFundo" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column d-none" style="margin-top: -3.5rem;">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Penalidades Jogador
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor13" type="color">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex flex-column d-none" style="margin-top: -3.5rem;">
+                                        <div class="d-flex justify-content-start">
+                                            <b>
+                                                Penalidades Tempo
+                                            </b>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <input id="inputColor14" type="color">
+                                        </div>
+                                    </div>
+                                </div>
+                                <table style="width: 100%; display: none;">
+                                    <tbody>
+                                        <tr style="display: none;">
+                                            <td><span style="font-weight: bold; margin-right: 12px;">Shots on goal:
+                                                </span></td>
+                                            <td><input id="inputColor11" type="color"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="font-weight: bold; margin-right: 12px;">Penalty time:
+                                                </span></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span style="font-weight: bold; margin-right: 12px;">Display screen
+                                                    active field: </span></td>
+                                            <td><input id="inputColor15" type="color"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="margin-top: 16px">
+                        <div class="col-10 d-flex justify-content-end">
+                            <button id="btn-cancelar-config" class="btn-acoes d-none">Cancelar</button>
+                            <button id="btn-confirma-config" class="btn-acoes"
+                                style="margin-left: 8px;">Confirmar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!-- Definição de Variaveis -->
+    <script>
+        const sqlite3 = require('sqlite3').verbose();
+        const { ipcRenderer } = require('electron');
+        let dbPath = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // 1. Garantir path do Banco de Dados
+                const p = await ipcRenderer.invoke('get-db-path');
+                if (p) dbPath = p;
+
+                // 2. Ajustar Zoom (Layout)
+                adjustZoom();
+
+                // 3. Carregar Dados
+                getConfigCores();
+            } catch (err) {
+                console.error('Erro fatal na inicialização:', err);
+            }
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode === 116) {
+                // O código 116 corresponde à tecla F5
+                location.reload();
+            }
+        });
+        let widthWindowPad = 1570;
+        let heightWindowPad = 870;
+        document.body.style.zoom = 1;
+        let oldWindowWidth = widthWindowPad;
+        let oldWindowHeight = heightWindowPad;
+        function calculateScale(width) {
+            const widthIncrement = 1000;
+            const scaleIncrement = 1;
+            const maxScale = 4; // Define a escala máxima
+
+            const widthDiff = width - widthWindowPad;
+            let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
+            scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
+            console.log(scaleFactor);
+            return scaleFactor;
+        }
+
+        function adjustZoom() {
+            const baseWidth = 1570;
+            const baseHeight = 870;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const baseAspectRatio = baseWidth / baseHeight;
+            let scale
+            if (aspectRatio < baseAspectRatio) {
+                scale = window.innerWidth / baseWidth;
+                document.body.style.width = '100%';
+            } else {
+                scale = window.innerHeight / baseHeight;
+                // document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
+            }
+            document.body.style.zoom = scale;
+            document.body.style.height = (window.innerHeight / scale) + 'px';
+            document.body.style.alignItems = "center";
+        }
+
+        // Chama a função de ajuste de zoom quando o DOM estiver pronto
+        // (Já chamado no listener DOMContentLoaded acima, mas mantendo para redimensionamento se necessario, ou removendo duplicata)
+        // document.addEventListener("DOMContentLoaded", function () {
+        //    adjustZoom();
+        // });
+
+        // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+        window.addEventListener("resize", function () {
+            // Resetar zoom para garantir calculo correto
+            document.body.style.zoom = 1;
+            adjustZoom();
+        });
+    </script>
+
+    <!-- Funções auxiliares -->
+    <script>
+        function getIntFormat(valueString) {
+            var valueInt = parseInt(valueString);
+            if (isNaN(valueInt)) {
+                return 0;
+            }
+            return valueInt;
+        }
+    </script>
+
+    <!-- Configuracoes -->
+    <script>
+
+        function search(elem) {
+            elem.value = event.key;
+        }
+
+        function limpaInputKey(elem) {
+            document.getElementById(elem).value = "";
+        }
+
+        function subtrairPontuacao(elemento, limite = 0) {
+            var pontuacao = elemento.parentElement.children[0].value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao <= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao - 1;
+            elemento.parentElement.children[0].value = pontuacao;
+        }
+
+        function adicionarPontuacao(elemento, limite = 99) {
+            var pontuacao = elemento.parentElement.children[0].value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao >= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao + 1;
+            elemento.parentElement.children[0].value = pontuacao;
+        }
+
+        function subtrairPontuacaoById(elementoId, limite = 0) {
+            var pontuacao = document.getElementById(elementoId).value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao <= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao - 1;
+            document.getElementById(elementoId).value = pontuacao;
+        }
+
+        function adicionarPontuacaoById(elementoId, limite = 99) {
+            var pontuacao = document.getElementById(elementoId).value;
+            if (!pontuacao || typeof pontuacao === 'undefined') {
+                pontuacao = 0;
+            }
+
+            pontuacao = parseInt(pontuacao);
+            if (pontuacao >= limite) {
+                return;
+            }
+
+            pontuacao = pontuacao + 1;
+            document.getElementById(elementoId).value = pontuacao;
+        }
+
+        function limitaInput(elemento) {
+            if (elemento.value > 99) {
+                elemento.value = 99;
+            }
+        }
+
+    </script>
+
+    <!-- Configuracoes: Cores -->
+    <script>
+
+        var configCores;
+        async function getConfigCores() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_cores", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configCores = rows;
+                    setConfigCores();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigCores() {
+
+            console.log(configCores);
+
+            document.querySelector("#inputColor1").value = configCores[0]["background"] ? configCores[0]["background"] : "";
+            document.querySelector("#inputColor2").value = configCores[0]["number_background"] ? configCores[0]["number_background"] : "";
+            document.querySelector("#inputColor3").value = configCores[0]["text_borders"] ? configCores[0]["text_borders"] : "";
+            document.querySelector("#inputColor4").value = configCores[0]["team1_name"] ? configCores[0]["team1_name"] : "";
+            document.querySelector("#inputColor5").value = configCores[0]["team2_name"] ? configCores[0]["team2_name"] : "";
+            document.querySelector("#inputColor6").value = configCores[0]["main_clock"] ? configCores[0]["main_clock"] : "";
+            document.querySelector("#inputColor7").value = configCores[0]["shot_clock"] ? configCores[0]["shot_clock"] : "";
+            document.querySelector("#inputColor8").value = configCores[0]["shot_clock_expiration_border"] ? configCores[0]["shot_clock_expiration_border"] : "";
+            document.querySelector("#inputColor9").value = configCores[0]["scores"] ? configCores[0]["scores"] : "";
+            document.querySelector("#inputColor10").value = configCores[0]["period"] ? configCores[0]["period"] : "";
+            document.querySelector("#inputColor11").value = configCores[0]["shots_on_goal"] ? configCores[0]["shots_on_goal"] : "";
+            document.querySelector("#inputColor12").value = configCores[0]["fouls"] ? configCores[0]["fouls"] : "";
+            document.querySelector("#inputColor13").value = configCores[0]["penalty_player"] ? configCores[0]["penalty_player"] : "";
+            document.querySelector("#inputColor14").value = configCores[0]["penalty_time"] ? configCores[0]["penalty_time"] : "";
+            document.querySelector("#inputColor15").value = configCores[0]["display_screen_active_field"] ? configCores[0]["display_screen_active_field"] : "";
+            // Carregar cor do gestor da tabela config_banner_color
+            loadGestorFundoColor();
+
+        }
+
+        // Função para carregar a cor de fundo do gestor
+        async function loadGestorFundoColor() {
+            var db = new sqlite3.Database(dbPath);
+            db.get("SELECT gestor_fundo_color FROM config_banner_color WHERE id = 1", (err, row) => {
+                if (err) {
+                    console.error(err.message);
+                    db.close();
+                    return;
+                }
+                if (row && row.gestor_fundo_color) {
+                    document.querySelector("#inputColorGestorFundo").value = row.gestor_fundo_color;
+                }
+                db.close();
+            });
+        }
+
+
+        async function saveConfiguracoes() {
+
+            const db = new sqlite3.Database(dbPath);
+
+            const background = document.querySelector("#inputColor1").value;
+            const number_background = document.querySelector("#inputColor2").value;
+            const text_borders = document.querySelector("#inputColor3").value;
+            const team1_name = document.querySelector("#inputColor4").value;
+            const team2_name = document.querySelector("#inputColor5").value;
+            const main_clock = document.querySelector("#inputColor6").value;
+            const shot_clock = document.querySelector("#inputColor7").value;
+            const shot_clock_expiration_border = document.querySelector("#inputColor8").value;
+            const scores = document.querySelector("#inputColor9").value;
+            const period = document.querySelector("#inputColor10").value;
+            const shots_on_goal = document.querySelector("#inputColor11").value;
+            const fouls = document.querySelector("#inputColor12").value;
+            const penalty_player = document.querySelector("#inputColor13").value;
+            const penalty_time = document.querySelector("#inputColor14").value;
+            const display_screen_active_field = document.querySelector("#inputColor15").value;
+
+            const query = `
+                UPDATE config_cores
+                SET 
+                    background = '${background}',
+                    number_background = '${number_background}',
+                    text_borders = '${text_borders}',
+                    team1_name = '${team1_name}',
+                    team2_name = '${team2_name}',
+                    main_clock = '${main_clock}',
+                    shot_clock = '${shot_clock}',
+                    shot_clock_expiration_border = '${shot_clock_expiration_border}',
+                    scores = '${scores}',
+                    period = '${period}',
+                    shots_on_goal = '${shots_on_goal}',
+                    fouls = '${fouls}',
+                    penalty_player = '${penalty_player}',
+                    penalty_time = '${penalty_time}',
+                    display_screen_active_field = '${display_screen_active_field}'
+                WHERE id = 1
+            `;
+
+            _ = await db.run(query,
+                function (err) {
+                    if (err) {
+                        // alert("Falha ao salvar configurações, tente novamente.");
+                        ipcRenderer.send('send-alert', 'Falha ao salvar configurações, tente novamente.');
+                        console.error(err);
+                        return;
+                    }
+                    // alert("Configurações salvar com sucesso.");
+                    getConfigCores();
+                });
+
+            db.close();
+
+            // Salvar cor do fundo do gestor na tabela config_banner_color
+            const gestor_fundo_color = document.querySelector("#inputColorGestorFundo").value;
+            const queryGestor = `UPDATE config_banner_color SET gestor_fundo_color = '${gestor_fundo_color}' WHERE id = 1`;
+            var db2 = new sqlite3.Database(dbPath);
+            db2.run(queryGestor, function (err) {
+                if (err) console.error(err);
+                db2.close();
+            });
+
+            ipcRenderer.send('reload');
+        }
+
+        document.getElementById('btn-cancelar-config').addEventListener('click', function () {
+            setConfigCores();
+        });
+
+        document.getElementById('btn-confirma-config').addEventListener('click', function () {
+            saveConfiguracoes();
+        });
+
+    </script>
+
+    <script>
+        // window.onload removido em favor de DOMContentLoaded
+        // window.onload = function () {
+        //     getConfigCores();
+        // }
+
+        function openTab(tabName, elem) {
+            window.location.href = tabName + ".html";
+        }
+
+        function retornar() {
+            if (confirm("Você tem certeza que deseja reiniciar tudo?\n\n" +
+                "Clique em OK para salvar as alterações e reiniciar.\n" +
+                "Clique em Cancelar caso não deseje reiniciar.")) {
+                ipcRenderer.send("closeWindowConfig", true);
+            } else {
+                ipcRenderer.send("closeWindowConfig", false);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
