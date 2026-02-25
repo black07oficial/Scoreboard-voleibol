@@ -1,0 +1,83 @@
+body {
+    background-color: #faf8f5 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+html {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+
+
+.tab-panel {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.group-class {
+    width: 100px !important;
+}
+
+.group-class input {
+    border: none !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+    padding-left: 10px !important;
+    border-radius: 4px !important;
+}
+
+.group-class input:hover {
+    background-color: antiquewhite !important;
+    border: none !important;
+    font-weight: bold !important;
+    font-size: 20px !important;
+    padding-left: 10px !important;
+    border-radius: 4px !important;
+}
+
+.group-class input:focus {
+    outline: none !important;
+}
+
+.group-class-in {
+    width: 20px !important;
+    height: 31px !important;
+    margin-top: -32px !important;
+    position: absolute !important;
+    margin-left: 45px !important;
+    background-color: rgb(187 187 187) !important;
+    border-radius: 4px !important;
+}
+
+.group-class .acres {
+    position: absolute !important;
+    margin-left: -15px !important;
+    margin-top: -7px !important;
+    color: black !important;
+}
+
+.group-class .down {
+    position: absolute !important;
+    margin-left: -15px !important;
+    margin-top: 10px !important;
+    color: black !important;
+}
+
+.panel-equipe {
+    min-height: 695px !important;
+}
+
+@media (max-width: 1400px) or (max-height:800px) {
+    .panel-equipe {
+        min-height: 500px !important;
+    }
+
+}

@@ -1,0 +1,2505 @@
+--- "c:/Users/Dev Black/Documents/scoreboard-main/views/index.html"	2026-01-27 08:05:58.232577500 +0100
++++ views/index.html	2026-02-04 11:06:34.593886900 +0100
+@@ -27,7 +27,6 @@
+     integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+-
+   <style>
+     @font-face {
+       font-family: 'Digital Display';
+@@ -74,34 +73,6 @@
+       scrollbar-color: #92652A #EBD7C9;
+     }
+ 
+-    @keyframes mover-cima {
+-      0% {
+-        transform: translateY(0);
+-      }
+-
+-      100% {
+-        transform: translateY(-100%);
+-      }
+-    }
+-
+-    tr.mover-para-cima {
+-      animation: mover-cima 0.4s forwards;
+-    }
+-
+-    @keyframes mover-baixo {
+-      0% {
+-        transform: translateY(0);
+-      }
+-
+-      100% {
+-        transform: translateY(100%);
+-      }
+-    }
+-
+-    tr.mover-para-baixo {
+-      animation: mover-baixo 0.4s forwards;
+-    }
+-
+     /* Chrome, Edge and Safari */
+     *::-webkit-scrollbar {
+       height: 8px;
+@@ -167,6 +138,10 @@
+       background-color: #2F2E81
+     }
+ 
++    .digital_dismay {
++      font-family: 'Digital Dismay', sans-serif;
++    }
++
+     .btn-dark-green {
+       background-color: #0D6635;
+     }
+@@ -261,6 +236,20 @@
+       width: 50%;
+     }
+ 
++    .tabela-exclusao-volei {
++      width: 50%;
++      margin-left: 3px;
++      margin-right: 3px;
++      background-color: #EAE1D0;
++      border: 1px solid #B2804A;
++      height: 298px;
++      padding: 20px;
++    }
++
++    .gray-text {
++      color: rgb(80, 80, 80);
++    }
++
+     .tabela-exclusao div {
+       margin-left: 3px;
+       margin-right: 3px;
+@@ -269,6 +258,8 @@
+       height: 180px;
+     }
+ 
++    .tabela-exclusao-volei div {}
++
+     .tabela-importacao {
+       margin-left: 3px;
+       margin-right: 3px;
+@@ -315,6 +306,12 @@
+       width: 100% !important;
+       height: 100% !important;
+     }
++
++    .timeout-active {
++      background-color: #14d15d !important;
++      border-radius: 10px;
++      padding: 5px;
++    }
+   </style>
+ </head>
+ 
+@@ -335,7 +332,8 @@
+           <!-- Segunda linha com um elemento img centralizado -->
+           <div class="row mt-2">
+             <div class="col text-center">
+-              <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" />
++              <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" src="../resources/images/no-image.jpg"
++                onerror="this.style.opacity='0.3'" />
+             </div>
+           </div>
+ 
+@@ -388,13 +386,13 @@
+                   <table>
+                     <tr>
+                       <td style="text-align: center;">
+-                        <strong>Período</strong>
++                        <strong>Jogo</strong>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td style="text-align: center;">
+                         <button id="btn-add-periodo"
+-                          onclick="adicionarPontuacaoPeriodo('#input-periodo', '#label-periodo', '#btn-add-periodo', '9', 'false');"
++                          onclick="adicionarPontuacaoPeriodo('#input-periodo', '#label-periodo', '#btn-add-periodo', '5', 'false');"
+                           type="button" class="custom-button-simple btn-green bd-r-10"
+                           style="width: 50px;padding: 0px;"><i class="fa fa-caret-up"></i></button>
+                       </td>
+@@ -462,9 +460,8 @@
+                         class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10 ml-20"
+                         style="min-width: 150px;">Intervalo</button></td>
+                     <td><button id="btn-musica" type="button" data-bs-toggle="modal" data-bs-target="#musicModal"
+-                        class="custom-button-simple ft-size-14 pd-10 bd-r-10 ml-20"
+-                        style="min-width: 150px; background-color: orange; color: white;"><i class="fa fa-music"></i>
+-                        Música</button>
++                        class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10 ml-20"
++                        style="min-width: 100px; background-color: #1A4B5A;"><i class="fa fa-music"></i> Música</button>
+                     </td>
+                   </tr>
+                   <tr id="painel-more-time">
+@@ -478,11 +475,16 @@
+           </div>
+ 
+           <div class="row mt-2">
+-            <div class="col-12 d-flex justify-content-center">
++            <div class="col-6 d-flex justify-content-end">
+               <button id="btn-iniciar-partida" type="button"
+                 class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10" style="background-color: #1A4B5A;">Ecrã
+                 Público</button>
+             </div>
++            <div class="col-6 d-flex justify-content-start">
++              <button id="btn-alterar-posicao" type="button"
++                class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10"
++                style="background-color: #1e1a5a;">Alterar Posição</button>
++            </div>
+           </div>
+ 
+         </div>
+@@ -502,7 +504,8 @@
+           <!-- Segunda linha com um elemento img centralizado -->
+           <div class="row mt-2">
+             <div class="col text-center">
+-              <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" />
++              <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" src="../resources/images/no-image.jpg"
++                onerror="this.style.opacity='0.3'" />
+             </div>
+           </div>
+ 
+@@ -540,7 +543,7 @@
+             <div class="container-fluid" style="margin-top: -10px;">
+               <div class="row">
+                 <div class="col-12 d-flex justify-content-center">
+-                  <strong>Golos</strong>
++                  <strong>Pontos</strong>
+                 </div>
+               </div>
+ 
+@@ -548,7 +551,7 @@
+                 <div class="col-12 d-flex justify-content-center">
+                   <div class="text-left">
+                     <button id="btn-add-gols-time-01"
+-                      onclick="adicionarPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-add-gols-time-01');"
++                      onclick="adicionarPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-add-gols-time-01', 99, 'true',1);"
+                       style="width: 150px;" type="button" class="custom-button-simple btn-time btn-green bd-r-10"><i
+                         class=" fa fa-caret-up"></i></button>
+                   </div>
+@@ -586,7 +589,7 @@
+                         <table>
+                           <tr>
+                             <td style="text-align: center;">
+-                              <strong>Faltas</strong>
++                              <strong>Set</strong>
+                             </td>
+                           </tr>
+                           <tr>
+@@ -636,7 +639,7 @@
+           </div>
+         </div>
+ 
+-        <div class="row" style="margin-top: 12px;">
++        <div class="row d-none" style="margin-top: 12px;">
+           <div class="col-12">
+             <div class="d-flex justify-content-between" style="margin-left: 12px; margin-right: 12px; margin-top: 8px;">
+ 
+@@ -669,18 +672,48 @@
+       </div>
+ 
+       <div class="custom-column" style="width: 30%">
++        <div class="row mt-3">
++          <div class="col-12 d-flex justify-content-center" style="padding-top: 8px; font-size: 20px;">
++            <strong>Resultado Set's</strong>
++          </div>
++        </div>
++        <div class="row mt-3">
++          <div class="col-12 d-flex justify-content-center">
++            <div class="tabela-exclusao-volei" style="margin-left: 77px;">
++              <div>
++                <div class="row">
++                  <div class="col-12">
++                    <div class="row">
++                      <div class="col-4 gray-text d-flex justify-content-center" style="font-size: 20px;">
++                        Set
++                      </div>
++                      <div class=" col-8 d-flex justify-content-start" style="font-size: 20px;">
++                        Pontuação
++                      </div>
++                    </div>
++                  </div>
++                  <div class="col-12" id="set">
+ 
+-
+-        <div class="row mt-3" id="text-ataq">
++                  </div>
++                </div>
++              </div>
++            </div>
++            <div style="width: 10%; margin-left: 20px;">
++              <i class="fa fa-plus" id="btn-adicionar-set" class="btn-icon" type=" button" data-bs-toggle="modal"
++                data-bs-target="#addRowModal1" style="color: #1f307c; font-size: 25px; margin-left:-5px;"></i>
++            </div>
++          </div>
++        </div>
++        <div class="row mt-3 d-none">
+           <div class="col-12 d-flex justify-content-center" style="padding-top: 8px; font-size: 20px;">
+             <strong>Tempo de Ataque</strong>
+           </div>
+         </div>
++
+         <div class="row">
+           <div class="col-12">
+-            <div class="container-fluid" style="padding-top: 18px;" id="ataque">
+-
+-              <div class="row">
++            <div class="container-fluid" style="padding-top: 18px;">
++              <div class="row d-none">
+                 <div class="col-12 d-flex justify-content-center">
+                   <div class="text-left">
+                     <button id="btn-adicionar-tempo-ataque"
+@@ -690,8 +723,7 @@
+                   </div>
+                 </div>
+               </div>
+-
+-              <div class="row">
++              <div class="row d-none">
+                 <div class="col-12 d-flex justify-content-center">
+                   <div class="text-left">
+                     <p id="label-tempo-ataque" class="label-time-extra"
+@@ -705,8 +737,7 @@
+                   </div>
+                 </div>
+               </div>
+-
+-              <div class="row" style="margin-bottom: 10px;margin-top:-48px;">
++              <div class="row d-none" style="margin-bottom: 10px;margin-top:-48px;">
+                 <div class="col-12 d-flex justify-content-center">
+                   <div class="text-left">
+                     <button id="btn-subtrair-tempo-ataque"
+@@ -716,7 +747,6 @@
+                   </div>
+                 </div>
+               </div>
+-
+             </div>
+           </div>
+         </div>
+@@ -759,7 +789,7 @@
+ 
+               <div class="row">
+                 <div class="col-12 d-flex justify-content-center">
+-                  <strong>Golos</strong>
++                  <strong>Pontos</strong>
+                 </div>
+               </div>
+ 
+@@ -767,7 +797,7 @@
+                 <div class="col-12 d-flex justify-content-center">
+                   <div class="text-left">
+                     <button id="btn-add-gols-time-02"
+-                      onclick="adicionarPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02');"
++                      onclick="adicionarPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02',99, 'true',2);"
+                       type="button" class="custom-button-simple btn-time btn-green bd-r-10" style="width: 150px;"><i
+                         class="fa fa-caret-up"></i></button>
+                   </div>
+@@ -786,7 +816,7 @@
+                       <table>
+                         <tr>
+                           <td style="text-align: center;">
+-                            <strong>Faltas</strong>
++                            <strong>Set</strong>
+                           </td>
+                         </tr>
+                         <tr>
+@@ -856,7 +886,7 @@
+           </div>
+         </div>
+ 
+-        <div class="row" style="margin-top: 12px;">
++        <div class="row d-none" style="margin-top: 12px;">
+           <div class="col-12">
+             <div class="d-flex justify-content-between" style="margin-left: 14px; margin-right: 14px; margin-top: 8px;">
+ 
+@@ -888,60 +918,29 @@
+ 
+       </div>
+     </div>
+-    <!-- Modal de Recuperação de Partida (Auto-Save) -->
+-    <div class="modal fade" id="recoveryModal" tabindex="-1" aria-labelledby="recoveryModalLabel" aria-hidden="true"
+-      data-bs-backdrop="static" data-bs-keyboard="false">
+-      <div class="modal-dialog modal-dialog-centered">
+-        <div class="modal-content" style="background-color: #C6C5C3; border: 2px solid #28235B;">
+-          <div class="modal-header" style="background-color: #28235B; color: white; border-bottom: none;">
+-            <h5 class="modal-title" id="recoveryModalLabel">
+-              <i class="fa fa-save"></i> Partida Encontrada
+-            </h5>
+-          </div>
+-          <div class="modal-body" style="text-align: center; padding: 25px;">
+-            <p style="font-size: 16px; margin-bottom: 15px;">Foi encontrada uma partida não finalizada:</p>
+-            <div
+-              style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ddd;">
+-              <div id="recovery-placar" style="font-size: 36px; font-weight: bold; color: #28235B;">0 x 0</div>
+-              <div id="recovery-tempo" style="font-size: 18px; color: #666; margin-top: 5px;">Tempo: 00:00</div>
+-              <div id="recovery-periodo" style="font-size: 14px; color: #888;">Período: 1</div>
+-            </div>
+-            <p id="recovery-ultimo-save" style="font-size: 12px; color: #999;">Último salvamento: --</p>
+-            <p style="font-size: 14px; margin-top: 10px;">Deseja continuar esta partida?</p>
+-          </div>
+-          <div class="modal-footer" style="justify-content: center; border-top: none; padding-bottom: 20px;">
+-            <button type="button" class="btn btn-success btn-lg" id="btn-continuar-partida">
+-              <i class="fa fa-play"></i> Continuar Partida
+-            </button>
+-            <button type="button" class="btn btn-danger" id="btn-nova-partida">
+-              <i class="fa fa-refresh"></i> Nova Partida
+-            </button>
+-          </div>
+-        </div>
+-      </div>
+-    </div>
+ 
+     <!-- Modal para adicionar nova linha -->
+     <div class="modal fade" id="addRowModal1" tabindex="-1" aria-labelledby="addRowModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-header">
+-            <h5 class="modal-title" id="addRowModalLabel">Adicionar Nova Exclusão</h5>
++            <h5 class="modal-title" id="addRowModalLabel">Resultado Set's</h5>
+             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+           </div>
+           <div class="modal-body">
+             <div class="mb-3">
+-              <label for="value1" class="form-label">Jogador</label>
+-              <input type="number" class="form-control" id="inputExcJogador1" min="0">
++              <label for="value1" class="form-label">Set</label>
++              <input type="number" class="form-control" id="inputExcSet" min="0">
+             </div>
+             <div class="mb-3">
+-              <label for="value2" class="form-label">Tempo</label>
+               <div class="row">
+                 <div class="col">
+-                  <input type="number" class="form-control" id="inputExcMinutos1" min="0" value="0">
++                  <label for="value1" class="form-label">Visitante</label>
++                  <input type="number" class="form-control" id="inputExcSet1" min="0">
+                 </div>
+                 <div class="col">
+-                  <input type="number" class="form-control" id="inputExcSegundos1" min="0" value="0">
++                  <label for="value2" class="form-label">Visitada</label>
++                  <input type="number" class="form-control" id="inputExcSet2" min="0">
+                 </div>
+               </div>
+             </div>
+@@ -1029,11 +1028,13 @@
+               </div>
+             </div>
+ 
++            <!-- Barra de Progresso -->
+             <div class="mb-3">
+               <input type="range" id="music-progress" min="0" max="100" value="0"
+                 style="width: 100%; accent-color: #92652A;">
+             </div>
+ 
++            <!-- Controle de Volume -->
+             <div class="d-flex align-items-center gap-2 mb-3">
+               <i class="fa fa-volume-down" style="color: #925F39;"></i>
+               <input type="range" id="music-volume" min="0" max="100" value="100" oninput="setVolume(this.value)"
+@@ -1066,6 +1067,7 @@
+       document.addEventListener('keydown', function (event) {
+         if (event.keyCode === 116) {
+           // O código 116 corresponde à tecla F5
++          ipcRenderer.send('reloadMain');
+           location.reload();
+         }
+       });
+@@ -1120,7 +1122,6 @@
+         document.body.style.zoom = 1;
+         oldWindowWidth = widthWindowPad;
+         oldWindowHeight = heightWindowPad;
+-        adjustZoom();
+       });
+       let secondWindowRoute = "placar";
+     </script>
+@@ -1133,25 +1134,8 @@
+       var tempo_atq_cont = 0;
+       var time_1_desconto = 0;
+       var time_2_desconto = 0;
++      var lastClicked = null;
+       const { ipcRenderer } = require("electron");
+-      const path = require('path');
+-
+-      // Definir caminho absoluto do banco de dados
+-      // Em produção: ao lado do executável
+-      // Em desenvolvimento: raiz do projeto
+-      let dbPath;
+-      try {
+-        const isPackaged = !process.execPath.includes('node_modules');
+-        if (isPackaged) {
+-          dbPath = path.join(path.dirname(process.execPath), 'scoreboard.sqlite');
+-        } else {
+-          dbPath = path.join(__dirname, '..', 'scoreboard.sqlite');
+-        }
+-        console.log('[Index] DB Path:', dbPath);
+-      } catch (err) {
+-        console.error('[Index] Erro ao definir dbPath:', err);
+-        dbPath = './scoreboard.sqlite'; // Fallback
+-      }
+       setInterval(() => {
+         var data = {
+           time_1: time_1_desconto,
+@@ -1184,7 +1168,8 @@
+           time_2_desconto -= 1;
+         }
+ 
+-        // var db = new sqlite3.Database('./scoreboard.sqlite');
++
++        // var db = new sqlite3.Database(require('path').join(__dirname, '..', 'scoreboard.sqlite'));
+         // _ = await db.serialize(() => {
+         //   db.run(`UPDATE config_desconto SET time_1 = ${time_1_desconto}, time_2 = ${time_2_desconto} WHERE id = 1;`);
+         // });
+@@ -1196,6 +1181,7 @@
+         ipcRenderer.send("atualizarDesconto", data);
+       }
+       function resetarTempoAtaque() {
++        return;
+         if (window.tempo_ataque == window.tempo_ataque + 1) {
+           window.tempo_ataque = window.tempo_ataque - 1;
+         }
+@@ -1218,6 +1204,19 @@
+         }
+       }
+ 
++      var trocaPosicao = false;
++
++      $('#btn-alterar-posicao').click(function () {
++        trocaPosicao = !trocaPosicao;
++        if (trocaPosicao) {
++          $('#btn-alterar-posicao').css('background-color', 'rgb(201 42 42)');
++        } else {
++          $('#btn-alterar-posicao').css('background-color', '#1e1a5a');
++        }
++        ipcRenderer.send("alterarPosicao", trocaPosicao);
++        ipcRenderer.send("getClickedButton", lastClicked);
++      });
++
+       function subtrairPontuacao(input, label, button, limite = 0, formata = "true") {
+         var pontuacao = $(input).val();
+         pontuacao = parseInt(pontuacao);
+@@ -1256,10 +1255,13 @@
+ 
+       }
+ 
+-      function adicionarPontuacao(input, label, button, limite = 99, formata = "true") {
++      function adicionarPontuacao(input, label, button, limite = 99, formata = "true", pontos = null) {
+         var pontuacao = $(input).val();
+         pontuacao = parseInt(pontuacao);
+-
++        if (pontos) {
++          lastClicked = pontos;
++          ipcRenderer.send("getClickedButton", lastClicked);
++        }
+         if (pontuacao >= limite) {
+           return;
+         }
+@@ -1404,6 +1406,37 @@
+ 
+       }
+ 
++      function adicionarPontuacaoDefault(input, label, button, pontuacao, limite = 99, formata = "true") {
++        pontuacao = parseInt(pontuacao);
++        if (pontuacao >= limite) {
++          return;
++        }
++
++        $(input).val(pontuacao);
++
++        let data = {
++          inputOrigin: input,
++          labelOrigin: label,
++          buttonOrigin: button,
++          limiteOrigin: limite,
++          formataOrigin: formata,
++          pontuacao: pontuacao,
++        }
++        if (formata === "true") {
++          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
++          $(label).html(pontuacaoFormatada);
++          data["pontuacaoFormatada"] = pontuacaoFormatada;
++        } else {
++          $(label).html(pontuacao.toString());
++        }
++        // setInterval(() => {
++        //   if ($(label).html() == '00') {
++        //     resetarTempoAtaque();
++        //   }
++        // }, 100)
++        ipcRenderer.send("alterarPontuacaoPlacar", data);
++      }
++
+       function subtrairPontuacaoPeriodo(input, label, button, limite = 0, formata = "true") {
+         subtrairPontuacao(input, label, button, limite, formata);
+       }
+@@ -1440,27 +1473,56 @@
+ 
+       }
+ 
+-      function sleep(ms) {
+-        return new Promise(resolve => setTimeout(resolve, ms));
+-      }
+-      let linhas = document.querySelectorAll('#tableBody1 tr');
+-      let segundos = Array.from(linhas, linha => {
+-        var second = formatSecond(linha.children[1].innerHTML)
+-        if (!linha.diminuido) {
+-          second -= 1;
+-          linha.diminuido = true;
++      // Ported from Scoreboard-main: Visual Indicator for Timeout (Panel Background)
++      document.getElementById("btn-desconto-equipe1").addEventListener("click", () => {
++        let body = {
++          origem: "btn-desconto-equipe1"
++        }
++        ipcRenderer.send("sendDescontoPainel", body);
++        // Toggle green background on team 1 panel
++        const painelTime1 = document.getElementById("painel-time-01");
++        if (painelTime1.style.backgroundColor === "rgb(57, 170, 73)") { // #39AA49 in rgb
++          painelTime1.style.backgroundColor = "";
++        } else {
++          painelTime1.style.backgroundColor = "#39AA49";
+         }
+-        return second;
+       });
+-      let linhas2 = document.querySelectorAll('#tableBody2 tr');
+-      let segundos2 = Array.from(linhas2, linha => {
+-        var second = formatSecond(linha.children[1].innerHTML)
+-        if (!linha.diminuido) {
+-          second -= 1;
+-          linha.diminuido = true;
++
++      document.getElementById("btn-desconto-equipe2").addEventListener("click", () => {
++        let body = {
++          origem: "btn-desconto-equipe2"
++        }
++        ipcRenderer.send("sendDescontoPainel", body);
++        // Toggle green background on team 2 panel
++        const painelTime2 = document.getElementById("painel-time-02");
++        if (painelTime2.style.backgroundColor === "rgb(57, 170, 73)") { // #39AA49 in rgb
++          painelTime2.style.backgroundColor = "";
++        } else {
++          painelTime2.style.backgroundColor = "#39AA49";
+         }
+-        return second;
+       });
++
++      function sleep(ms) {
++        return new Promise(resolve => setTimeout(resolve, ms));
++      }
++      // let linhas = document.querySelectorAll('#tableBody1 tr');
++      // let segundos = Array.from(linhas, linha => {
++      //   var second = formatSecond(linha.children[1].innerHTML)
++      //   if (!linha.diminuido) {
++      //     second -= 1;
++      //     linha.diminuido = true;
++      //   }
++      //   return second;
++      // });
++      // let linhas2 = document.querySelectorAll('#tableBody2 tr');
++      // let segundos2 = Array.from(linhas2, linha => {
++      //   var second = formatSecond(linha.children[1].innerHTML)
++      //   if (!linha.diminuido) {
++      //     second -= 1;
++      //     linha.diminuido = true;
++      //   }
++      //   return second;
++      // });
+       let exclusoesLista1 = [];
+       let exclusoesLista2 = [];
+       let intervalId;
+@@ -1469,56 +1531,56 @@
+       let rodando2 = false;
+       let old_qtd1 = 0;
+       let old_qtd2 = 0;
+-      setInterval(() => {
+-        let qtd_1 = document.querySelectorAll('#tableBody1 tr').length;
+-        let qtd_2 = document.querySelectorAll('#tableBody2 tr').length;
+-        if (qtd_1 == 0) {
+-          old_qtd1 = 0;
+-        }
+-        if (qtd_2 == 0) {
+-          old_qtd2 = 0;
+-        }
+-        if (qtd_1 !== old_qtd1) {
+-          old_qtd1 = qtd_1;
+-          if (intervalId !== null) {
+-            clearInterval(intervalId);
+-          }
+-          linhas = document.querySelectorAll('#tableBody1 tr');
+-          segundos = Array.from(linhas, linha => {
+-            var second = formatSecond(linha.children[1].innerHTML)
+-            var diferenca = tempoRestante - second;
+-            console.log(second);
+-            var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+-            second = Math.round(second);
+-            second = second + decimal + 0.1;
+-            second -= 1;
+-            return second;
+-          });
++      // setInterval(() => {
++      //   let qtd_1 = document.querySelectorAll('#tableBody1 tr').length;
++      //   let qtd_2 = document.querySelectorAll('#tableBody2 tr').length;
++      //   if (qtd_1 == 0) {
++      //     old_qtd1 = 0;
++      //   }
++      //   if (qtd_2 == 0) {
++      //     old_qtd2 = 0;
++      //   }
++      //   if (qtd_1 !== old_qtd1) {
++      //     old_qtd1 = qtd_1;
++      //     if (intervalId !== null) {
++      //       clearInterval(intervalId);
++      //     }
++      //     linhas = document.querySelectorAll('#tableBody1 tr');
++      //     segundos = Array.from(linhas, linha => {
++      //       var second = formatSecond(linha.children[1].innerHTML)
++      //       var diferenca = tempoRestante - second;
++      //       console.log(second);
++      //       var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
++      //       second = Math.round(second);
++      //       second = second + decimal + 0.1;
++      //       second -= 1;
++      //       return second;
++      //     });
+ 
+-        }
+-        if (qtd_2 !== old_qtd2) {
+-          old_qtd2 = qtd_2;
+-          if (intervalId2 !== null) {
+-            clearInterval(intervalId2);
+-          }
+-          linhas2 = document.querySelectorAll('#tableBody2 tr');
+-          segundos2 = Array.from(linhas2, linha => {
+-            var second = formatSecond(linha.children[1].innerHTML)
+-            var diferenca = tempoRestante - second;
+-            console.log(second);
+-            var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+-            second = Math.round(second);
+-            second = second + decimal + 0.1;
+-            second -= 1;
+-            return second;
+-          });
+-        }
+-      }, 50)
++      //   }
++      //   if (qtd_2 !== old_qtd2) {
++      //     old_qtd2 = qtd_2;
++      //     if (intervalId2 !== null) {
++      //       clearInterval(intervalId2);
++      //     }
++      //     linhas2 = document.querySelectorAll('#tableBody2 tr');
++      //     segundos2 = Array.from(linhas2, linha => {
++      //       var second = formatSecond(linha.children[1].innerHTML)
++      //       var diferenca = tempoRestante - second;
++      //       console.log(second);
++      //       var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
++      //       second = Math.round(second);
++      //       second = second + decimal + 0.1;
++      //       second -= 1;
++      //       return second;
++      //     });
++      //   }
++      // }, 50)
+ 
+       let intervalId1 = null;
+ 
+       function diminuiTempoEquipe() {
+-
++        return
+         linhas.forEach((linha, index) => {
+           if (segundos[index] >= 0) {
+             console.log(segundos[index] + ' - ' + tempoRestante);
+@@ -1580,98 +1642,6 @@
+         });
+       }
+ 
+-      setInterval(() => {
+-        exclusoesLista1 = [];
+-        document.querySelectorAll('#tableBody1 tr').forEach((row) => {
+-          let id = 'tableBody1';
+-          if (formatSecond(row.children[1].innerHTML) == 0) {
+-            rowId = row.id,
+-              $("#" + rowId).remove();
+-            var indexToRemove = -1;
+-            for (let i = 0; i < exclusoesLista1.length; i++) {
+-              let excAtual = exclusoesLista1[i];
+-              if (excAtual['exclusoes']['tabela'] != listaTabela) {
+-                continue;
+-              }
+-
+-              if (excAtual['exclusoes']['rowId'] === rowId) {
+-                indexToRemove = i;
+-              }
+-            }
+-            if (indexToRemove != -1) {
+-              exclusoesLista1.splice(indexToRemove, 1);
+-            }
+-
+-            let response = {
+-              tabela: listaTabela,
+-              lista: exclusoesLista1
+-            }
+-
+-            ipcRenderer.send("sendNovaExclusao", response);
+-            return
+-          }
+-          let body = [];
+-          body['exclusoes'] = {
+-            jogador: row.children[0].innerHTML,
+-            tempo: row.children[1].innerHTML,
+-            rowId: row.id,
+-            tabela: id == "tableBody1" ? "lista-time-1" : "lista-time-2"
+-          };
+-          exclusoesLista1.push(body);
+-        })
+-        let response = {
+-          tabela: "lista-time-1",
+-          lista: exclusoesLista1
+-        }
+-        ipcRenderer.send("sendNovaExclusao", response);
+-      }, 100)
+-      setInterval(() => {
+-        exclusoesLista2 = [];
+-        document.querySelectorAll('#tableBody2 tr').forEach((row) => {
+-
+-          let id = 'tableBody2';
+-
+-          if (formatSecond(row.children[1].innerHTML) == 0) {
+-            rowId = row.id,
+-              $("#" + rowId).remove();
+-            var indexToRemove = -1;
+-            for (let i = 0; i < exclusoesLista2.length; i++) {
+-              let excAtual = exclusoesLista2[i];
+-              if (excAtual['exclusoes']['tabela'] != listaTabela) {
+-                continue;
+-              }
+-
+-              if (excAtual['exclusoes']['rowId'] === rowId) {
+-                indexToRemove = i;
+-              }
+-            }
+-            if (indexToRemove != -1) {
+-              exclusoesLista2.splice(indexToRemove, 1);
+-            }
+-
+-            let response = {
+-              tabela: listaTabela,
+-              lista: exclusoesLista2
+-            }
+-
+-            ipcRenderer.send("sendNovaExclusao", response);
+-            return
+-          }
+-          let body = [];
+-          body['exclusoes'] = {
+-            jogador: row.children[0].innerHTML,
+-            tempo: row.children[1].innerHTML,
+-            rowId: row.id,
+-            tabela: id == "tableBody1" ? "lista-time-1" : "lista-time-2"
+-          };
+-          exclusoesLista2.push(body);
+-        })
+-        let response = {
+-          tabela: "lista-time-2",
+-          lista: exclusoesLista2
+-        }
+-        ipcRenderer.send("sendNovaExclusao", response);
+-      }, 100)
+ 
+ 
+       function formatTime(value) {
+@@ -1884,13 +1854,6 @@
+           origem: "btn-desconto-equipe1"
+         }
+         ipcRenderer.send("sendDescontoPainel", body);
+-        // Toggle green background on team 1 panel
+-        const painelTime1 = document.getElementById("painel-time-01");
+-        if (painelTime1.style.backgroundColor === "rgb(57, 170, 73)") {
+-          painelTime1.style.backgroundColor = "";
+-        } else {
+-          painelTime1.style.backgroundColor = "#39AA49";
+-        }
+       });
+ 
+       document.getElementById("btn-desconto-equipe2").addEventListener("click", () => {
+@@ -1898,13 +1861,6 @@
+           origem: "btn-desconto-equipe2"
+         }
+         ipcRenderer.send("sendDescontoPainel", body);
+-        // Toggle green background on team 2 panel
+-        const painelTime2 = document.getElementById("painel-time-02");
+-        if (painelTime2.style.backgroundColor === "rgb(57, 170, 73)") {
+-          painelTime2.style.backgroundColor = "";
+-        } else {
+-          painelTime2.style.backgroundColor = "#39AA49";
+-        }
+       });
+       //Não foi alterado nome de ID para poder facilitar
+       document.getElementById("btn-iniciar-partida").addEventListener("click", () => {
+@@ -1984,45 +1940,23 @@
+       let itemsExclusoesTotal1 = 0;
+       let itemsExclusoesTotal2 = 0;
+       let exclusoesLista = [];
++
+       function addRow(table, value1, value2) {
++        // const newRow = document.getElementById(table).insertRow();
++
+         var table = document.getElementById(table);
+-        var rows = Array.from(table.querySelectorAll("tr"));
+         var listaTabela = table.id === "tableBody1" ? "lista-time-1" : "lista-time-2";
+         var prefixoLinha = table.id === "tableBody1" ? "excList1Row_" : "excList2Row_";
++
+         var novoId = table.id === "tableBody1" ? itemsExclusoesTotal1 : itemsExclusoesTotal2;
+ 
+-        // Cria uma nova linha
+-        var newRow = document.createElement('tr');
++        var newRow = table.insertRow();
+         newRow.id = prefixoLinha + novoId;
++
++        // Adiciona as células com os valores
+         newRow.insertCell(0).innerText = value1;
+         newRow.insertCell(1).innerText = value2;
+ 
+-        // Se a tabela estiver vazia, adiciona a nova linha
+-        if (rows.length === 0) {
+-          table.appendChild(newRow);
+-        } else {
+-          // Encontra a linha com o maior valor
+-
+-          let minValue = parseFloat(formatSecond(rows[0].cells[1].innerText));
+-          let minRow = rows[0];
+-
+-          for (let i = 1; i < rows.length; i++) {
+-            let rowValue = parseFloat(formatSecond(rows[i].cells[1].innerText));
+-            if (formatSecond(rowValue) < formatSecond(minValue)) {
+-              minValue = formatSecond(rowValue);
+-              minRow = rows[i];
+-            }
+-          }
+-
+-          // Se o valor da nova linha for menor que o valor mínimo atual, insere a nova linha antes da linha com o valor mínimo
+-          if (formatSecond(value2) < minValue) {
+-            table.insertBefore(newRow, minRow);
+-          } else {
+-            // Caso contrário, adiciona a nova linha no final
+-            table.appendChild(newRow);
+-          }
+-        }
+-
+         let body = [];
+         body['exclusoes'] = {
+           jogador: value1,
+@@ -2039,14 +1973,8 @@
+ 
+         ipcRenderer.send("sendNovaExclusao", response);
+ 
+-        const div5 = newRow.insertCell(2).innerHTML = `
+-            <container class="d-flex flex-column" style="margin-top:-5px">
+-                <i class="up fa fa-caret-up" style="font-size: 25px; text-align: center; color: #254f9d; cursor: pointer;" onclick="moverParaCima(this.parentNode.parentNode.parentNode)"></i>
+-                <i class="down fa fa-caret-down" style="font-size: 25px; margin-top:-10px; text-align: center;color: #254f9d; cursor: pointer;" onclick="moverParaBaixo(this.parentNode.parentNode.parentNode)"></i>
+-            </container>
+-        `
+         // Adiciona o ícone de excluir e o evento para excluir a linha
+-        const deleteCell = newRow.insertCell(3);
++        const deleteCell = newRow.insertCell(2);
+         deleteCell.innerHTML = '<button class="btn btn-danger" onclick="removerLinha(this)" style="padding: 1px 8px; font-size: 15px !important; margin-top:-5px;"><i class="fa fa-trash"></i></button>';
+ 
+         if (table.id === "tableBody1") {
+@@ -2054,51 +1982,9 @@
+         } else {
+           itemsExclusoesTotal2++;
+         }
+-      }
+-      // function addRow(table, value1, value2) {
+-      //   // const newRow = document.getElementById(table).insertRow();
+ 
+-      //   var table = document.getElementById(table);
+-      //   var listaTabela = table.id === "tableBody1" ? "lista-time-1" : "lista-time-2";
+-      //   var prefixoLinha = table.id === "tableBody1" ? "excList1Row_" : "excList2Row_";
+-
+-      //   var novoId = table.id === "tableBody1" ? itemsExclusoesTotal1 : itemsExclusoesTotal2;
+-
+-      //   var newRow = table.insertRow();
+-      //   newRow.id = prefixoLinha + novoId;
+-
+-      //   // Adiciona as células com os valores
+-      //   newRow.insertCell(0).innerText = value1;
+-      //   newRow.insertCell(1).innerText = value2;
+-
+-      //   let body = [];
+-      //   body['exclusoes'] = {
+-      //     jogador: value1,
+-      //     tempo: value2,
+-      //     rowId: prefixoLinha + novoId,
+-      //     tabela: listaTabela
+-      //   };
+-
+-      //   exclusoesLista.push(body);
+-      //   let response = {
+-      //     tabela: listaTabela,
+-      //     lista: exclusoesLista
+-      //   }
+-
+-      //   ipcRenderer.send("sendNovaExclusao", response);
+-
+-      //   // Adiciona o ícone de excluir e o evento para excluir a linha
+-      //   const deleteCell = newRow.insertCell(2);
+-      //   deleteCell.innerHTML = '<button class="btn btn-danger" onclick="removerLinha(this)" style="padding: 1px 8px; font-size: 15px !important; margin-top:-5px;"><i class="fa fa-trash"></i></button>';
+-
+-      //   if (table.id === "tableBody1") {
+-      //     itemsExclusoesTotal1++;
+-      //   } else {
+-      //     itemsExclusoesTotal2++;
+-      //   }
+-
+-      //   // deleteCell.firstChild.addEventListener("click", () => newRow.remove());
+-      // }
++        // deleteCell.firstChild.addEventListener("click", () => newRow.remove());
++      }
+ 
+       function removerLinha(elem) {
+         var rowId = elem.parentElement.parentElement.id;
+@@ -2129,48 +2015,101 @@
+         ipcRenderer.send("sendNovaExclusao", response);
+         // itemsExclusoesTotal1--;
+       }
+-
++      var setsList = [];
+       // Adiciona uma nova linha ao clicar no botão "Adicionar" na modal
+       addRowBtn1.addEventListener("click", () => {
+-
+-        let value1;
+-        let value_min;
+-        let value_sec;
+-        let value2;
+-        if (document.getElementById("inputExcJogador1").value < 10) {
+-          value1 = document.getElementById("inputExcJogador1").value;
+-        } else {
+-          value1 = document.getElementById("inputExcJogador1").value;
+-        }
+-        value_min = document.getElementById("inputExcMinutos1").value;
+-        value_sec = document.getElementById("inputExcSegundos1").value;
+-        if (value_min === '' || value_sec === '') {
+-          ipcRenderer.send('send-alert-main', "Preencha todos os campos!");
++        var set = $('#inputExcSet').val();
++        var time1 = $('#inputExcSet1').val();
++        var time2 = $('#inputExcSet2').val();
++        addRowSet(set, time1, time2);
++        ipcRenderer.send("sendNovoSet", setsList)
++      });
++      function removerLinhaSet(id, element) {
++        $(element).remove();
++        setsList.forEach(element => {
++          if (element.id == id) {
++            setsList.splice(setsList.indexOf(element), 1);
++          }
++        });
++        ipcRenderer.send("sendNovoSet", setsList)
++      }
++      function addRowSet(set, time1, time2) {
++        var id = 1;
++        if (setsList.length == 5) {
+           return;
+         }
+-        if (value_min < 10) {
+-          value_min = '0' + value_min;
++        setsList.forEach(element => {
++          id += 1;
++        });
++        if (set > 5 || set < 1) {
++          // alert("Quantidade de sets inválida");
++          ipcRenderer.send('send-alert', 'Quantidade de sets inválida');
++          return
+         }
+-        if (value_sec < 10) {
+-          value_sec = '0' + value_sec;
++        if (time1 == "" || time2 == "") {
++          ipcRenderer.send('send-alert', 'Adicione o tempo dos sets');
++          return
+         }
+-        value2 = value_min + ":" + value_sec;
+-        if (!value1) {
+-          ipcRenderer.send('send-alert-main', "Preencha todos os campos!");
+-          return;
++        if (time1.toString().charAt(0) === '0' && time1.toString().length > 1) {
++          time1 = time1.toString().substring(1);
+         }
+-        if (value1 && value2) {
+-          if (value1 < 10) {
+-            value1 = '0' + value1;
+-          }
++        if (time2.toString().charAt(0) === '0' && time1.toString().length > 1) {
++          time2 = time2.toString().substring(1);
+         }
+-        addRow("tableBody1", value1, value2);
+-        clearInterval(intervalId);
+-        $("#addRowModal").modal("hide");
+-
+-
+-      });
+-
++        if (set.toString().charAt(0) === '0') {
++          set = set.toString().substring(1);
++        }
++        if (time1 < 10) {
++          time1 = '0' + time1
++        }
++        if (time2 < 10) {
++          time2 = '0' + time2
++        }
++        if (set < 10) {
++          set = '0' + set
++        }
++        var arr = {
++          id: id,
++          set: set,
++          time1: time1,
++          time2: time2
++        };
++        var setRepetido = false;
++        setsList.forEach(element => {
++          if (set == element.set) {
++            setRepetido = true;
++          }
++        })
++        if (setRepetido) {
++          // alert("Set repetido");
++          ipcRenderer.send('send-alert', 'Set repetido');
++          return;
++        }
++        setsList.push(arr);
++        var html = '';
++        setsList.forEach(element => {
++          html += `
++          <div class="row" style="border-bottom: 1px solid rgb(201, 166, 128);" id="set${element.id}">
++            <div class="col-4 gray-text d-flex justify-content-center digital_dismay"
++              style="font-size: 30px;">
++              ${element.set}
++            </div>
++            <div class=" col-8 d-flex justify-content-center" style="gap: 20px;">
++              <div class="digital_dismay" style="font-size: 30px; color: red;">
++                <b>${element.time1}</b>
++              </div>
++              <div class="digital_dismay" style="font-size: 30px;">
++                <b>${element.time2}</b>
++              </div>
++              <div class="digital_dismay" style="font-size: 30px;">
++                <b><i class="fa fa-trash" style="cursor: pointer; color: red;" onclick="removerLinhaSet(${element.id}, '#set'+${element.id})"></i></b>
++              </div>
++            </div>
++          </div>
++          `;
++        })
++        $('#set').html(html);
++      }
+       addRowBtn2.addEventListener("click", () => {
+         let value1;
+         let value_min;
+@@ -2191,12 +2130,9 @@
+         } else {
+           value_sec = document.getElementById("inputExcSegundos2").value;
+         }
+-        if (value_min === '' || value_sec === '' || value_min === '0' || value_sec === '0') {
+-          ipcRenderer.send('send-alert-main', "Preencha todos os campos!");
+-          return;
+-        }
+         value2 = value_min + ":" + value_sec;
+         if (!value1 || !value2 || value1 == 0 || value2 == '00:00') {
++          // alert("Preencha todos os campos!");
+           ipcRenderer.send('send-alert', 'Preencha todos os campos!');
+           return;
+         }
+@@ -2207,13 +2143,10 @@
+         }
+       });
+ 
+-
+-
+       document.addEventListener("keydown", function (event) {
+         if ($('.modal').hasClass('show')) {
+           return;
+         }
+-        console.log(event.key);
+         if (!event.key || $('#addRowModal1').hasClass('show')) {
+           event.preventDefault();
+           return;
+@@ -2260,7 +2193,6 @@
+         }
+ 
+         if (ckey_team2_score_add_1.includes(event.key) || ckey_team2_score_add_1.includes(event.key.toLowerCase())) {
+-
+           event.preventDefault();
+           $("#btn-add-gols-time-02").click();
+           return;
+@@ -2303,7 +2235,7 @@
+ 
+         if (ckey_other_new_game.includes(event.key) || ckey_other_new_game.includes(event.key.toLowerCase())) {
+           event.preventDefault();
+-          $("#btn-start").click();
++          $("#btn-iniciar-partida").click();
+           return;
+         }
+ 
+@@ -2333,6 +2265,7 @@
+         if (ckey_main_reset_time.includes(event.key) || ckey_main_reset_time.includes(event.key.toLowerCase())) {
+           event.preventDefault();
+           pausarContagem = false;
++          tempoRestante = 0;
+           zeraCronometro = true;
+           return;
+         }
+@@ -2515,14 +2448,11 @@
+               return
+             }
+             $('#check_time2_val3').click();
+-            return
+           }
+           return
+         }
+       });
+ 
+-
+-
+     </script>
+ 
+     <script>
+@@ -2532,8 +2462,8 @@
+         cronometroAtualModal = cronometroAtualModal.replaceAll(" ", "");
+         cronometroAtualModal = cronometroAtualModal.split(":");
+ 
+-        $(elemMinutos).val(0);
+-        $(elemSegundos).val(0);
++        $(elemMinutos).val('');
++        $(elemSegundos).val('');
+       }
+ 
+       document.getElementById("btn-start").addEventListener("click", async () => {
+@@ -2575,22 +2505,28 @@
+         else {
+           partidaIniciada = true;
+ 
+-          var _isContagemRegressiva = config_setup_tempo_jogo === "D";
+-          var _tempoPartidaSegundos;
+-          _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+-          _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
++          // Verificar se é modo hora local
++          if (config_setup_tempo_jogo === "H") {
++            // Modo Hora Local - exibe a hora atual do sistema
++            iniciarHoraLocal();
++          } else {
++            var _isContagemRegressiva = config_setup_tempo_jogo === "D";
++            var _tempoPartidaSegundos;
++            _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
++            _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+ 
+-          if (config_setup_buzinar_iniciar) {
++            if (config_setup_buzinar_iniciar) {
+ 
+-            if (!listaConfiguracoesSons) {
+-              return;
+-            }
++              if (!listaConfiguracoesSons) {
++                return;
++              }
+ 
+-            // playAudio('#player-sons', listaConfiguracoesSons['buzzer']);
++              // playAudio('#player-sons', listaConfiguracoesSons['buzzer']);
+ 
+-          }
++            }
+ 
+-          iniciarCronometro(_tempoPartidaSegundos, _isContagemRegressiva);
++            iniciarCronometro(_tempoPartidaSegundos, _isContagemRegressiva);
++          }
+           // alert("Nova partida iniciada!");
+           if (secondWindowRoute != "placar") {
+             secondWindowRoute = "placar";
+@@ -2612,28 +2548,27 @@
+ 
+ 
+       });
+-
+       document.getElementById('btn-add-time-minutes').addEventListener('click', function () {
+ 
+         tempoRestante += 60;
+         if (pausarContagem) {
+-          if (tempoRestante >= 60) {
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          // }
+         }
+       });
+ 
+@@ -2643,46 +2578,46 @@
+         }
+         tempoRestante -= 60;
+         if (pausarContagem) {
+-          if (tempoRestante >= 60) {
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          // }
+         }
+       });
+ 
+       document.getElementById('btn-add-time-seconds').addEventListener('click', function () {
+         tempoRestante += 1;
+         if (pausarContagem) {
+-          if (tempoRestante >= 60) {
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          // }
+         }
+       });
+ 
+@@ -2692,45 +2627,45 @@
+         }
+         tempoRestante -= 1;
+         if (pausarContagem) {
+-          if (tempoRestante >= 60) {
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          // }
+         }
+       });
+       document.getElementById('btn-add-time-seconds-2').addEventListener('click', function () {
+         tempoRestante += 1;
+         if (pausarContagem) {
+-          if (tempoRestante >= 60) {
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          // }
+         }
+       });
+ 
+@@ -2740,26 +2675,27 @@
+         }
+         tempoRestante -= 1;
+         if (pausarContagem) {
+-          if (tempoRestante >= 60) {
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toSt()')}`);
++          // }
+         }
+       });
+ 
++
+     </script>
+ 
+     <script>
+@@ -2775,12 +2711,43 @@
+       // Define o elemento HTML onde o cronômetro será exibido
+       // const cronometro = document.getElementsByName("label-time-extra");
+ 
++      // Variável para armazenar o intervalo da hora local
++      let horaLocalInterval = null;
++
++      // Função para iniciar o modo Hora Local
++      function iniciarHoraLocal() {
++        pausarContagem = true; // Não usar o cronômetro normal
++
++        // Limpa qualquer intervalo anterior
++        if (horaLocalInterval) {
++          clearInterval(horaLocalInterval);
++        }
++
++        // Função para atualizar a hora local
++        function atualizarHoraLocal() {
++          const agora = new Date();
++          const horas = agora.getHours().toString().padStart(2, "0");
++          const minutos = agora.getMinutes().toString().padStart(2, "0");
++          const horaFormatada = `${horas}:${minutos}`;
++
++          // Atualiza o display local
++          document.querySelector('.label-time-extra-temp').innerHTML = horaFormatada;
++
++          // Envia para o placar público
++          ipcRenderer.send("alterarCronometro", horaFormatada);
++        }
++
++        // Atualiza imediatamente
++        atualizarHoraLocal();
++
++        // Atualiza a cada segundo
++        horaLocalInterval = setInterval(atualizarHoraLocal, 1000);
++      }
++
+       // Define a função que inicia o cronômetro
+       function iniciarCronometro(tempo, contagemRegressiva = false) {
+-        if (!dbPath) { console.error('DB Path Missing'); return; }
+-        console.log(tempoRestante);
+         pausarContagem = false;
+-        tempoRestante = tempo + 1;
++        tempoTotal = tempo;
+         isContagemRegressiva = contagemRegressiva;
+         tempo_atq = false;
+         tempo_atq_finalizado = false;
+@@ -2790,56 +2757,54 @@
+           playAudio('#player-sons-at', '../resources/sound/buzzer.mp3', 0.001);
+         }, 700);
+         tmp_esp = true;
+-        console.log('iniciou');
+         if (isContagemRegressiva) {
+-          if (tempoRestante <= 0) {
+-            tempoRestante = tempo + 10;
+-            console.log('tempo restante', tempoRestante);
++          tempoRestante = tempo;
++          if (tempoRestante >= 60) {
++            tempoRestante = tempo;
+           }
+         } else {
+           tempoRestante = 0;
+         }
+-        setTimeout(function () {
+-          console.log('dale');
+-          linhas = document.querySelectorAll('#tableBody1 tr');
+-          segundos = Array.from(linhas, linha => {
+-            var second = formatSecond(linha.children[1].innerHTML) + 1
+-            var diferenca = tempoRestante - second;
+-            console.log(second);
+-            var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+-            second = Math.round(second);
+-
+-            console.log('dnfksjd' + second);
+-            if (tempoRestante == tempo) {
+-              second = second + decimal + 0.9
+-            } else {
+-              second = second + decimal + 0.1
+-            }
+-            second -= 1;
+-            return second;
+-          });
+-          linhas2 = document.querySelectorAll('#tableBody2 tr');
+-          segundos2 = Array.from(linhas2, linha => {
+-            var second = formatSecond(linha.children[1].innerHTML)
+-            var diferenca = tempoRestante - second;
+-            console.log(second);
+-            var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+-            second = Math.round(second);
+-            if (tempoRestante == tempo) {
+-              second = second + decimal + 0.9
+-            } else {
+-              second = second + decimal + 0.1
+-            }
+-            second -= 1;
+-            return second;
+-          });
+-        }, 0e3)
+-
+-        tempo_atq_temp = window.tempo_atq_cont;
+-        var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
+-        second = Math.round(tempo_atq_temp);
+-        second = second + decimal + 0.5;
+-        window.tempo_atq_cont = second;
++        // setTimeout(function () {
++        //   console.log('dale');
++        //   linhas = document.querySelectorAll('#tableBody1 tr');
++        //   segundos = Array.from(linhas, linha => {
++        //     var second = formatSecond(linha.children[1].innerHTML)
++        //     var diferenca = tempoRestante - second;
++        //     console.log(second);
++        //     var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
++        //     second = Math.round(second);
++
++        //     if (tempoRestante == tempo) {
++        //       second = second + decimal + 0.9
++        //     } else {
++        //       second = second + decimal + 0.1
++        //     }
++        //     second -= 1;
++        //     return second;
++        //   });
++        //   linhas2 = document.querySelectorAll('#tableBody2 tr');
++        //   segundos2 = Array.from(linhas2, linha => {
++        //     var second = formatSecond(linha.children[1].innerHTML)
++        //     var diferenca = tempoRestante - second;
++        //     console.log(second);
++        //     var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
++        //     second = Math.round(second);
++        //     if (tempoRestante == tempo) {
++        //       second = second + decimal + 0.9
++        //     } else {
++        //       second = second + decimal + 0.1
++        //     }
++        //     second -= 1;
++        //     return second;
++        //   });
++        // }, 1e3)
++
++        // tempo_atq_temp = window.tempo_atq_cont;
++        // var decimal = parseFloat('0.' + tempoRestante.toString().split('.')[1]);
++        // second = Math.round(tempo_atq_temp);
++        // second = second + decimal + 0.5;
++        // window.tempo_atq_cont = second;
+         // if (tempoRestante == tempoTotal && isContagemRegressiva) {
+         //   tempoRestante += 1.8;
+         // }
+@@ -2848,70 +2813,58 @@
+         //   window.tempo_atq_finalizado = false;
+         //   tempo_atq = true;
+         // }, 150)
+-
+         contador = setInterval(function () {
+-          if (zeraCronometro || (isContagemRegressiva && tempoRestante <= 0) || (!isContagemRegressiva && tempoRestante >= tempoTotal)) {
+-            window.tempo_atq_cont = Math.round(window.tempo_ataque);
+-            tempoRestante = tempoTotal + 1;
+-            document.querySelector('.label-time-extra-temp').innerHTML = `00:00`;
+-            ipcRenderer.send("alterarCronometro", `00:00`);
+-            console.log(window.tempo_atq_cont);
+-            $('#label-tempo-ataque').html(window.tempo_ataque);
+-            $('#input-tempo-ataque').val(window.tempo_ataque);
+-            let data = {
+-              inputOrigin: '#input-tempo-ataque',
+-              pontuacaoFormatada: window.tempo_ataque,
+-            }
+-            if (secondWindowRoute != "desconto_tempo") {
+-              ipcRenderer.send("alterarPontuacaoPlacar", data);
+-            }
+-            clearInterval(contador);
+-            // document.querySelector('.label-time-extra-temp').innerHTML = "00:00";
+-            // ipcRenderer.send("alterarCronometro", "00:00");
+-            zeraCronometro = false;
+-            pausarContagem = false;
+-            partidaIniciada = false;
+-            if (!listaConfiguracoesSons) {
+-              return;
+-            }
+-            // aguarde = true;
+-            playAudio('#player-sons', listaConfiguracoesSons['end_timeout']);
+-            return;
+-          }
++          // if (zeraCronometro || (isContagemRegressiva && tempoRestante <= 0) || (!isContagemRegressiva && tempoRestante >= tempoTotal)) {
++          //   window.tempo_atq_cont = Math.round(window.tempo_ataque);
++          //   tempoRestante = tempoTotal;
++          //   if (tempoRestante > 59.9) {
++          //     let minutos = Math.floor(tempoRestante / 60);
++          //     let segundos = Math.ceil(tempoRestante % 60);
++          //     if (segundos >= 60 && segundos <= 60.9) {
++          //       minutos++;
++          //       segundos = 0;
++          //     }
++          //     const minutosStr = minutos.toString().padStart(2, "0");
++          //     const segundosStr = segundos.toString().padStart(2, "0");
++          //     document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          //     ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          //   } else {
++          //     const segundos = tempoRestante.toFixed(1);
++          //     const segundosStr = segundos.toString().padStart(2, "0");
++          //     document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //     ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          //   }
++          //   console.log(window.tempo_atq_cont);
++          //   $('#label-tempo-ataque').html(window.tempo_ataque);
++          //   $('#input-tempo-ataque').val(window.tempo_ataque);
++          //   let data = {
++          //     inputOrigin: '#input-tempo-ataque',
++          //     pontuacaoFormatada: window.tempo_ataque,
++          //   }
++          //   if (secondWindowRoute != "desconto_tempo") {
++          //     ipcRenderer.send("alterarPontuacaoPlacar", data);
++          //   }
++          //   clearInterval(contador);
++          //   // document.querySelector('.label-time-extra-temp').innerHTML = "00:00";
++          //   // ipcRenderer.send("alterarCronometro", "00:00");
++          //   zeraCronometro = false;
++          //   pausarContagem = false;
++          //   partidaIniciada = false;
++          //   if (!listaConfiguracoesSons) {
++          //     return;
++          //   }
++          //   // aguarde = true;
++          //   playAudio('#player-sons', listaConfiguracoesSons['end_timeout']);
++          //   return;
++          // }
+           atualizarCronometroDec();
+-          if (mostrar_ataque == 1) {
+-            atualizarTempoAtaque();
+-          }
++          // atualizarTempoAtaque();
+         }, 100);
+         // Define o contador com a função setInterval()
+ 
+ 
+       }
+-      function moverParaCima(linha) {
+-        var anterior = linha.previousElementSibling;
+-        if (anterior) {
+-          linha.classList.add('mover-para-cima');
+-          anterior.classList.add('mover-para-baixo');
+-          setTimeout(function () {
+-            linha.parentNode.insertBefore(linha, anterior);
+-            linha.classList.remove('mover-para-cima');
+-            anterior.classList.remove('mover-para-baixo');
+-          }, 400);
+-        }
+-      }
+ 
+-      function moverParaBaixo(linha) {
+-        var proximo = linha.nextElementSibling;
+-        if (proximo) {
+-          linha.classList.add('mover-para-baixo');
+-          proximo.classList.add('mover-para-cima');
+-          setTimeout(function () {
+-            linha.parentNode.insertBefore(proximo, linha);
+-            linha.classList.remove('mover-para-baixo');
+-            proximo.classList.remove('mover-para-cima');
+-          }, 400);
+-        }
+-      }
+       // Define a função que atualiza o cronômetro a cada segundo
+       function atualizarCronometroDec() {
+         // Verifica se o cronômetro chegou ao fim 
+@@ -2932,46 +2885,46 @@
+           }
+           // Calcula os minutos e segundos restantes
+           // const minutos = Math.floor(tempoRestante / 60);
+-          if (tempoRestante >= 60) {
+-
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.floor(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++          // if (tempoRestante >= 60) {
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.floor(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++          // } else {
++          //   const segundos = tempoRestante.toFixed(1);
++          //   const segundosStr = segundos.toString().padStart(2, "0");
++          //   document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          //   ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++          // }
+         }
+       }
+       setInterval(() => {
+         $('#btn-sub-time-seconds-2').css('margin-left', '-200px');
+         $('#btn-add-time-seconds-2').css('margin-left', '-200px');
+-        if (tempoRestante < 60) {
+-          $('#btn-sub-time-seconds-2').removeClass('d-none');
+-          $('#btn-add-time-seconds-2').removeClass('d-none');
+-          $('#btn-sub-time-minutes').addClass('d-none');
+-          $('#btn-add-time-minutes').addClass('d-none');
+-          $('#btn-sub-time-seconds').addClass('d-none');
+-          $('#btn-add-time-seconds').addClass('d-none');
+-        } else {
+-          $('#btn-sub-time-seconds-2').addClass('d-none');
+-          $('#btn-add-time-seconds-2').addClass('d-none');
+-          $('#btn-sub-time-minutes').removeClass('d-none');
+-          $('#btn-add-time-minutes').removeClass('d-none');
+-          $('#btn-sub-time-seconds').removeClass('d-none');
+-          $('#btn-add-time-seconds').removeClass('d-none');
+-        }
++        // if (tempoRestante < 60) {
++        //   $('#btn-sub-time-seconds-2').removeClass('d-none');
++        //   $('#btn-add-time-seconds-2').removeClass('d-none');
++        //   $('#btn-sub-time-minutes').addClass('d-none');
++        //   $('#btn-add-time-minutes').addClass('d-none');
++        //   $('#btn-sub-time-seconds').addClass('d-none');
++        //   $('#btn-add-time-seconds').addClass('d-none');
++        // } else {
++        $('#btn-sub-time-seconds-2').addClass('d-none');
++        $('#btn-add-time-seconds-2').addClass('d-none');
++        $('#btn-sub-time-minutes').removeClass('d-none');
++        $('#btn-add-time-minutes').removeClass('d-none');
++        $('#btn-sub-time-seconds').removeClass('d-none');
++        $('#btn-add-time-seconds').removeClass('d-none');
++        // }
+       }, 100);
+       function atualizarTempoAtaque() {
++        return
+         if (!pausarContagem) {
+           // if (window.tempo_atq_cont == window.tempo_ataque) {
+           //   window.tempo_atq_cont -= 0.4;
+@@ -3109,15 +3062,18 @@
+         }
+ 
+ 
+-        somAudio.play();
+-        somAudio.volume = volume;
++        soio.somAudio.volume = volume;
+       }
+ 
+     </script>
+ 
++    <!-- Helper para caminho do banco de dados (ASAR-aware) -->
++    <script src="../resources/js/db-path.js"></script>
++
+     <!-- Configurações: Variáveis -->
+     <script>
+       const sqlite3 = require('sqlite3').verbose();
++      // getDbPath() é definido em db-path.js e retorna o caminho correto do DB
+     </script>
+ 
+     <!-- Configurações: Equipe -->
+@@ -3126,8 +3082,7 @@
+       var configEquipaTime01;
+       var configEquipaTime02;
+       async function getConfigEquipaTime(id) {
+-        if (!dbPath) return;
+-        var db = new sqlite3.Database(dbPath);
++        var db = new sqlite3.Database(getDbPath());
+         _ = await db.serialize(() => {
+           db.all("SELECT * FROM config_equipas_times where id =" + id, (err, rows) => {
+             if (err) {
+@@ -3149,19 +3104,20 @@
+       function loadConfigEquipaTime(equipeId) {
+         var configuration = equipeId === "1" ? configEquipaTime01 : configEquipaTime02;
+ 
+-        const img = document.querySelector("#img-cfg-equipes-t" + equipeId + "-logo");
++        // Verificar se os dados existem
++        if (configuration && configuration.length > 0 && configuration[0]) {
++          var imgElement = document.querySelector("#img-cfg-equipes-t" + equipeId + "-logo");
++          var nomeElement = document.querySelector("#edit-cfg-equipes-t" + equipeId + "-nome");
+ 
+-        // Simplificado para corresponder ao placar.html (que funciona corretamente)
+-        if (configuration && configuration[0] && configuration[0]["logo_caminho"]) {
+-          img.setAttribute('src', configuration[0]["logo_caminho"]);
++          if (imgElement && configuration[0]["logo_caminho"]) {
++            imgElement.setAttribute('src', configuration[0]["logo_caminho"]);
++          }
++          if (nomeElement && configuration[0]["nome"]) {
++            nomeElement.innerHTML = configuration[0]["nome"];
++          }
+         } else {
+-          img.setAttribute('src', "../resources/images/no-image.jpg");
++          console.log("Configuração da equipe " + equipeId + " não encontrada no banco de dados");
+         }
+-
+-        // Remover handlers de erro que podem causar loops ou falsos positivos
+-        img.onerror = null;
+-
+-        document.querySelector("#edit-cfg-equipes-t" + equipeId + "-nome").innerHTML = configuration[0]["nome"];
+       }
+ 
+     </script>
+@@ -3217,14 +3173,14 @@
+           formataOrigin: "true",
+           pontuacao: $('#label-periodo').html(),
+         }
+-        let dataPontuacao7 = {
+-          inputOrigin: '#input-tempo-ataque',
+-          labelOrigin: '#label-tempo-ataque',
+-          buttonOrigin: '',
+-          limiteOrigin: 99,
+-          formataOrigin: "true",
+-          pontuacaoFormatada: $('#label-tempo-ataque').html()
+-        }
++        // let dataPontuacao7 = {
++        //   inputOrigin: '#input-tempo-ataque',
++        //   labelOrigin: '#label-tempo-ataque',
++        //   buttonOrigin: '',
++        //   limiteOrigin: 99,
++        //   formataOrigin: "true",
++        //   pontuacaoFormatada: $('#label-tempo-ataque').html()
++        // }
+         ipcRenderer.send("alterarCronometro", document.querySelector('.label-time-extra-temp').innerHTML);
+         ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao);
+         ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao2);
+@@ -3232,41 +3188,20 @@
+         ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao4);
+         ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao5);
+         ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao6);
+-        ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao7);
++        ipcRenderer.send("sendNovoSet", setsList);
++        console.log(lastClicked);
++        ipcRenderer.send("getClickedButton", lastClicked);
++        ipcRenderer.send("alterarPosicao", trocaPosicao);
++        // ipcRenderer.send("alterarPontuacaoPlacar", dataPontuacao7);
+         getConfigSons();
+         getConfigEquipaTime("1");
+         getConfigEquipaTime("2");
+         getConfigShortcuts();
+         getConfigSetupReload();
+       });
+-      let horaLocalInterval = null;
+-
+-      function iniciarHoraLocal() {
+-        if (horaLocalInterval) clearInterval(horaLocalInterval);
+-
+-        function atualizar() {
+-          const agora = new Date();
+-          const horas = agora.getHours().toString().padStart(2, "0");
+-          const minutos = agora.getMinutes().toString().padStart(2, "0");
+-          const horaFormatada = `${horas}:${minutos}`;
+-          document.querySelector('.label-time-extra-temp').innerHTML = horaFormatada;
+-          ipcRenderer.send("alterarCronometro", horaFormatada);
+-        }
+-
+-        atualizar();
+-        horaLocalInterval = setInterval(atualizar, 1000);
+-      }
+-
+-      function pararHoraLocal() {
+-        if (horaLocalInterval) {
+-          clearInterval(horaLocalInterval);
+-          horaLocalInterval = null;
+-        }
+-      }
+-
+       var configSetup;
+       async function getConfigSetup() {
+-        var db = new sqlite3.Database(dbPath);
++        var db = new sqlite3.Database(getDbPath());
+         _ = await db.serialize(() => {
+           db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
+             if (err) {
+@@ -3279,8 +3214,7 @@
+         db.close();
+       }
+       async function getConfigSetupReload() {
+-        if (!dbPath) return;
+-        var db = new sqlite3.Database(dbPath);
++        var db = new sqlite3.Database(getDbPath());
+         _ = await db.serialize(() => {
+           db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
+             if (err) {
+@@ -3292,65 +3226,38 @@
+         });
+         db.close();
+       }
+-      var mostrar_ataque;
++
+       function setConfigSetup() {
+         tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
+-        mostrar_ataque = configSetup[0]["mostrar_ataque"];
+-        if (mostrar_ataque == 1) {
+-          $('#label-tempo-ataque').removeClass('d-none');
+-          $('#ataque').removeClass('d-none');
+-          $('#text-ataq').removeClass('d-none');
+-          window.tempo_atq_cont = tempo_ataque;
+-          adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+-        } else {
+-          $('#label-tempo-ataque').addClass('d-none');
+-          window.tempo_atq_cont = 0;
+-          $('#ataque').addClass('d-none');
+-          $('#text-ataq').addClass('d-none');
+-        }
++        window.tempo_atq_cont = tempo_ataque;
++        adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+         config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
+-
+-        // Verifica se é modo Hora Local (H)
+-        if (config_setup_tempo_jogo === "H") {
+-          iniciarHoraLocal();
+-          tempoRestante = 0; // Para garantir que lógica de cronômetro não conflite visualmente
+-        } else {
+-          pararHoraLocal();
+-
+-          config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
+-          config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
+-          var _tempoPartidaSegundos;
+-          _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+-          _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+-          tempoRestante = _tempoPartidaSegundos;
+-          if (tempoRestante >= 60) {
+-            if (tempoRestante >= 60 && tempoRestante <= 60.9) {
+-              tempoRestante = 60
+-            }
+-            let minutos = Math.floor(tempoRestante / 60);
+-            let segundos = Math.ceil(tempoRestante % 60);
+-            if (segundos >= 60 && segundos <= 60.9) {
+-              minutos++;
+-              segundos = 0;
+-            }
+-            const minutosStr = minutos.toString().padStart(2, "0");
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-            ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-          } else {
+-            const segundos = tempoRestante.toFixed(1);
+-            const segundosStr = segundos.toString().padStart(2, "0");
+-            document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-            ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-          }
++        config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
++        config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
++        var _tempoPartidaSegundos;
++        _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
++        _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
++        tempoRestante = _tempoPartidaSegundos;
++        if (tempoRestante >= 60) {
++          if (tempoRestante >= 60 && tempoRestante <= 60.9) {
++            tempoRestante = 60
++          }
++          let minutos = Math.floor(tempoRestante / 60);
++          let segundos = Math.ceil(tempoRestante % 60);
++          if (segundos >= 60 && segundos <= 60.9) {
++            minutos++;
++            segundos = 0;
++          }
++          const minutosStr = minutos.toString().padStart(2, "0");
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++          ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++        } else {
++          const segundos = tempoRestante.toFixed(1);
++          const segundosStr = segundos.toString().padStart(2, "0");
++          document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++          ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+         }
+-        /*setInterval(function () {
+-          int = setInterval(function () {
+-            if (!partidaIniciada) {
+-              
+-          //   }
+-          // }, 100)
+-        })*/
+ 
+         config_setup_desconto_min = configSetup[0]["desconto_tempo_minutos"];
+         config_setup_desconto_seg = configSetup[0]["desconto_tempo_segundos"];
+@@ -3405,64 +3312,41 @@
+       }
+       function setConfigSetupReload() {
+         tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
+-        mostrar_ataque = configSetup[0]["mostrar_ataque"];
+-        if (mostrar_ataque == 1) {
+-          $('#label-tempo-ataque').removeClass('d-none');
+-          $('#ataque').removeClass('d-none');
+-          $('#text-ataq').removeClass('d-none');
+-          window.tempo_atq_cont = tempo_ataque;
+-          adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+-        } else {
+-          $('#label-tempo-ataque').addClass('d-none');
+-          window.tempo_atq_cont = 0;
+-          $('#ataque').addClass('d-none');
+-          $('#text-ataq').addClass('d-none');
+-          ipcRenderer.send
+-        }
+         config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
+-
+-        // Verifica se é modo Hora Local (H)
+-        if (config_setup_tempo_jogo === "H") {
+-          iniciarHoraLocal();
+-          tempoRestante = 0;
+-        } else {
+-          pararHoraLocal();
+-
+-          config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
+-          config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
+-          var _tempoPartidaSegundos;
+-          _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+-          _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+-          tempoTotal = _tempoPartidaSegundos;
+-          if (!partidaIniciada) {
+-            var _tempoPartidaSegundos;
+-            _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
+-            _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
+-            tempoRestante = _tempoPartidaSegundos;
+-            if (tempoRestante >= 60) {
+-              window.tempo_atq_cont = tempo_ataque;
+-              adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+-              if (tempoRestante >= 60 && tempoRestante <= 60.9) {
+-                tempoRestante = 60
+-              }
+-              let minutos = Math.floor(tempoRestante / 60);
+-              let segundos = Math.ceil(tempoRestante % 60);
+-              if (segundos >= 60 && segundos <= 60.9) {
+-                minutos++;
+-                segundos = 0;
+-              }
+-              const minutosStr = minutos.toString().padStart(2, "0");
+-              const segundosStr = segundos.toString().padStart(2, "0");
+-              document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
+-              ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
+-            } else {
+-              const segundos = tempoRestante.toFixed(1);
+-              const segundosStr = segundos.toString().padStart(2, "0");
+-              document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
+-              ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
+-            }
+-          }
+-        }
++        config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
++        config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
++        var _tempoPartidaSegundos;
++        _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
++        _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
++        tempoTotal = _tempoPartidaSegundos;
++        // if (!partidaIniciada) {
++        //   var _tempoPartidaSegundos;
++        //   _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
++        //   _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
++        //   tempoRestante = _tempoPartidaSegundos;
++        //   if (tempoRestante >= 60) {
++        //     window.tempo_atq_cont = tempo_ataque;
++        //     adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
++        //     if (tempoRestante >= 60 && tempoRestante <= 60.9) {
++        //       tempoRestante = 60
++        //     }
++        //     let minutos = Math.floor(tempoRestante / 60);
++        //     let segundos = Math.ceil(tempoRestante % 60);
++        //     if (segundos >= 60 && segundos <= 60.9) {
++        //       minutos++;
++        //       segundos = 0;
++        //     }
++        //     const minutosStr = minutos.toString().padStart(2, "0");
++        //     const segundosStr = segundos.toString().padStart(2, "0");
++        //     document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
++        //     ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
++        //   } else {
++        //     const segundos = tempoRestante.toFixed(1);
++        //     const segundosStr = segundos.toString().padStart(2, "0");
++        //     document.querySelector('.label-time-extra-temp').innerHTML = `${segundosStr.toString().replace('.', ':')}`;
++        //     ipcRenderer.send("alterarCronometro", `${segundosStr.toString().replace('.', ':')}`);
++        //   }
++        // }
+         config_setup_desconto_min = configSetup[0]["desconto_tempo_minutos"];
+         config_setup_desconto_seg = configSetup[0]["desconto_tempo_segundos"];
+         config_setup_intervalo_min = configSetup[0]["intervalo_tempo_minutos"];
+@@ -3522,7 +3406,7 @@
+       var listaConfiguracoesSons;
+ 
+       async function getConfigSons() {
+-        var db = new sqlite3.Database(dbPath);
++        var db = new sqlite3.Database(getDbPath());
+         _ = await db.serialize(() => {
+           db.all("SELECT * FROM config_sons", (err, rows) => {
+             if (err) {
+@@ -3557,7 +3441,7 @@
+ 
+       var configShortcuts;
+       async function getConfigShortcuts() {
+-        var db = new sqlite3.Database(dbPath);
++        var db = new sqlite3.Database(getDbPath());
+         _ = await db.serialize(() => {
+           db.all("SELECT * FROM config_shortcuts", (err, rows) => {
+             if (err) {
+@@ -3643,9 +3527,12 @@
+         StartConfigSons();
+         StarConfigShortcuts();
+ 
+-        // alert("Atenção!\n\nAntes de iniciar uma nova partida, verifique\nas configurações atuais salvas.")
++        // alert("Atenção!\n\nAntes de iniciar uma nova partida, verifique\nas confições salvas.")
+       }
++    </script>
+ 
++    <!-- Music Player Script -->
++    <script>
+       // ======== Music Player ========
+       let musicPlayer = {
+         audio: new Audio(),
+@@ -3692,14 +3579,6 @@
+         ipcRenderer.send('load-music-files', folderPath);
+       }
+ 
+-      function updateMusicDisplay() {
+-        if (musicPlayer.playlist.length > 0) {
+-          const currentFile = musicPlayer.playlist[musicPlayer.currentIndex];
+-          const fileName = currentFile.split(/[/\\]/).pop().replace(/\.[^/.]+$/, '');
+-          document.getElementById('music-title').textContent = fileName;
+-        }
+-      }
+-
+       function renderMusicList() {
+         const listContainer = document.getElementById('music-list');
+         if (!listContainer) return;
+@@ -3747,6 +3626,14 @@
+         renderMusicList();
+       }
+ 
++      function updateMusicDisplay() {
++        if (musicPlayer.playlist.length > 0) {
++          const currentFile = musicPlayer.playlist[musicPlayer.currentIndex];
++          const fileName = currentFile.split(/[/\\]/).pop().replace(/\.[^/.]+$/, '');
++          document.getElementById('music-title').textContent = fileName;
++        }
++      }
++
+       function togglePlayMusic() {
+         if (musicPlayer.playlist.length === 0) {
+           selectMusicFolder();
+@@ -3802,7 +3689,6 @@
+         document.querySelector('[onclick="repeatMusic()"] i').style.color = musicPlayer.isRepeat ? '#007bff' : '#333';
+       }
+ 
+-      // Volume control functions
+       function setVolume(value) {
+         musicPlayer.audio.volume = value / 100;
+         document.getElementById('music-volume').value = value;
+@@ -3821,7 +3707,6 @@
+         setVolume(newVolume);
+       }
+ 
+-      // Progress bar update
+       musicPlayer.audio.addEventListener('timeupdate', () => {
+         if (musicPlayer.audio.duration) {
+           const progress = (musicPlayer.audio.currentTime / musicPlayer.audio.duration) * 100;
+@@ -3829,14 +3714,12 @@
+         }
+       });
+ 
+-      // Progress bar seek
+       document.getElementById('music-progress')?.addEventListener('input', (e) => {
+         if (musicPlayer.audio.duration) {
+           musicPlayer.audio.currentTime = (e.target.value / 100) * musicPlayer.audio.duration;
+         }
+       });
+ 
+-      // Auto next track
+       musicPlayer.audio.addEventListener('ended', () => {
+         if (!musicPlayer.isRepeat) {
+           nextMusic();
+@@ -3847,263 +3730,6 @@
+     <!-- Controles de Apresentação de Jogadores -->
+     <script src="../resources/js/presentation-controls.js"></script>
+ 
+-    <!-- Sistema de Auto-Save e Recuperação -->
+-    <script>
+-      // ============================================
+-      // AUTO-SAVE - Salva estado a cada 5 segundos
+-      // ============================================
+-
+-      // Função para enviar logs ao backend (visíveis no terminal)
+-      function frontendLog(message, data) {
+-        const logMsg = data !== undefined ? `${message} ${JSON.stringify(data)}` : message;
+-        console.log(logMsg);
+-        if (typeof ipcRenderer !== 'undefined') {
+-          ipcRenderer.send('frontend-log', logMsg);
+-        }
+-      }
+-
+-      let autoSaveInterval = null;
+-      let partidaFoiIniciada = false;
+-
+-      // Função para coletar o estado atual da partida
+-      function collectGameState() {
+-        const cronometroText = document.querySelector('.label-time-extra-temp')?.innerHTML || '00:00';
+-        const [minStr, secStr] = cronometroText.split(':');
+-        const cronometroMinutos = parseInt(minStr) || 0;
+-        const cronometroSegundos = parseInt(secStr) || 0;
+-
+-        return {
+-          placar_time1: parseInt(document.querySelector('#input-gols-time-01')?.value) || 0,
+-          placar_time2: parseInt(document.querySelector('#input-gols-time-02')?.value) || 0,
+-          cronometro_minutos: cronometroMinutos,
+-          cronometro_segundos: cronometroSegundos,
+-          cronometro_pausado: !partidaIniciada ? 1 : 0,
+-          periodo_atual: parseInt(document.querySelector('#input-periodo')?.value) || 1,
+-          faltas_time1: parseInt(document.querySelector('#input-faltas-time-01')?.value) || 0,
+-          faltas_time2: parseInt(document.querySelector('#input-faltas-time-02')?.value) || 0,
+-          tempo_ataque: parseInt(document.querySelector('#input-tempo-ataque')?.value) || 0,
+-          sets_time1: parseInt(document.querySelector('#input-sets-time-01')?.value) || 0,
+-          sets_time2: parseInt(document.querySelector('#input-sets-time-02')?.value) || 0,
+-          partida_iniciada: partidaFoiIniciada ? 1 : 0
+-        };
+-      }
+-
+-      // Função para salvar o estado
+-      function autoSaveGameState() {
+-        // Só salva se a partida foi iniciada em algum momento
+-        if (!partidaFoiIniciada) return;
+-
+-        const gameState = collectGameState();
+-        ipcRenderer.send('auto-save-game-state', gameState);
+-      }
+-
+-      // Iniciar auto-save a cada 5 segundos
+-      function startAutoSave() {
+-        if (autoSaveInterval) return;
+-        autoSaveInterval = setInterval(autoSaveGameState, 5000);
+-        console.log('[Auto-Save] Sistema iniciado - salvando a cada 5 segundos');
+-      }
+-
+-      // Parar auto-save
+-      function stopAutoSave() {
+-        if (autoSaveInterval) {
+-          clearInterval(autoSaveInterval);
+-          autoSaveInterval = null;
+-        }
+-      }
+-
+-      // Observar quando a partida iniciar - detectar cliques em botões relevantes
+-      document.addEventListener('click', function (e) {
+-        const target = e.target;
+-        const targetId = target.id || '';
+-        const parentId = target.parentElement?.id || '';
+-
+-        // Detectar clique em botões que indicam início de jogo ou alteração de placar
+-        if (targetId === 'btn-iniciar-partida' ||
+-          parentId === 'btn-iniciar-partida' ||
+-          target.closest('#btn-iniciar-partida') ||
+-          targetId.includes('btn-add') ||
+-          targetId.includes('btn-sub') ||
+-          target.classList.contains('btn-play') ||
+-          target.classList.contains('fa-play') ||
+-          target.classList.contains('fa-pause')) {
+-
+-          if (!partidaFoiIniciada) {
+-            partidaFoiIniciada = true;
+-            startAutoSave();
+-            console.log('[Auto-Save] Partida detectada - auto-save ativado');
+-          }
+-        }
+-      });
+-
+-      // Também detectar quando alterar valores nos inputs (fallback)
+-      document.addEventListener('change', function (e) {
+-        const target = e.target;
+-        if (target.id && (target.id.includes('gols') || target.id.includes('faltas') || target.id.includes('periodo'))) {
+-          if (!partidaFoiIniciada) {
+-            partidaFoiIniciada = true;
+-            startAutoSave();
+-            console.log('[Auto-Save] Alteração detectada - auto-save ativado');
+-          }
+-        }
+-      });
+-
+-      // Restaurar estado da partida
+-      function restoreGameState(savedState) {
+-        if (!savedState) return;
+-
+-        console.log('[Auto-Save] Restaurando estado:', savedState);
+-
+-        // Restaurar placar
+-        if (document.querySelector('#input-gols-time-01')) {
+-          document.querySelector('#input-gols-time-01').value = savedState.placar_time1 || 0;
+-          document.querySelector('#label-gols-time-01').innerHTML = String(savedState.placar_time1 || 0).padStart(2, '0');
+-        }
+-        if (document.querySelector('#input-gols-time-02')) {
+-          document.querySelector('#input-gols-time-02').value = savedState.placar_time2 || 0;
+-          document.querySelector('#label-gols-time-02').innerHTML = String(savedState.placar_time2 || 0).padStart(2, '0');
+-        }
+-
+-        // Restaurar faltas
+-        if (document.querySelector('#input-faltas-time-01')) {
+-          document.querySelector('#input-faltas-time-01').value = savedState.faltas_time1 || 0;
+-          document.querySelector('#label-faltas-time-01').innerHTML = String(savedState.faltas_time1 || 0).padStart(2, '0');
+-        }
+-        if (document.querySelector('#input-faltas-time-02')) {
+-          document.querySelector('#input-faltas-time-02').value = savedState.faltas_time2 || 0;
+-          document.querySelector('#label-faltas-time-02').innerHTML = String(savedState.faltas_time2 || 0).padStart(2, '0');
+-        }
+-
+-        // Restaurar período
+-        if (document.querySelector('#input-periodo')) {
+-          document.querySelector('#input-periodo').value = savedState.periodo_atual || 1;
+-          document.querySelector('#label-periodo').innerHTML = savedState.periodo_atual || 1;
+-        }
+-
+-        // Restaurar cronômetro
+-        const min = String(savedState.cronometro_minutos || 0).padStart(2, '0');
+-        const sec = String(savedState.cronometro_segundos || 0).padStart(2, '0');
+-        const tempoFormatado = `${min}:${sec}`;
+-
+-        if (document.querySelector('.label-time-extra-temp')) {
+-          document.querySelector('.label-time-extra-temp').innerHTML = tempoFormatado;
+-        }
+-
+-        // Calcular tempoRestante
+-        tempoRestante = (savedState.cronometro_minutos || 0) * 60 + (savedState.cronometro_segundos || 0);
+-
+-        // Restaurar tempo de ataque
+-        if (document.querySelector('#input-tempo-ataque')) {
+-          document.querySelector('#input-tempo-ataque').value = savedState.tempo_ataque || 0;
+-          document.querySelector('#label-tempo-ataque').innerHTML = String(savedState.tempo_ataque || 0).padStart(2, '0');
+-          window.tempo_ataque = savedState.tempo_ataque || 0;
+-        }
+-
+-        // Enviar atualizações para outras janelas
+-        ipcRenderer.send('reload');
+-
+-        partidaFoiIniciada = true;
+-        startAutoSave();
+-
+-        console.log('[Auto-Save] Estado restaurado com sucesso');
+-      }
+-
+-      // Verificar estado salvo no startup
+-      async function checkSavedGameState() {
+-        frontendLog('[Auto-Save] Iniciando verificação de estado salvo...');
+-        try {
+-          const savedState = await ipcRenderer.invoke('get-saved-game-state');
+-          frontendLog('[Auto-Save] Resposta recebida:', savedState);
+-
+-          if (savedState && savedState.partida_iniciada === 1) {
+-            frontendLog('[Auto-Save] Partida encontrada! Mostrando modal...');
+-            // Mostrar modal de recuperação
+-            showRecoveryModal(savedState);
+-          } else {
+-            frontendLog('[Auto-Save] Nenhuma partida ativa encontrada');
+-          }
+-        } catch (err) {
+-          frontendLog('[Auto-Save] Erro ao verificar estado salvo:', err.message);
+-        }
+-      }
+-
+-      // Modal de Recuperação - usando Bootstrap Modal
+-      let savedStateGlobal = null;
+-
+-      function showRecoveryModal(savedState) {
+-        frontendLog('[Auto-Save] showRecoveryModal CHAMADO');
+-
+-        // Guardar estado para usar nos botões
+-        savedStateGlobal = savedState;
+-
+-        const placar = `${savedState.placar_time1} x ${savedState.placar_time2}`;
+-        const tempo = `${String(savedState.cronometro_minutos).padStart(2, '0')}:${String(savedState.cronometro_segundos).padStart(2, '0')}`;
+-        const periodo = savedState.periodo_atual || 1;
+-        const ultimoSave = savedState.ultimo_save || 'Desconhecido';
+-
+-        // Atualizar conteúdo do modal
+-        document.getElementById('recovery-placar').textContent = placar;
+-        document.getElementById('recovery-tempo').textContent = `Tempo: ${tempo}`;
+-        document.getElementById('recovery-periodo').textContent = `Período: ${periodo}`;
+-        document.getElementById('recovery-ultimo-save').textContent = `Último salvamento: ${ultimoSave}`;
+-
+-        // Mostrar modal usando Bootstrap
+-        try {
+-          const recoveryModalEl = document.getElementById('recoveryModal');
+-          const recoveryModal = new bootstrap.Modal(recoveryModalEl);
+-          recoveryModal.show();
+-          frontendLog('[Auto-Save] Modal Bootstrap exibido com sucesso');
+-        } catch (err) {
+-          frontendLog('[Auto-Save] ERRO ao exibir modal:', err.message);
+-        }
+-      }
+-
+-      // Event listeners para os botões do modal de recuperação
+-      document.addEventListener('DOMContentLoaded', function () {
+-        // Botão Continuar Partida
+-        document.getElementById('btn-continuar-partida')?.addEventListener('click', function () {
+-          frontendLog('[Auto-Save] Botão Continuar Partida clicado');
+-          const modal = bootstrap.Modal.getInstance(document.getElementById('recoveryModal'));
+-          if (modal) modal.hide();
+-          if (savedStateGlobal) {
+-            restoreGameState(savedStateGlobal);
+-          }
+-        });
+-
+-        // Botão Nova Partida
+-        document.getElementById('btn-nova-partida')?.addEventListener('click', function () {
+-          frontendLog('[Auto-Save] Botão Nova Partida clicado');
+-          const modal = bootstrap.Modal.getInstance(document.getElementById('recoveryModal'));
+-          if (modal) modal.hide();
+-          ipcRenderer.send('clear-saved-game-state');
+-          frontendLog('[Auto-Save] Estado anterior descartado');
+-        });
+-      });
+-
+-      // Verificar no carregamento da página
+-      document.addEventListener('DOMContentLoaded', function () {
+-        frontendLog('[Auto-Save] DOMContentLoaded disparado');
+-        // Aguardar 1 segundo para garantir que Bootstrap e tudo mais carregou
+-        setTimeout(function () {
+-          frontendLog('[Auto-Save] Verificando estado salvo...');
+-          if (typeof bootstrap !== 'undefined') {
+-            frontendLog('[Auto-Save] Bootstrap disponível - chamando checkSavedGameState()');
+-            checkSavedGameState();
+-          } else {
+-            frontendLog('[Auto-Save] Bootstrap não disponível, tentando novamente em 1s...');
+-            setTimeout(checkSavedGameState, 1000);
+-          }
+-        }, 1000);
+-      });
+-
+-      // Limpar estado quando iniciar novo jogo (zerar placar)
+-      function clearGameStateOnNewGame() {
+-        ipcRenderer.send('clear-saved-game-state');
+-        partidaFoiIniciada = false;
+-        stopAutoSave();
+-      }
+-    </script>
+-
+ </body>
+ 
+ </html>
+\ No newline at end of file

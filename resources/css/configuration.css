@@ -1,0 +1,178 @@
+.tab-panel {
+    background-color: #F1EDE7;
+    border-radius: 4px;
+    padding: 18px 28px;
+    margin-top: 12px;
+    /* height: 600px; */
+    /* height: 100vh; */
+}
+
+.tab-button {
+    background-color: #EAE1D0;
+    border: none;
+    border-radius: 4px;
+    margin-right: 8px;
+    padding: 2px 8px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.tab-button:hover {
+    background-color: #d1a06b;
+}
+
+.selected {
+    background-color: #d1a06b;
+}
+
+.option-label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.btn-acrescimo {
+    color: #129647;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-subtracao {
+    color: #E21E25;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.label-checkbox {
+    padding-top: 4px;
+    padding-left: 6px;
+}
+
+.label-checkbox span {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 18px;
+    vertical-align: top;
+}
+
+.btn-acoes {
+    background-color: #B2804A;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: black;
+    font-weight: bold;
+}
+
+.btn-simples {
+    background-color: transparent;
+    border: solid 1px #B2804A;
+    border-radius: 4px;
+    padding: 4px 8px;
+    color: black;
+    font-weight: bold;
+}
+
+.panel-equipe {
+
+    background-color: #EAE1D0;
+    border: none;
+    border-radius: 8px;
+    padding: 4px 8px;
+
+}
+
+.panel-logo-central {
+    background-color: #EAE1D0;
+    border: solid 1px #B2804A;
+    border-radius: 8px;
+    padding: 4px 8px;
+    min-height: 80px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.panel-logo-central img {
+    width: 80px;
+}
+
+.panel-equipe-title {
+    font-weight: bold;
+    padding-top: 6px;
+    padding-left: 16px;
+}
+
+.panel-equipe-logo {
+    background-color: transparent;
+    border: solid 1px #B2804A;
+    border-radius: 4px;
+    padding: 4px 8px;
+    height: 70px;
+    width: 70px;
+    max-height: 70px;
+    max-width: 70px;
+    margin-left: 12px;
+    margin-right: 8px;
+}
+
+.panel-equipe-logo img {
+    width: 50px;
+}
+
+.foto-jogador {
+    width: 60px;
+    height: 60px;
+}
+
+input {
+    background-color: #EAE1D0;
+    border-radius: 2px;
+    border: 1px solid #422816;
+}
+
+.input-simple {
+    border: 1px solid #B2804A;
+}
+
+.lista-jogadores {
+    width: 100%;
+    margin-top: 6px;
+    /* max-height: 100px; */
+    /* display: block; */
+    /* overflow-y: auto; */
+}
+
+.lista-jogadores thead {
+    font-weight: 600;
+    background-color: #C1996E;
+    border: 1px solid #B2804A;
+}
+
+.lista-jogadores tbody tr {
+    line-height: 20px;
+}
+
+.lista-jogadores tr {
+    height: 20px;
+}
+
+.campo-texto span {
+    border: 1px solid #B2804A;
+    border-radius: 2px;
+    padding: 2px 4px;
+}
+
+.btnVisualizarAnexo {
+    cursor: pointer;
+}
+
+.adicionarAnexo {
+    cursor: pointer;
+    color: #332E81;
+}
+
+.divisor {
+    border: 1px solid #C9A680;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width: 98%;
+}

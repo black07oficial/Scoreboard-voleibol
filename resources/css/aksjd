@@ -1,0 +1,535 @@
+ @media (max-height: 820px) {
+            #edit-cfg-equipes-t1-nome {
+                font-size: 55px;
+                text-align: center;
+            }
+
+            #edit-cfg-equipes-t2-nome {
+                font-size: 55px;
+                text-align: center;
+            }
+
+            .painel-pontuacao-time-01 {
+                background-color: black;
+                height: 200px !important;
+                margin-left: -12px;
+                padding-top: 12px;
+                padding-right: 12px;
+                width: 105%;
+                -webkit-border-top-right-radius: 10px;
+                -webkit-border-bottom-right-radius: 10px;
+                -moz-border-radius-topright: 10px;
+                -moz-border-radius-bottomright: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .painel-pontuacao-time-02 {
+                background-color: black;
+                margin-right: -12px;
+                padding-top: 12px;
+                padding-left: 12px;
+                height: 200px !important;
+                width: 100%;
+                -webkit-border-top-left-radius: 10px;
+                -webkit-border-bottom-left-radius: 10px;
+                -moz-border-radius-topleft: 10px;
+                -moz-border-radius-bottomleft: 10px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .pontuacao {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 210px;
+                line-height: 180px;
+                color: #E95023;
+            }
+
+            .painel-anuncio {
+                border-radius: 10px;
+                height: 150px;
+                background-color: white;
+                padding: 10px;
+            }
+
+            .cronometro {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 130px;
+                line-height: 65px;
+                color: red;
+                margin-bottom: 0px;
+            }
+
+            .painel-exclusoes-time-01 {
+                height: 240px !important;
+            }
+
+            .painel-exclusoes-time-02 {
+                height: 240px !important;
+            }
+
+            .player-number {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: white;
+            }
+
+            .player-hour {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: red;
+            }
+
+            .tempo-ataque {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 110px;
+                line-height: 80px;
+                color: #ffffff;
+                margin-bottom: 0px;
+            }
+
+            .painel-tempo-ataque {
+                background-color: rgb(250, 20, 20);
+                text-align: center;
+                padding: 12px;
+                border-radius: 10px;
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 1560px) {
+
+            #edit-cfg-equipes-t1-nome {
+                font-size: 55px;
+                text-align: center;
+            }
+
+            #edit-cfg-equipes-t2-nome {
+                font-size: 55px;
+                text-align: center;
+            }
+
+            .painel-pontuacao-time-01 {
+                background-color: black;
+                height: 230px !important;
+                margin-left: -12px;
+                padding-top: 12px;
+                padding-right: 12px;
+                width: 105%;
+                -webkit-border-top-right-radius: 10px;
+                -webkit-border-bottom-right-radius: 10px;
+                -moz-border-radius-topright: 10px;
+                -moz-border-radius-bottomright: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .painel-pontuacao-time-02 {
+                background-color: black;
+                margin-right: -12px;
+                padding-top: 12px;
+                padding-left: 12px;
+                height: 230px !important;
+                width: 100%;
+                -webkit-border-top-left-radius: 10px;
+                -webkit-border-bottom-left-radius: 10px;
+                -moz-border-radius-topleft: 10px;
+                -moz-border-radius-bottomleft: 10px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .pontuacao {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 220px;
+                line-height: 200px;
+                color: #E95023;
+            }
+
+            .cronometro {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 130px;
+                line-height: 65px;
+                color: red;
+                margin-bottom: 0px;
+            }
+
+            .painel-anuncio {
+                border-radius: 10px;
+                height: 150px;
+                background-color: white;
+                padding: 10px;
+            }
+
+            .painel-exclusoes-time-02 {
+                height: 240px !important;
+            }
+
+            .painel-exclusoes-time-01 {
+                height: 240px !important;
+            }
+
+            .player-number {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: white;
+            }
+
+            .player-hour {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: red;
+            }
+
+            .painel-faltas-time-01 {
+
+                text-align: center;
+                padding: 8px;
+                border-radius: 10px;
+                width: 100px;
+                margin-top: 60px;
+                margin-left: -20px;
+                /* margin-right: -700px; */
+            }
+
+            .painel-faltas-time-02 {
+
+                text-align: center;
+                padding: 8px;
+                border-radius: 10px;
+                width: 100px;
+                margin-top: 60px;
+                margin-left: -20px;
+                /* margin-right: -700px; */
+            }
+
+            .faltas {
+                font-family: 'Digital Display', sans-serif;
+                font-size: 80px;
+                line-height: 70px;
+                font-weight: 100;
+                color: rgb(255, 230, 0);
+            }
+
+            .periodo {
+                font-family: 'Digital Display', sans-serif;
+                font-size: 100px;
+                line-height: 0px;
+            }
+
+            #label-periodo {
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                margin-top: -45px;
+                margin-bottom: 32px;
+            }
+
+            .tempo-ataque {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 110px;
+                line-height: 80px;
+                color: #ffffff;
+                margin-bottom: 0px;
+            }
+
+            .painel-tempo-ataque {
+                background-color: rgb(250, 20, 20);
+                text-align: center;
+                padding: 12px;
+                border-radius: 10px;
+                width: 120px;
+            }
+        }
+
+        @media (max-height: 800px) {
+            .painel-exclusoes-time-02 {
+                height: 240px !important;
+            }
+
+            #edit-cfg-equipes-t1-nome {
+                font-size: 45px;
+                text-align: center;
+            }
+
+            #edit-cfg-equipes-t2-nome {
+                font-size: 45px;
+                text-align: center;
+            }
+
+            .painel-pontuacao-time-01 {
+                background-color: black;
+                height: 200px !important;
+                margin-left: -12px;
+                padding-top: 12px;
+                padding-right: 12px;
+                width: 105%;
+                -webkit-border-top-right-radius: 10px;
+                -webkit-border-bottom-right-radius: 10px;
+                -moz-border-radius-topright: 10px;
+                -moz-border-radius-bottomright: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .painel-pontuacao-time-02 {
+                background-color: black;
+                margin-right: -12px;
+                padding-top: 12px;
+                padding-left: 12px;
+                height: 200px !important;
+                width: 100%;
+                -webkit-border-top-left-radius: 10px;
+                -webkit-border-bottom-left-radius: 10px;
+                -moz-border-radius-topleft: 10px;
+                -moz-border-radius-bottomleft: 10px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .pontuacao {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 200px;
+                line-height: 180px;
+                color: #E95023;
+            }
+
+            .painel-anuncio {
+                border-radius: 10px;
+                height: 150px;
+                background-color: white;
+                padding: 10px;
+            }
+
+            .cronometro {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 130px;
+                line-height: 65px;
+                color: red;
+                margin-bottom: 0px;
+            }
+
+            .painel-exclusoes-time-01 {
+                height: 240px !important;
+            }
+
+            .player-number {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: white;
+            }
+
+            .player-hour {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: red;
+            }
+
+            .tempo-ataque {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 110px;
+                line-height: 80px;
+                color: #ffffff;
+                margin-bottom: 0px;
+            }
+
+            .painel-tempo-ataque {
+                background-color: rgb(250, 20, 20);
+                text-align: center;
+                padding: 12px;
+                border-radius: 10px;
+                width: 120px;
+            }
+        }
+
+        @media (max-height: 760px) {
+            .painel-pontuacao-time-01 {
+                background-color: black;
+                height: 170px !important;
+                margin-left: -12px;
+                padding-top: 12px;
+                padding-right: 12px;
+                width: 105%;
+                -webkit-border-top-right-radius: 10px;
+                -webkit-border-bottom-right-radius: 10px;
+                -moz-border-radius-topright: 10px;
+                -moz-border-radius-bottomright: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .painel-pontuacao-time-02 {
+                background-color: black;
+                margin-right: -12px;
+                padding-top: 12px;
+                padding-left: 12px;
+                height: 170px !important;
+                width: 100%;
+                -webkit-border-top-left-radius: 10px;
+                -webkit-border-bottom-left-radius: 10px;
+                -moz-border-radius-topleft: 10px;
+                -moz-border-radius-bottomleft: 10px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            .pontuacao {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 180px;
+                line-height: 150px;
+                color: #E95023;
+            }
+
+            .exclusoes-tabela {
+                margin-top: -47px !important;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            #edit-cfg-equipes-t1-nome {
+                font-size: 45px;
+                text-align: center;
+            }
+
+            #edit-cfg-equipes-t2-nome {
+                font-size: 45px;
+                text-align: center;
+            }
+
+            .lista-azul {
+                background-color: #148cd1;
+                height: 30px;
+                width: 120px;
+            }
+
+            .cronometro {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 130px;
+                line-height: 65px;
+                color: red;
+                margin-bottom: 0px;
+            }
+
+            .painel-anuncio {
+                border-radius: 10px;
+                height: 150px;
+                background-color: white;
+                padding: 10px;
+            }
+
+            .painel-exclusoes-time-02 {
+                height: 240px !important;
+            }
+
+            .painel-exclusoes-time-01 {
+                height: 240px !important;
+            }
+
+            .player-number {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: white;
+            }
+
+            .player-hour {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 100px;
+                line-height: 60px;
+                color: red;
+            }
+
+            .painel-faltas-time-01 {
+
+                text-align: center;
+                padding: 8px;
+                border-radius: 10px;
+                width: 100px;
+                margin-top: 60px;
+                margin-left: -20px;
+                /* margin-right: -700px; */
+            }
+
+            .painel-faltas-time-02 {
+
+                text-align: center;
+                padding: 8px;
+                border-radius: 10px;
+                width: 100px;
+                margin-top: 60px;
+                margin-left: -20px;
+                /* margin-right: -700px; */
+            }
+
+            .faltas {
+                font-family: 'Digital Display', sans-serif;
+                font-size: 80px;
+                line-height: 70px;
+                font-weight: 100;
+                color: rgb(255, 230, 0);
+            }
+
+            .periodo {
+                font-family: 'Digital Display', sans-serif;
+                font-size: 100px;
+                line-height: 0px;
+            }
+
+            #label-periodo {
+                font-size: 50px;
+                margin-top: -55px;
+            }
+
+            .tempo-ataque {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 110px;
+                line-height: 80px;
+                color: #ffffff;
+                margin-bottom: 0px;
+            }
+
+            .painel-tempo-ataque {
+                background-color: rgb(250, 20, 20);
+                text-align: center;
+                padding: 12px;
+                border-radius: 10px;
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .cronometro {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 120px;
+                line-height: 65px;
+                color: red;
+                margin-bottom: 0px;
+            }
+
+            .lista-azul {
+                background-color: #148cd1;
+                height: 30px;
+                width: 100px;
+            }
+
+            .player-number {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 80px;
+                line-height: 60px;
+                color: white;
+            }
+
+            .player-hour {
+                font-family: 'Digital Dismay', sans-serif;
+                font-size: 80px;
+                line-height: 60px;
+                color: red;
+            }
+        }

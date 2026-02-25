@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Digital Display';
+    src: url('../resources/fonts/digital_display.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Digital Dismay';
+    src: url('../resources/fonts/digital_dismay.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gobold';
+    src: url('../resources/fonts/gobold_regular.otf') format('truetype');
+}
+
+body {
+    background-color: #C6C5C3;
+}
