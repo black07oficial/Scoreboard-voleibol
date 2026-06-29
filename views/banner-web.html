@@ -1,553 +1,574 @@
 <!doctype html>
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Scoreboard - Banner Web Voleibol</title>
 
-        <!-- Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
-            crossorigin="anonymous"
-        />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scoreboard - Banner Web Voleibol</title>
 
-        <!-- Font Awesome -->
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous" />
 
-        <!-- Socket.IO Client -->
-        <script src="/socket.io/socket.io.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-        <style>
-            @font-face {
-                font-family: "Digital Display";
-                src: url("/resources/fonts/digital_display.ttf")
-                    format("truetype");
-            }
+    <!-- Socket.IO Client -->
+    <script src="/socket.io/socket.io.js"></script>
 
-            @font-face {
-                font-family: "Digital Dismay";
-                src: url("/resources/fonts/digital_dismay.otf")
-                    format("truetype");
-            }
+    <style>
+        @font-face {
+            font-family: "Digital Display";
+            src: url("/resources/fonts/digital_display.ttf") format("truetype");
+        }
 
-            @font-face {
-                font-family: "Gobold";
-                src: url("/resources/fonts/gobold_bold.otf") format("truetype");
-            }
+        @font-face {
+            font-family: "Digital Dismay";
+            src: url("/resources/fonts/digital_dismay.otf") format("truetype");
+        }
 
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+        @font-face {
+            font-family: "Gobold";
+            src: url("/resources/fonts/gobold_bold.otf") format("truetype");
+        }
 
-            html,
-            body {
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                background-color: #129647;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            .banner-container {
-                display: flex;
-                align-items: stretch;
-                background-color: #000000;
-                width: 100%;
-                max-width: 100%;
-                max-height: 100%;
-                aspect-ratio: 3/1;
-                margin: auto;
-            }
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #129647;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            /* Logo do Gestor */
-            .gestor-section {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 10px 25px;
-                background-color: #000000;
-                min-width: 200px;
-            }
+        .banner-container {
+            display: flex;
+            align-items: stretch;
+            background-color: #000000;
+            width: 100%;
+            height: 100%;
+        }
 
-            #gestor-logo {
-                height: 90%;
-                max-height: 100px;
-                width: auto;
-                object-fit: contain;
-                background-color: transparent;
-            }
+        /* Logo do Gestor */
+        .gestor-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1vw;
+            background-color: #000000;
+            width: 25%;
+            flex-shrink: 0;
+            height: 100%;
+        }
 
-            /* Container das duas linhas de times */
-            .teams-container {
-                display: flex;
-                flex-direction: column;
-                flex: 1;
-                height: 100%;
-                justify-content: flex-start;
-                gap: 4px;
-            }
+        #gestor-logo {
+            max-height: 95%;
+            max-width: 95%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            background-color: transparent;
+        }
 
-            /* Linha de cada time */
-            .team-row {
-                display: flex;
-                align-items: center;
-                flex: 1;
-                background-color: #000000;
-                padding: 0;
-            }
+        /* Container das duas linhas de times */
+        .teams-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+            justify-content: flex-start;
+            gap: 4px;
+        }
 
-            /* Barra de cor do time */
-            .team-color-bar {
-                width: 20px;
-                height: 100%;
-                min-height: 40px;
-            }
+        /* Linha de cada time */
+        .team-row {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            background-color: #000000;
+            padding: 0;
+        }
 
-            /* Sigla do time */
-            .team-abbrev {
-                font-family: "Gobold", sans-serif;
-                font-size: 72px;
-                font-weight: bold;
-                color: #ffffff;
-                padding: 0 15px 0 30px;
-                min-width: 150px;
-                white-space: nowrap;
-            }
+        /* Barra de cor do time */
+        .team-color-bar {
+            width: 2.5vw;
+            height: 100%;
+        }
 
-            /* Logo do time */
-            .team-logo {
-                height: 100px;
-                width: 100px;
-                object-fit: contain;
-                background-color: transparent;
-                margin: 0 10px 0 0;
-            }
+        /* Sigla do time */
+        .team-abbrev {
+            font-family: "Gobold", sans-serif;
+            font-size: min(28vh, 10vw);
+            font-weight: bold;
+            color: #ffffff;
+            padding: 0 1vw;
+            flex: 1; /* Pushes the scoreboard to the far right */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-            /* Sets (vem primeiro) */
-            .sets-value {
-                font-family: "Digital Dismay", sans-serif;
-                font-size: 80px;
-                line-height: 80px;
-                color: #000000;
-                background-color: #ffff00;
-                min-width: 140px;
-                text-align: center;
-                padding: 30px 30px;
-            }
+        /* Logo do time */
+        .team-logo {
+            height: 100%;
+            max-width: 15vw;
+            width: auto;
+            object-fit: contain;
+            background-color: transparent;
+            margin: 0 1vw 0 0;
+        }
 
-            /* Pontuação (vem depois) */
-            .score-value {
-                font-family: "Digital Dismay", sans-serif;
-                font-size: 80px;
-                line-height: 80px;
-                color: #ffffff;
-                background-color: #ff0000;
-                min-width: 140px;
-                text-align: center;
-                margin-left: 5px;
-                padding: 30px 30px;
-            }
+        /* Sets (vem primeiro) */
+        .sets-value {
+            font-family: "Digital Dismay", sans-serif;
+            font-size: min(65vh, 16vw);
+            line-height: 0.85;
+            color: #000000;
+            background-color: #ffff00;
+            width: 18vw;
+            text-align: center;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
 
-            /* Linha divisória */
-            .divider {
-                width: 4px;
-                background-color: #ffffff;
-                min-height: 100%;
-                align-self: stretch;
-            }
+        /* Pontuação (vem depois) */
+        .score-value {
+            font-family: "Digital Dismay", sans-serif;
+            font-size: min(65vh, 16vw);
+            line-height: 0.85;
+            color: #ffffff;
+            background-color: #ff0000;
+            width: 18vw;
+            text-align: center;
+            margin-left: 0.5vw;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
 
-            /* Wrapper dos sets com seta */
-            .sets-wrapper {
-                position: relative;
-                display: flex;
-                align-items: center;
-                margin-left: 30px;
-            }
+        /* Linha divisória */
+        .divider {
+            width: 0.4vw;
+            background-color: #ffffff;
+            min-height: 100%;
+            align-self: stretch;
+        }
 
-            /* Seta indicadora de serviço */
-            .serve-indicator {
-                position: absolute;
-                left: -65px;
-                font-size: 70px;
-                color: #ffa600;
-                display: none;
-            }
+        /* Wrapper dos sets com seta */
+        .sets-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: 2vw;
+            height: 100%;
+        }
 
-            .serve-indicator.active {
-                display: inline-block;
-            }
-        </style>
-    </head>
+        /* Seta indicadora de serviço */
+        .serve-indicator {
+            position: absolute;
+            left: -3vw;
+            font-size: min(25vh, 6vw);
+            color: #ffa600;
+            display: none;
+        }
 
-    <body>
-        <div class="banner-container">
-            <!-- Logo do Gestor -->
-            <div class="gestor-section">
-                <img id="gestor-logo" src="/resources/images/icon.png" />
-            </div>
+        .serve-indicator.active {
+            display: inline-block;
+        }
+    </style>
+</head>
 
-            <!-- Linha divisória branca -->
-            <div class="divider"></div>
-
-            <!-- Container dos Times (vertical) -->
-            <div class="teams-container">
-                <!-- Time 1 (linha de cima) -->
-                <div class="team-row">
-                    <div class="team-color-bar" id="team1-color"></div>
-                    <span id="sigla-time1" class="team-abbrev">N/D</span>
-                    <img
-                        id="logo-time-01"
-                        class="team-logo"
-                        src="/resources/images/no-image.jpg"
-                    />
-                    <div class="sets-wrapper">
-                        <i
-                            id="serve-time1"
-                            class="fa fa-caret-left serve-indicator"
-                        ></i>
-                        <span id="sets-time1" class="sets-value">0</span>
-                    </div>
-                    <span id="pontuacao-time1" class="score-value">00</span>
-                </div>
-                <!-- Time 2 (linha de baixo) -->
-                <div class="team-row">
-                    <div class="team-color-bar" id="team2-color"></div>
-                    <span id="sigla-time2" class="team-abbrev">N/D</span>
-                    <img
-                        id="logo-time-02"
-                        class="team-logo"
-                        src="/resources/images/no-image.jpg"
-                    />
-                    <div class="sets-wrapper">
-                        <i
-                            id="serve-time2"
-                            class="fa fa-caret-left serve-indicator"
-                        ></i>
-                        <span id="sets-time2" class="sets-value">0</span>
-                    </div>
-                    <span id="pontuacao-time2" class="score-value">00</span>
-                </div>
-            </div>
+<body>
+    <div class="banner-container">
+        <!-- Logo do Gestor -->
+        <div class="gestor-section">
+            <img id="gestor-logo" src="/resources/images/icon.png" />
         </div>
 
-        <script>
-            // Conectar ao Socket.IO
-            const socket = io({
-                transports: ["websocket"],
-            });
+        <!-- Linha divisória branca -->
+        <div class="divider"></div>
 
-            socket.on("connect", () => {
-                console.log("Conectado ao servidor de streaming - Voleibol");
-            });
+        <!-- Container dos Times (vertical) -->
+        <div class="teams-container">
+            <!-- Time 1 (linha de cima) -->
+            <div class="team-row">
+                <div class="team-color-bar" id="team1-color"></div>
+                <span id="sigla-time1" class="team-abbrev">N/D</span>
+                <img id="logo-time-01" class="team-logo" src="/resources/images/no-image.jpg" />
+                <div class="sets-wrapper">
+                    <i id="serve-time1" class="fa fa-caret-left serve-indicator"></i>
+                    <span id="sets-time1" class="sets-value">0</span>
+                </div>
+                <span id="pontuacao-time1" class="score-value">0</span>
+            </div>
+            <!-- Time 2 (linha de baixo) -->
+            <div class="team-row">
+                <div class="team-color-bar" id="team2-color"></div>
+                <span id="sigla-time2" class="team-abbrev">N/D</span>
+                <img id="logo-time-02" class="team-logo" src="/resources/images/no-image.jpg" />
+                <div class="sets-wrapper">
+                    <i id="serve-time2" class="fa fa-caret-left serve-indicator"></i>
+                    <span id="sets-time2" class="sets-value">0</span>
+                </div>
+                <span id="pontuacao-time2" class="score-value">0</span>
+            </div>
+        </div>
+    </div>
 
-            socket.on("disconnect", () => {
-                console.log("Desconectado do servidor");
-            });
+    <script>
+        // Conectar ao Socket.IO
+        const socket = io({
+            transports: ["websocket"],
+        });
 
-            // Receber estado completo inicial
-            socket.on("fullState", (state) => {
-                console.log("Estado recebido:", state);
-                applyFullState(state);
-            });
+        socket.on("connect", () => {
+            console.log("Conectado ao servidor de streaming - Voleibol");
+        });
 
-            function applyFullState(state) {
-                console.log("Aplicando estado completo:", state);
+        socket.on("disconnect", () => {
+            console.log("Desconectado do servidor");
+        });
 
-                // Pontos
-                document.querySelector("#pontuacao-time1").innerHTML =
-                    state.time01.gols;
-                document.querySelector("#pontuacao-time2").innerHTML =
-                    state.time02.gols;
+        // Receber estado completo inicial
+        socket.on("fullState", (state) => {
+            console.log("Estado recebido:", state);
+            applyFullState(state);
+        });
 
-                // Sets
-                document.querySelector("#sets-time1").innerHTML =
-                    state.setsTime1 || "0";
-                document.querySelector("#sets-time2").innerHTML =
-                    state.setsTime2 || "0";
+        function applyFullState(state) {
+            console.log("Aplicando estado completo:", state);
 
-                // Siglas dos times
-                if (state.time01.sigla) {
+            // Pontos
+            document.querySelector("#pontuacao-time1").innerHTML =
+                state.time01.gols;
+            document.querySelector("#pontuacao-time2").innerHTML =
+                state.time02.gols;
+
+            // Sets
+            document.querySelector("#sets-time1").innerHTML =
+                state.setsTime1 || "0";
+            document.querySelector("#sets-time2").innerHTML =
+                state.setsTime2 || "0";
+
+            // Siglas dos times
+            if (state.time01.sigla) {
+                document.querySelector("#sigla-time1").innerHTML =
+                    state.time01.sigla;
+            }
+            if (state.time02.sigla) {
+                document.querySelector("#sigla-time2").innerHTML =
+                    state.time02.sigla;
+            }
+
+            // Logo do gestor
+            if (state.gestorLogo) {
+                document.querySelector("#gestor-logo").src =
+                    state.gestorLogo.startsWith("data:") || state.gestorLogo.startsWith("/")
+                        ? state.gestorLogo
+                        : "/config-logos" + state.gestorLogo;
+            }
+            if (state.gestorFundoColor) {
+                console.log(
+                    "Estado inicial - cor de fundo gestor:",
+                    state.gestorFundoColor,
+                );
+                document.querySelector(
+                    ".gestor-section",
+                ).style.backgroundColor = state.gestorFundoColor;
+            }
+
+            // Logos dos times
+            if (state.time01.logo) {
+                document.querySelector("#logo-time-01").src =
+                    state.time01.logo.startsWith("data:") || state.time01.logo.startsWith("/")
+                        ? state.time01.logo
+                        : "/config-logos" + state.time01.logo;
+            }
+            if (state.time02.logo) {
+                document.querySelector("#logo-time-02").src =
+                    state.time02.logo.startsWith("data:") || state.time02.logo.startsWith("/")
+                        ? state.time02.logo
+                        : "/config-logos" + state.time02.logo;
+            }
+
+            // Cores das camisas (aplica na barra de cor)
+            if (state.camisaVisitadaColor) {
+                document.querySelector(
+                    "#team1-color",
+                ).style.backgroundColor = state.camisaVisitadaColor;
+                console.log(
+                    "Aplicando cor time 1:",
+                    state.camisaVisitadaColor,
+                );
+            }
+            if (state.camisaVisitanteColor) {
+                document.querySelector(
+                    "#team2-color",
+                ).style.backgroundColor = state.camisaVisitanteColor;
+                console.log(
+                    "Aplicando cor time 2:",
+                    state.camisaVisitanteColor,
+                );
+            }
+
+            // Chroma key
+            if (state.chromaKeyColor) {
+                document.body.style.backgroundColor = state.chromaKeyColor;
+            }
+
+            if (state.fundoColor) {
+                 const bannerContainer = document.querySelector(".banner-container");
+                 if (bannerContainer) bannerContainer.style.backgroundColor = state.fundoColor;
+                 document.querySelectorAll(".team-row").forEach(el => el.style.backgroundColor = state.fundoColor);
+                 if (!state.gestorFundoColor) {
+                     const gestorSection = document.querySelector(".gestor-section");
+                     if (gestorSection) gestorSection.style.backgroundColor = state.fundoColor;
+                 }
+            }
+
+            // === Cores do config_banner_color ===
+            // Cor da pontuação (texto)
+            if (state.golosColor) {
+                document.querySelector("#pontuacao-time1").style.color =
+                    state.golosColor;
+                document.querySelector("#pontuacao-time2").style.color =
+                    state.golosColor;
+            }
+            // Cor de fundo da pontuação
+            if (state.golosBgColor) {
+                document.querySelector(
+                    "#pontuacao-time1",
+                ).style.backgroundColor = state.golosBgColor;
+                document.querySelector(
+                    "#pontuacao-time2",
+                ).style.backgroundColor = state.golosBgColor;
+            }
+            // Cor dos sets (texto)
+            if (state.faltasColor) {
+                document.querySelector("#sets-time1").style.color =
+                    state.faltasColor;
+                document.querySelector("#sets-time2").style.color =
+                    state.faltasColor;
+            }
+            // Cor de fundo dos sets
+            if (state.faltasBgColor) {
+                document.querySelector(
+                    "#sets-time1",
+                ).style.backgroundColor = state.faltasBgColor;
+                document.querySelector(
+                    "#sets-time2",
+                ).style.backgroundColor = state.faltasBgColor;
+            }
+            // Cor das siglas dos times
+            if (state.equipaNomeColor) {
+                document.querySelector("#sigla-time1").style.color =
+                    state.equipaNomeColor;
+                document.querySelector("#sigla-time2").style.color =
+                    state.equipaNomeColor;
+            }
+
+            // Seta de serviço
+            applyServeIndicator(state.serveTeam);
+        }
+
+        // Atualiza a seta de serviço
+        function applyServeIndicator(teamId) {
+            const serve1 = document.querySelector("#serve-time1");
+            const serve2 = document.querySelector("#serve-time2");
+
+            if (teamId == 1) {
+                serve1.classList.add("active");
+                serve2.classList.remove("active");
+            } else if (teamId == 2) {
+                serve1.classList.remove("active");
+                serve2.classList.add("active");
+            } else {
+                serve1.classList.remove("active");
+                serve2.classList.remove("active");
+            }
+        }
+
+        // Evento de atualização de serviço
+        socket.on("updateServe", (teamId) => {
+            console.log("Atualizando serviço para time:", teamId);
+            applyServeIndicator(teamId);
+        });
+
+        // Atualizações em tempo real
+        socket.on("updatePontuacao", (data) => {
+            switch (data.inputOrigin) {
+                case "#input-gols-time-01":
+                    document.querySelector("#pontuacao-time1").innerHTML =
+                        data.pontuacaoFormatada;
+                    break;
+                case "#input-gols-time-02":
+                    document.querySelector("#pontuacao-time2").innerHTML =
+                        data.pontuacaoFormatada;
+                    break;
+                case "#input-faltas-time-01":
+                    document.querySelector("#sets-time1").innerHTML =
+                        data.pontuacaoFormatada;
+                    break;
+                case "#input-faltas-time-02":
+                    document.querySelector("#sets-time2").innerHTML =
+                        data.pontuacaoFormatada;
+                    break;
+            }
+        });
+
+        socket.on("updateTeamInfo", (data) => {
+            const suffix = data.teamId === "1" ? "1" : "2";
+            if (data.data.sigla) {
+                document.querySelector("#sigla-time" + suffix).innerHTML =
+                    data.data.sigla;
+            }
+            if (data.data.logo) {
+                document.querySelector("#logo-time-0" + suffix).src =
+                    data.data.logo;
+            }
+        });
+
+        socket.on("updateFullConfig", (config) => {
+            console.log("Config completa recebida:", config);
+
+            function resolvePath(path) {
+                if (!path) return "";
+                if (path.startsWith("data:") || path.startsWith("/")) return path;
+                return "/config-logos" + path;
+            }
+
+            if (config.gestorLogo) {
+                document.querySelector("#gestor-logo").src = resolvePath(
+                    config.gestorLogo,
+                );
+            }
+            if (config.gestorFundoColor) {
+                console.log(
+                    "Aplicando cor de fundo gestor:",
+                    config.gestorFundoColor,
+                );
+                document.querySelector(
+                    ".gestor-section",
+                ).style.backgroundColor = config.gestorFundoColor;
+            }
+
+            if (config.time01) {
+                if (config.time01.sigla) {
                     document.querySelector("#sigla-time1").innerHTML =
-                        state.time01.sigla;
+                        config.time01.sigla;
                 }
-                if (state.time02.sigla) {
-                    document.querySelector("#sigla-time2").innerHTML =
-                        state.time02.sigla;
-                }
-
-                // Logo do gestor
-                if (state.gestorLogo) {
-                    document.querySelector("#gestor-logo").src =
-                        state.gestorLogo.startsWith("/")
-                            ? state.gestorLogo
-                            : "/config-logos" + state.gestorLogo;
-                }
-                if (state.gestorFundoColor) {
-                    console.log(
-                        "Estado inicial - cor de fundo gestor:",
-                        state.gestorFundoColor,
-                    );
-                    document.querySelector(
-                        ".gestor-section",
-                    ).style.backgroundColor = state.gestorFundoColor;
-                }
-
-                // Logos dos times
-                if (state.time01.logo) {
+                if (config.time01.logo) {
                     document.querySelector("#logo-time-01").src =
-                        state.time01.logo.startsWith("/")
-                            ? state.time01.logo
-                            : "/config-logos" + state.time01.logo;
+                        resolvePath(config.time01.logo);
                 }
-                if (state.time02.logo) {
+            }
+
+            if (config.time02) {
+                if (config.time02.sigla) {
+                    document.querySelector("#sigla-time2").innerHTML =
+                        config.time02.sigla;
+                }
+                if (config.time02.logo) {
                     document.querySelector("#logo-time-02").src =
-                        state.time02.logo.startsWith("/")
-                            ? state.time02.logo
-                            : "/config-logos" + state.time02.logo;
-                }
-
-                // Cores das camisas (aplica na barra de cor)
-                if (state.camisaVisitadaColor) {
-                    document.querySelector(
-                        "#team1-color",
-                    ).style.backgroundColor = state.camisaVisitadaColor;
-                    console.log(
-                        "Aplicando cor time 1:",
-                        state.camisaVisitadaColor,
-                    );
-                }
-                if (state.camisaVisitanteColor) {
-                    document.querySelector(
-                        "#team2-color",
-                    ).style.backgroundColor = state.camisaVisitanteColor;
-                    console.log(
-                        "Aplicando cor time 2:",
-                        state.camisaVisitanteColor,
-                    );
-                }
-
-                // Chroma key
-                if (state.chromaKeyColor) {
-                    document.body.style.backgroundColor = state.chromaKeyColor;
-                }
-
-                // === Cores do config_banner_color ===
-                // Cor da pontuação (texto)
-                if (state.golosColor) {
-                    document.querySelector("#pontuacao-time1").style.color =
-                        state.golosColor;
-                    document.querySelector("#pontuacao-time2").style.color =
-                        state.golosColor;
-                }
-                // Cor de fundo da pontuação
-                if (state.golosBgColor) {
-                    document.querySelector(
-                        "#pontuacao-time1",
-                    ).style.backgroundColor = state.golosBgColor;
-                    document.querySelector(
-                        "#pontuacao-time2",
-                    ).style.backgroundColor = state.golosBgColor;
-                }
-                // Cor dos sets (texto)
-                if (state.faltasColor) {
-                    document.querySelector("#sets-time1").style.color =
-                        state.faltasColor;
-                    document.querySelector("#sets-time2").style.color =
-                        state.faltasColor;
-                }
-                // Cor de fundo dos sets
-                if (state.faltasBgColor) {
-                    document.querySelector(
-                        "#sets-time1",
-                    ).style.backgroundColor = state.faltasBgColor;
-                    document.querySelector(
-                        "#sets-time2",
-                    ).style.backgroundColor = state.faltasBgColor;
-                }
-                // Cor das siglas dos times
-                if (state.equipaNomeColor) {
-                    document.querySelector("#sigla-time1").style.color =
-                        state.equipaNomeColor;
-                    document.querySelector("#sigla-time2").style.color =
-                        state.equipaNomeColor;
-                }
-
-                // Seta de serviço
-                applyServeIndicator(state.serveTeam);
-            }
-
-            // Atualiza a seta de serviço
-            function applyServeIndicator(teamId) {
-                const serve1 = document.querySelector("#serve-time1");
-                const serve2 = document.querySelector("#serve-time2");
-
-                if (teamId == 1) {
-                    serve1.classList.add("active");
-                    serve2.classList.remove("active");
-                } else if (teamId == 2) {
-                    serve1.classList.remove("active");
-                    serve2.classList.add("active");
-                } else {
-                    serve1.classList.remove("active");
-                    serve2.classList.remove("active");
+                        resolvePath(config.time02.logo);
                 }
             }
 
-            // Evento de atualização de serviço
-            socket.on("updateServe", (teamId) => {
-                console.log("Atualizando serviço para time:", teamId);
-                applyServeIndicator(teamId);
+            // Cores das camisas (aplica na barra de cor)
+            if (config.camisaVisitadaColor) {
+                document.querySelector(
+                    "#team1-color",
+                ).style.backgroundColor = config.camisaVisitadaColor;
+            }
+            if (config.camisaVisitanteColor) {
+                document.querySelector(
+                    "#team2-color",
+                ).style.backgroundColor = config.camisaVisitanteColor;
+            }
+
+            // Chroma key
+            if (config.chromaKeyColor) {
+                document.body.style.backgroundColor = config.chromaKeyColor;
+            }
+
+            if (config.fundoColor) {
+                 const bannerContainer = document.querySelector(".banner-container");
+                 if (bannerContainer) bannerContainer.style.backgroundColor = config.fundoColor;
+                 document.querySelectorAll(".team-row").forEach(el => el.style.backgroundColor = config.fundoColor);
+                 if (!config.gestorFundoColor) {
+                     const gestorSection = document.querySelector(".gestor-section");
+                     if (gestorSection) gestorSection.style.backgroundColor = config.fundoColor;
+                 }
+            }
+
+            // === Cores do config_banner_color ===
+            // Cor da pontuação (texto)
+            if (config.golosColor) {
+                document.querySelector("#pontuacao-time1").style.color =
+                    config.golosColor;
+                document.querySelector("#pontuacao-time2").style.color =
+                    config.golosColor;
+            }
+            // Cor de fundo da pontuação
+            if (config.golosBgColor) {
+                document.querySelector(
+                    "#pontuacao-time1",
+                ).style.backgroundColor = config.golosBgColor;
+                document.querySelector(
+                    "#pontuacao-time2",
+                ).style.backgroundColor = config.golosBgColor;
+            }
+            // Cor dos sets (texto)
+            if (config.faltasColor) {
+                document.querySelector("#sets-time1").style.color =
+                    config.faltasColor;
+                document.querySelector("#sets-time2").style.color =
+                    config.faltasColor;
+            }
+            // Cor de fundo dos sets
+            if (config.faltasBgColor) {
+                document.querySelector(
+                    "#sets-time1",
+                ).style.backgroundColor = config.faltasBgColor;
+                document.querySelector(
+                    "#sets-time2",
+                ).style.backgroundColor = config.faltasBgColor;
+            }
+            // Cor das siglas dos times
+            if (config.equipaNomeColor) {
+                document.querySelector("#sigla-time1").style.color =
+                    config.equipaNomeColor;
+                document.querySelector("#sigla-time2").style.color =
+                    config.equipaNomeColor;
+            }
+        });
+    </script>
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
             });
+        }
+    </script>
+</body>
 
-            // Atualizações em tempo real
-            socket.on("updatePontuacao", (data) => {
-                switch (data.inputOrigin) {
-                    case "#input-gols-time-01":
-                        document.querySelector("#pontuacao-time1").innerHTML =
-                            data.pontuacaoFormatada;
-                        break;
-                    case "#input-gols-time-02":
-                        document.querySelector("#pontuacao-time2").innerHTML =
-                            data.pontuacaoFormatada;
-                        break;
-                    case "#input-faltas-time-01":
-                        document.querySelector("#sets-time1").innerHTML =
-                            data.pontuacaoFormatada;
-                        break;
-                    case "#input-faltas-time-02":
-                        document.querySelector("#sets-time2").innerHTML =
-                            data.pontuacaoFormatada;
-                        break;
-                }
-            });
-
-            socket.on("updateTeamInfo", (data) => {
-                const suffix = data.teamId === "1" ? "1" : "2";
-                if (data.data.sigla) {
-                    document.querySelector("#sigla-time" + suffix).innerHTML =
-                        data.data.sigla;
-                }
-                if (data.data.logo) {
-                    document.querySelector("#logo-time-0" + suffix).src =
-                        data.data.logo;
-                }
-            });
-
-            socket.on("updateFullConfig", (config) => {
-                console.log("Config completa recebida:", config);
-
-                function resolvePath(path) {
-                    if (!path) return "";
-                    if (path.startsWith("/")) return path;
-                    return "/config-logos" + path;
-                }
-
-                if (config.gestorLogo) {
-                    document.querySelector("#gestor-logo").src = resolvePath(
-                        config.gestorLogo,
-                    );
-                }
-                if (config.gestorFundoColor) {
-                    console.log(
-                        "Aplicando cor de fundo gestor:",
-                        config.gestorFundoColor,
-                    );
-                    document.querySelector(
-                        ".gestor-section",
-                    ).style.backgroundColor = config.gestorFundoColor;
-                }
-
-                if (config.time01) {
-                    if (config.time01.sigla) {
-                        document.querySelector("#sigla-time1").innerHTML =
-                            config.time01.sigla;
-                    }
-                    if (config.time01.logo) {
-                        document.querySelector("#logo-time-01").src =
-                            resolvePath(config.time01.logo);
-                    }
-                }
-
-                if (config.time02) {
-                    if (config.time02.sigla) {
-                        document.querySelector("#sigla-time2").innerHTML =
-                            config.time02.sigla;
-                    }
-                    if (config.time02.logo) {
-                        document.querySelector("#logo-time-02").src =
-                            resolvePath(config.time02.logo);
-                    }
-                }
-
-                // Cores das camisas (aplica na barra de cor)
-                if (config.camisaVisitadaColor) {
-                    document.querySelector(
-                        "#team1-color",
-                    ).style.backgroundColor = config.camisaVisitadaColor;
-                }
-                if (config.camisaVisitanteColor) {
-                    document.querySelector(
-                        "#team2-color",
-                    ).style.backgroundColor = config.camisaVisitanteColor;
-                }
-
-                // Chroma key
-                if (config.chromaKeyColor) {
-                    document.body.style.backgroundColor = config.chromaKeyColor;
-                }
-
-                // === Cores do config_banner_color ===
-                // Cor da pontuação (texto)
-                if (config.golosColor) {
-                    document.querySelector("#pontuacao-time1").style.color =
-                        config.golosColor;
-                    document.querySelector("#pontuacao-time2").style.color =
-                        config.golosColor;
-                }
-                // Cor de fundo da pontuação
-                if (config.golosBgColor) {
-                    document.querySelector(
-                        "#pontuacao-time1",
-                    ).style.backgroundColor = config.golosBgColor;
-                    document.querySelector(
-                        "#pontuacao-time2",
-                    ).style.backgroundColor = config.golosBgColor;
-                }
-                // Cor dos sets (texto)
-                if (config.faltasColor) {
-                    document.querySelector("#sets-time1").style.color =
-                        config.faltasColor;
-                    document.querySelector("#sets-time2").style.color =
-                        config.faltasColor;
-                }
-                // Cor de fundo dos sets
-                if (config.faltasBgColor) {
-                    document.querySelector(
-                        "#sets-time1",
-                    ).style.backgroundColor = config.faltasBgColor;
-                    document.querySelector(
-                        "#sets-time2",
-                    ).style.backgroundColor = config.faltasBgColor;
-                }
-                // Cor das siglas dos times
-                if (config.equipaNomeColor) {
-                    document.querySelector("#sigla-time1").style.color =
-                        config.equipaNomeColor;
-                    document.querySelector("#sigla-time2").style.color =
-                        config.equipaNomeColor;
-                }
-            });
-        </script>
-    </body>
 </html>

@@ -87,15 +87,18 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 10px 25px;
+                padding: 1vw;
                 background-color: #000000;
-                min-width: 200px;
+                width: 25%;
+                flex-shrink: 0;
+                height: 100%;
             }
 
             #gestor-logo {
-                height: 90%;
-                max-height: 100px;
+                max-height: 95%;
+                max-width: 95%;
                 width: auto;
+                height: auto;
                 object-fit: contain;
                 background-color: transparent;
             }
@@ -121,41 +124,43 @@
 
             /* Barra de cor do time */
             .team-color-bar {
-                width: 20px;
+                width: 2.5vw;
                 height: 100%;
-                min-height: 40px;
             }
 
             /* Sigla do time */
             .team-abbrev {
                 font-family: "Gobold", sans-serif;
-                font-size: 72px;
+                font-size: min(28vh, 10vw);
                 font-weight: bold;
                 color: #ffffff;
-                padding: 0 15px 0 30px;
-                min-width: 150px;
+                padding: 0 1vw;
+                flex: 1; /* Pushes the scoreboard to the far right */
                 white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             /* Logo do time */
             .team-logo {
-                height: 100px;
-                width: 100px;
+                height: 100%;
+                max-width: 15vw;
+                width: auto;
                 object-fit: contain;
                 background-color: transparent;
-                margin: 0 10px 0 0;
+                margin: 0 1vw 0 0;
             }
 
             /* Sets (vem primeiro) */
             .sets-value {
                 font-family: "Digital Dismay", sans-serif;
-                font-size: 100px;
-                line-height: 80px;
+                font-size: min(65vh, 16vw);
+                line-height: 0.85;
                 color: #000000;
                 background-color: #ffff00;
-                min-width: 140px;
+                width: 18vw;
                 text-align: center;
-                padding: 30px 30px;
+                padding: 0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -165,14 +170,14 @@
             /* Pontuação (vem depois) */
             .score-value {
                 font-family: "Digital Dismay", sans-serif;
-                font-size: 100px;
-                line-height: 80px;
+                font-size: min(65vh, 16vw);
+                line-height: 0.85;
                 color: #ffffff;
                 background-color: #ff0000;
-                min-width: 140px;
+                width: 18vw;
                 text-align: center;
-                margin-left: 5px;
-                padding: 30px 30px;
+                margin-left: 0.5vw;
+                padding: 0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -181,7 +186,7 @@
 
             /* Linha divisória */
             .divider {
-                width: 4px;
+                width: 0.4vw;
                 background-color: #ffffff;
                 min-height: 100%;
                 align-self: stretch;
@@ -192,14 +197,15 @@
                 position: relative;
                 display: flex;
                 align-items: center;
-                margin-left: 30px;
+                margin-left: 2vw;
+                height: 100%;
             }
 
             /* Seta indicadora de serviço */
             .serve-indicator {
                 position: absolute;
-                left: -35px;
-                font-size: 80px;
+                left: -3vw;
+                font-size: min(25vh, 6vw);
                 color: #ffa600;
                 display: none;
             }
@@ -234,7 +240,7 @@
                         ></i>
                         <span id="sets-time1" class="sets-value">0</span>
                     </div>
-                    <span id="pontuacao-time1" class="score-value">00</span>
+                    <span id="pontuacao-time1" class="score-value">0</span>
                 </div>
                 <!-- Time 2 (linha de baixo) -->
                 <div class="team-row">
@@ -248,7 +254,7 @@
                         ></i>
                         <span id="sets-time2" class="sets-value">0</span>
                     </div>
-                    <span id="pontuacao-time2" class="score-value">00</span>
+                    <span id="pontuacao-time2" class="score-value">0</span>
                 </div>
             </div>
         </div>
@@ -387,7 +393,7 @@
                             if (err) {
                                 console.error(err.message);
                             }
-                            console.log(rows);
+                            // console.log(rows); // Removed: BLOB data crash
                             configEquipaGeral = rows;
                             loadConfigEquipaGeral();
                         },
@@ -430,7 +436,7 @@
                             if (err) {
                                 console.error(err.message);
                             }
-                            console.log(rows);
+                            // console.log(rows); // Removed: BLOB data crash
                             if (id === "1") {
                                 configEquipaTime01 = rows;
                             } else {
@@ -486,6 +492,18 @@
             }
 
             function setConfigBannerCores() {
+                // Cor de fundo do banner
+                if (configBannerCores[0]["fundo_color"]) {
+                    const fundoColor = configBannerCores[0]["fundo_color"];
+                    const bannerContainer = document.querySelector(".banner-container");
+                    if (bannerContainer) bannerContainer.style.backgroundColor = fundoColor;
+                    document.querySelectorAll(".team-row").forEach(el => el.style.backgroundColor = fundoColor);
+                    
+                    if (!configBannerCores[0]["gestor_fundo_color"]) {
+                        const gestorSection = document.querySelector(".gestor-section");
+                        if (gestorSection) gestorSection.style.backgroundColor = fundoColor;
+                    }
+                }
                 // Cor da barra do time 1
                 if (configBannerCores[0]["camisa_visitada_color"]) {
                     document.querySelector(
@@ -584,5 +602,16 @@
                 StartConfigBanner();
             };
         </script>
-    </body>
+    
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
+</body>
 </html>

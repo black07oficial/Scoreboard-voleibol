@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoreboard - Ecran Público</title>
+    <title>Scoreboard - Desconto Público</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -16,9 +16,6 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="../resources/css/custom.css">
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.js"
-        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
@@ -29,6 +26,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
         integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 
     <style>
         @font-face {
@@ -44,17 +45,25 @@
         html {
             overflow: hidden;
             background-color: black;
-
         }
 
         body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
             background-color: black !important;
+        }
+
+        img[src=""], img:not([src]) {
+            display: none !important;
+            border: none;
+            outline: none;
         }
 
         #painel-superior {
             background-color: black;
-            border-bottom: 2px solid white;
-            min-height: 110px;
+            min-height: 100px;
         }
 
         .icone-time {
@@ -64,24 +73,19 @@
 
         .cronometro {
             font-family: 'Digital Dismay', sans-serif;
-            font-size: 28px;
-            line-height: 28px;
-            color: rgb(255, 255, 255);
-        }
-
-        .desconto {
-            font-family: 'Digital Dismay', sans-serif;
             font-size: 68px;
             line-height: 68px;
-            color: rgb(255, 0, 0);
+            color: red;
+            margin-top: 22px;
+            letter-spacing: 10px;
         }
 
-        .gols-time {
+        .gols {
             font-family: 'Digital Dismay', sans-serif;
             font-size: 62px;
             line-height: 62px;
             color: orange;
-            margin-top: 36px;
+            margin-top: 25px;
         }
 
         .faltas {
@@ -96,8 +100,8 @@
         #anexoArquivoImagemSessao {
             width: 100%;
             height: 768px;
-            background-color: black;
             overflow: hidden;
+            background-color: black;
         }
 
         #anexoArquivoVideoSessao {
@@ -110,35 +114,40 @@
         #anexoArquivoVideo {
             object-fit: fill;
             width: 100%;
+            /* height: 100%; */
             height: 420px;
+            border: none;
+            outline: none;
         }
 
         #anexoArquivoImagem {
             width: 100%;
             height: 420px;
+            object-fit: fill;
+            /* height: 90%;
+            min-height: 75%;
+            max-height: 90%; */
         }
 
-        /* @media (max-width: 1200px) {
 
 
-            .desconto {
-                font-family: 'Digital Dismay', sans-serif;
-                font-size: 55px;
-                line-height: 55px;
+        /* @media (max-height: 840px) {
+            #anexoArquivoImagem {
+                height: 88vh;
+                /* height: 90%;
+            min-height: 75%;
+            max-height: 90%; 
+        }
+        }
+
+        @media (max-height: 800px) {
+            #anexoArquivoImagem {
+                height: 85.7vh;
             }
 
-            .gols-time {
-                font-family: 'Digital Dismay', sans-serif;
-                font-size: 52px;
-                line-height: 52px;
-            }
+        }
 
-            .faltas {
-                font-family: 'Digital Dismay', sans-serif;
-                font-size: 28px;
-                line-height: 28px;
-            }
-        } */
+        */
     </style>
 
 </head>
@@ -147,701 +156,675 @@
     <div class="container-fluid" style="height: 100vh; background-color: black;">
         <div id="painel-superior" class="row">
             <div class="col-12">
-                <div class="d-flex align-items-center"
-                    style="height: 100%;padding-left: 2%; padding-right: 2%; padding-top: 0.4%;">
-                    <div class="row" style="height: 100%; width: 100%;">
-                        <div class="col-2">
+                <div style="padding-left: 2%; padding-right: 2%; padding-top: 0.4%;">
+                    <div class="row">
+                        <div class="col-2 d-flex justify-content-center">
                             <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" />
                         </div>
                         <div class="col-8 d-flex align-items-center">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-4 d-flex align-items-center">
-                                        <div class="d-flex justify-content-start time-01 align-items-center">
-                                            <span class="gols-time">00</span>
-                                            <span class="faltas">00</span>
+                                    <div class="col-4">
+                                        <div class="time-01 d-flex justify-content-start">
+                                            <span class="gols">0</span>
+                                            <span class="faltas">0</span>
                                         </div>
                                     </div>
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <table>
-                                            <tr>
-                                                <td style="text-align: center;">
-                                                    <div>
-                                                        <span class="cronometro">00:00</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div style="margin-top: -10px;">
-                                                        <span class="desconto"">00:00</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <div class="col-4 d-flex justify-content-center">
+                                        <span class="cronometro">00:00</span>
                                     </div>
-                                    <div class=" col-4 d-flex align-items-center justify-content-end">
-                                                            <div
-                                                                class="d-flex justify-content-end time-02 align-items-center">
-                                                                <span class="faltas"
-                                                                    style="margin-left: 0px; margin-right: 10px;">00</span>
-                                                                <span class="gols-time">00</span>
-                                                            </div>
-                                                    </div>
+                                    <div class="col-4">
+                                        <div class="time-02 d-flex justify-content-end">
+                                            <span class="faltas" style="margin-left: 0px; margin-right: 10px;">0</span>
+                                            <span class="gols">0</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2" style="text-align: end;">
-                                <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" />
-                            </div>
+                        </div>
+                        <div class="col-2 d-flex justify-content-center">
+                            <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12" style="padding: 0px;">
-
-                    <div class="d-flex justify-content-center" width="100%" height="800px">
-                        <div id="anexoArquivoVideoSessao">
-                            <video id="anexoArquivoVideo" width="100%" height="100%" autoplay loop>
-                                <source type="video/mp4">
-                            </video>
-                        </div>
-
-                        <div id="anexoArquivoImagemSessao" class="d-flex justify-content-center">
-                            <img id="anexoArquivoImagem" width="100%" height="100%" />
-                        </div>
+        </div>
+        <div class="row">
+            <div class="col-12" style="padding: 0px; background-color: black;">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div id="anexoArquivoVideoSessao">
+                        <video id="anexoArquivoVideo" width="100%" height="100%" autoplay loop>
+                            <source type="video/mp4">
+                        </video>
                     </div>
 
+                    <div id="anexoArquivoImagemSessao" class="d-flex justify-content-center align-items-start">
+                        <img id="anexoArquivoImagem" width="100%" />
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="d-none">
-            <audio id="player-sons" controls>
-        </div>
-        <script>
-            setInterval(function () {
-                // let painelSuperior = document.querySelector("#painel-superior");
-                // let anexoArquivoImagem = document.querySelector("#anexoArquivoImagemSessao");
-                // let anexoArquivoVideo = document.querySelector("#anexoArquivoVideoSessao");
-                // let windowHeight = window.innerHeight;
-                // let anexoArquivoSize = windowHeight - painelSuperior.clientHeight;
-                // anexoArquivoImagem.style.height = anexoArquivoSize + "px";
-                // anexoArquivoVideo.style.height = anexoArquivoSize + "px";
-            }, 100)
-            function proportionSet(prop, min) {
-                const windowWidth = 720;
-                const windowHeight = 520;
-                const referenceWidth = 1024;
-                const referenceHeight = 768;
-                let proportion1 = windowWidth / referenceWidth;
-                if (windowWidth > 1200 || windowHeight > 800) {
-                    proportion1 = windowWidth / (referenceWidth + referenceWidth - 1350);
-                }
-                var widthIncreaseCount = Math.floor((windowWidth - 1200) / 100);
-                var heightIncreaseCount = Math.floor((windowHeight - 800) / 100);
-                var totalReduction = (widthIncreaseCount + heightIncreaseCount) * 9.5;
-                // Se a largura for significativamente maior que a altura, reduza a proporção
-                if (windowWidth > windowHeight * 1.2) {
-                    totalReduction += (windowWidth - windowHeight) / 100;
-                }
-                if (totalReduction > 0) {
-                    proportion1 -= (totalReduction / 100);
-                }
-                let proportion2 = windowHeight / referenceHeight - 0.4;
-
-                let result = prop * proportion1 * proportion2;
-                result = Math.max(result, min);
-                return result;
+    </div>
+    <div class="d-none">
+        <audio id="player-sons" controls>
+    </div>
+    <script>
+        function playAudio(elemId, filePath) {
+            if (!filePath || typeof filePath === "undefined") {
+                return;
             }
-            function adjustStyles() {
-                const painelSuperior = document.querySelector("#painel-superior");
-                const iconeTime = document.querySelectorAll(".icone-time")
-                const painelCronometro = document.querySelector(".painel-cronometro");
-                const cronometro = document.querySelector(".cronometro");
-                const desconto = document.querySelector(".desconto");
-                const golsTime = document.querySelectorAll(".gols-time");
-                const faltas = document.querySelectorAll(".faltas");
-                const windowWidth = 720;
-                const windowHeight = 520;
-                const referenceWidth = 1224;
-                const referenceHeight = 768;
-                const proportion = windowWidth / referenceWidth;
-                const proportion2 = windowHeight / referenceHeight;
-                let painelSuperiorSize = proportionSet(100, 100);
-                let cronometroFontSize = proportionSet(40, 48);
-                let descontoFontSize = proportionSet(60, 68);
-                let faltasFontSize = proportionSet(40, 48);
-                let golsTimeFontSize = proportionSet(60, 58);
-                let iconeTimeSize = proportionSet(80, 70);
-                cronometro.style.fontSize = cronometroFontSize + "px";
-                cronometro.style.lineHeight = 40 + "px";
-                desconto.style.fontSize = descontoFontSize + "px";
-                // desconto.style.lineHeight = descontoFontSize + "px";
-                painelSuperior.style.height = painelSuperiorSize + "px";
-                iconeTime.forEach((item) => {
-                    item.style.height = iconeTimeSize + "px";
-                });
-                iconeTime.forEach((item) => {
-                    item.style.height = iconeTimeSize + "px";
-                });
-                golsTime.forEach((item) => {
-                    item.style.fontSize = golsTimeFontSize + "px";
-                    item.style.lineHeight = golsTimeFontSize + "px";
-                });
-                faltas.forEach((item) => {
-                    item.style.fontSize = faltasFontSize + "px";
-                    item.style.lineHeight = faltasFontSize + "px";
-                });
-
+            const somAudio = document.querySelector(elemId);
+            somAudio.setAttribute("src", filePath);
+            if (!somAudio.paused) {
+                return;
             }
-
-            function adjustZoom() {
-                const baseWidth = 720;
-                const baseHeight = 520;
-                const aspectRatio = window.innerWidth / window.innerHeight;
-                const baseAspectRatio = baseWidth / baseHeight;
-                let scale
-                if (aspectRatio < baseAspectRatio) {
-                    scale = window.innerWidth / baseWidth;
-                    document.body.style.width = '100%';
-                } else {
-                    scale = window.innerHeight / baseHeight;
-                    document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
-                }
-                document.body.style.zoom = scale;
-                document.body.style.height = (window.innerHeight / scale) + 'px';
-                document.querySelector("html").style.display = "flex";
-                document.querySelector("html").style.justifyContent = "center";
-                // document.body.style.alignItems = "center";
+            somAudio.play();
+        }
+        setInterval(function () {
+            // let painelSuperior = document.querySelector("#painel-superior");
+            // let anexoArquivoImagem = document.querySelector("#anexoArquivoImagemSessao");
+            // let anexoArquivoVideo = document.querySelector("#anexoArquivoVideoSessao");
+            // let windowHeight = window.innerHeight;
+            // let anexoArquivoSize = windowHeight - painelSuperior.clientHeight;
+            // anexoArquivoImagem.style.height = anexoArquivoSize + "px";
+            // anexoArquivoVideo.style.height = anexoArquivoSize + "px";
+        }, 100)
+        function proportionSet(prop, min) {
+            const windowWidth = 720;
+            const windowHeight = 520;
+            const referenceWidth = 1024;
+            const referenceHeight = 768;
+            let proportion1 = windowWidth / referenceWidth;
+            if (windowWidth > 1200 || windowHeight > 800) {
+                proportion1 = windowWidth / (referenceWidth + referenceWidth - 1350);
             }
+            var widthIncreaseCount = Math.floor((windowWidth - 1200) / 100);
+            var heightIncreaseCount = Math.floor((windowHeight - 800) / 100);
+            var totalReduction = (widthIncreaseCount + heightIncreaseCount) * 9.5;
+            // Se a largura for significativamente maior que a altura, reduza a proporção
+            if (windowWidth > windowHeight * 1.2) {
+                totalReduction += (windowWidth - windowHeight) / 100;
+            }
+            if (totalReduction > 0) {
+                proportion1 -= (totalReduction / 100);
+            }
+            let proportion2 = windowHeight / referenceHeight - 0.4;
 
-
-            // Chama a função de ajuste de zoom quando o DOM estiver pronto
-            document.addEventListener("DOMContentLoaded", function () {
-                adjustStyles();
-                adjustZoom();
+            let result = prop * proportion1 * proportion2;
+            result = Math.max(result, min);
+            return result;
+        }
+        function adjustStyles() {
+            const painelSuperior = document.querySelector("#painel-superior");
+            const iconeTime = document.querySelectorAll(".icone-time")
+            const cronometro = document.querySelector(".cronometro");
+            const golsTime = document.querySelectorAll(".gols");
+            const faltas = document.querySelectorAll(".faltas");
+            const windowWidth = 720;
+            const windowHeight = 520;
+            const referenceWidth = 1224;
+            const referenceHeight = 768;
+            const proportion = windowWidth / referenceWidth;
+            const proportion2 = windowHeight / referenceHeight;
+            let painelSuperiorSize = proportionSet(90, 110);
+            let cronometroFontSize = proportionSet(55, 75);
+            let faltasFontSize = proportionSet(40, 48);
+            let golsTimeFontSize = proportionSet(40, 70);
+            let iconeTimeSize = proportionSet(75, 70);
+            cronometro.style.fontSize = cronometroFontSize + "px";
+            painelSuperior.style.height = painelSuperiorSize + "px";
+            iconeTime.forEach((item) => {
+                item.style.height = iconeTimeSize + "px";
+            });
+            iconeTime.forEach((item) => {
+                item.style.height = iconeTimeSize + "px";
+            });
+            golsTime.forEach((item) => {
+                item.style.fontSize = golsTimeFontSize + "px";
+            });
+            faltas.forEach((item) => {
+                item.style.fontSize = faltasFontSize + "px";
             });
 
-            // Chama a função de ajuste de zoom sempre que a janela for redimensionada
-            window.addEventListener("resize", function () {
-                adjustZoom();
-            });
+        }
 
-            function playAudio(elemId, filePath) {
-                if (!filePath || typeof filePath === "undefined") {
+        function adjustZoom() {
+            const baseWidth = 720;
+            const baseHeight = 520;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const baseAspectRatio = baseWidth / baseHeight;
+            let scale
+            if (aspectRatio < baseAspectRatio) {
+                scale = window.innerWidth / baseWidth;
+                document.body.style.width = '100%';
+            } else {
+                scale = window.innerHeight / baseHeight;
+                document.body.style.width = (100 / (aspectRatio * 0.7)) + '%'; // Ajuste o valor 0.5 conforme necessário
+            }
+            document.body.style.zoom = scale;
+            document.body.style.height = (window.innerHeight / scale) + 'px';
+            // document.body.style.display = "flex";
+            document.querySelector("html").style.display = "flex";
+            document.querySelector("html").style.justifyContent = "center";
+            // document.body.style.alignItems = "center";
+        }
+
+
+        // Chama a função de ajuste de zoom quando o DOM estiver pronto
+        document.addEventListener("DOMContentLoaded", function () {
+            adjustStyles();
+            adjustZoom();
+        });
+
+        // Chama a função de ajuste de zoom sempre que a janela for redimensionada
+        window.addEventListener("resize", function () {
+            adjustZoom();
+        });
+        const { ipcRenderer } = require('electron');
+
+        let carregouInfoPartida = false;
+
+        ipcRenderer.on('updatesFromControl', function (event, arg) {
+
+            switch (arg['inputOrigin']) {
+                case "#input-gols-time-01":
+                    document.querySelector(".time-01 span.gols").innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                case "#input-faltas-time-01":
+                    document.querySelector(".time-01 span.faltas").innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                case "#input-gols-time-02":
+                    document.querySelector(".time-02 span.gols").innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                case "#input-faltas-time-02":
+                    document.querySelector(".time-02 span.faltas").innerHTML = arg['pontuacaoFormatada'];
+                    break;
+                default:
+                // code block
+            }
+
+        });
+
+        ipcRenderer.on('loadInformacoesPartida', function (event, arg) {
+            if (carregouInfoPartida) {
+                return;
+            }
+            document.querySelector(".time-01 span.gols").innerHTML = arg['time01']['gols'];
+            document.querySelector(".time-01 span.faltas").innerHTML = arg['time01']['faltas'];
+            document.querySelector(".time-02 span.gols").innerHTML = arg['time02']['gols'];
+            document.querySelector(".time-02 span.faltas").innerHTML = arg['time02']['faltas'];
+            carregouInfoPartida = true;
+        });
+
+        // Define as variáveis globais
+        let partidaIniciada = false;
+
+        let tempoTotal = 0;
+        let tempoRestante = 0;
+        let contador;
+        let isContagemRegressiva = false;
+        let pausarContagem = true;
+
+        // Define a função que inicia o cronômetro
+        function iniciarCronometro(tempo, contagemRegressiva = false) {
+            pausarContagem = false;
+            tempoTotal = tempo;
+            isContagemRegressiva = contagemRegressiva;
+
+            if (isContagemRegressiva) {
+                tempoRestante = tempo;
+            } else {
+                tempoRestante = 0;
+            }
+
+            if (!carregouInfoPartida) {
+                ipcRenderer.send("solicitaAtualizacoes", null);
+            }
+            // Define o contador com a função setInterval()
+            contador = setInterval(function () {
+                atualizarCronometro();
+            }, 1000);
+        }
+
+        // Define a função que atualiza o cronômetro a cada segundo
+        function atualizarCronometro() {
+            // Verifica se o cronômetro chegou ao fim      
+            if ((isContagemRegressiva && tempoRestante < 0) || (!isContagemRegressiva && tempoRestante > tempoTotal)) {
+                playAudio('#player-sons', listaConfiguracoesSons['start_timeout']);
+
+                clearInterval(contador);
+                var min = config_setup_desconto_min
+                var seg = config_setup_desconto_seg
+                if (config_setup_desconto_min < 10) {
+                    min = "0" + config_setup_desconto_min;
+                }
+                if (config_setup_desconto_seg < 10) {
+                    seg = "0" + config_setup_desconto_seg;
+                }
+                setTimeout(function () {
+                    //document.querySelector('.cronometro').innerHTML = `${min}:${seg}`;
+                    ipcRenderer.send("sendCronometroDesconto", `${min}:${seg}`);
+                }, 2e3)
+
+
+                return;
+            }
+
+            // Calcula os minutos e segundos restantes
+            const minutos = Math.floor(tempoRestante / 60);
+            const segundos = tempoRestante % 60;
+
+            // Formata a saída do cronômetro
+            const minutosStr = minutos.toString();
+            const segundosStr = segundos.toString();
+
+            // Exibe o cronômetro na página
+            document.querySelector('.cronometro').innerHTML = `${minutosStr}:${segundosStr}`;
+            ipcRenderer.send("sendCronometroDesconto", `${minutosStr}:${segundosStr}`);
+
+            // Atualiza o tempo restante de acordo com a contagem
+            if (isContagemRegressiva) {
+                tempoRestante--;
+            } else {
+                tempoRestante++;
+            }
+            if (config_setup_buzinar_faltar) {
+
+                var totalFaltarSegundos = config_setup_faltar_min * 60;
+                totalFaltarSegundos += config_setup_faltar_seg;
+                if (isContagemRegressiva && (tempoRestante + 1 - totalFaltarSegundos != 0)) {
+
                     return;
                 }
 
-                const somAudio = document.querySelector(elemId);
-                somAudio.setAttribute("src", filePath);
-
-                if (!somAudio.paused) {
+                if (!listaConfiguracoesSons) {
                     return;
                 }
+                playAudio('#player-sons', listaConfiguracoesSons['timeout_warning']);
 
-                somAudio.play();
             }
-            let carregouInfoPartida = false;
+        }
+    </script>
 
-            const { ipcRenderer } = require('electron');
+    <!-- Configurações: Variáveis -->
+    <script>
+        const sqlite3 = require('sqlite3').verbose();
+        // const { ipcRenderer } = require('electron');
+        const { pathToFileURL } = require('url');
+        let dbPath = require('path').join(__dirname, '..', 'scoreboard.sqlite');
+        (async () => { try { const p = await ipcRenderer.invoke('get-db-path'); if (p) dbPath = p; } catch (e) { } })();
 
-            ipcRenderer.on('updatesFromControl', function (event, arg) {
-                switch (arg['inputOrigin']) {
-                    case "#input-gols-time-01":
-                        document.querySelector(".time-01 span.gols-time").innerHTML = arg['pontuacaoFormatada'];
-                        break;
-                    case "#input-faltas-time-01":
-                        document.querySelector(".time-01 span.faltas").innerHTML = arg['pontuacaoFormatada'];
-                        break;
-                    case "#input-gols-time-02":
-                        document.querySelector(".time-02 span.gols-time").innerHTML = arg['pontuacaoFormatada'];
-                        break;
-                    case "#input-faltas-time-02":
-                        document.querySelector(".time-02 span.faltas").innerHTML = arg['pontuacaoFormatada'];
-                        break;
-                    case ".cronometro":
+        // Função para resolver corretamente o caminho de imagens/logos
+        function resolveImageSrcForDisplay(storedPath) {
+            if (!storedPath || typeof storedPath !== 'string') return "../resources/images/no-image.jpg";
 
-                        document.querySelector(".cronometro").innerHTML = arg['pontuacaoFormatada'];
-                        break;
-                    default:
-                    // code block
+            const p = storedPath.replace(/\\/g, '/');
+
+            if (p.startsWith('file://')) return storedPath;
+            if (/^[a-zA-Z]:\//.test(p)) return pathToFileURL(p).href;
+
+            const isAsar = (window.location && window.location.href && window.location.href.includes('app.asar'));
+            const assetsPrefix = isAsar ? '../../assets/' : '../resources/assets/';
+
+            if (p.startsWith('../resources/assets/')) {
+                return isAsar ? p.replace('../resources/assets/', '../../assets/') : p;
+            }
+
+            if (p.startsWith('images/')) {
+                return assetsPrefix + p;
+            }
+
+            return p;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        var configSetup;
+        async function getConfigSetup() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configSetup = rows;
+                    setConfigSetup();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigSetup() {
+
+
+            tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
+            //   adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+
+            config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
+
+            config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
+            config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"];
+
+            config_setup_desconto_min = configSetup[0]["desconto_tempo_minutos"];
+            config_setup_desconto_seg = configSetup[0]["desconto_tempo_segundos"];
+
+            config_setup_faltar_min = configSetup[0]["tempo_final_minutos"];
+            config_setup_faltar_seg = configSetup[0]["tempo_final_segundos"];
+
+            var buzinaIniciar = configSetup[0]["toque_buzinar_iniciar"] === 1 ? true : false;
+            config_setup_buzinar_iniciar = buzinaIniciar;
+
+            var buzinaFaltar = configSetup[0]["toque_buzinar_final"] === 1 ? true : false;
+            config_setup_buzinar_faltar = buzinaFaltar;
+
+            var mostrarEcran = configSetup[0]["mostrar_ecran"];
+            if (mostrarEcran === "T") {
+                config_setup_mostrar_ecran_tempo = true;
+                config_setup_mostrar_ecran_logo = false;
+            } else {
+                config_setup_mostrar_ecran_tempo = false;
+                config_setup_mostrar_ecran_logo = true;
+            }
+            var tempoContar = config_setup_desconto_min * 60;
+            tempoContar += config_setup_desconto_seg - 1;
+
+            iniciarCronometro(tempoContar, true);
+
+        }
+
+    </script>
+
+    <!-- Configurações: Equipe -->
+    <script>
+
+        var configEquipaTime01;
+        var configEquipaTime02;
+        async function getConfigEquipaTime(id) {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_equipas_times where id =" + id, (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    // console.log(rows); // Removed: BLOB data crash
+                    // configuration = rows;
+                    if (id === "1") {
+                        configEquipaTime01 = rows;
+                    } else {
+                        configEquipaTime02 = rows;
+                    }
+                    loadConfigEquipaTime(id);
+                });
+            });
+            db.close();
+        }
+
+        function loadConfigEquipaTime(equipeId) {
+            var configuration = equipeId === "1" ? configEquipaTime01 : configEquipaTime02;
+
+            const logoData = configuration[0]["logo_data"];
+            let imgSrc = resolveImageSrcForDisplay(configuration[0]["logo_caminho"]);
+            if (logoData && logoData.length > 0) {
+                const base64 = Buffer.from(logoData).toString('base64');
+                imgSrc = 'data:image/png;base64,' + base64;
+            }
+            document.querySelector("#img-cfg-equipes-t" + equipeId + "-logo").setAttribute('src', imgSrc);
+            // document.querySelector("#edit-cfg-equipes-t" + equipeId + "-nome").innerHTML = configuration[0]["nome"];
+        }
+
+    </script>
+    <script>
+        var listaConfiguracoesSons;
+        async function getConfigSons() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_sons", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configSons = rows;
+                    setConfigSons();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigSons() {
+
+            listaConfiguracoesSons = {
+                hom: configSons[0]["hom"] ? configSons[0]["hom"] : "",
+                buzzer: configSons[0]["buzzer"] ? configSons[0]["buzzer"] : "",
+                end_period: configSons[0]["end_period"] ? configSons[0]["end_period"] : "",
+                shot_clock: configSons[0]["shot_clock"] ? configSons[0]["shot_clock"] : "",
+                start_timeout: configSons[0]["start_timeout"] ? configSons[0]["start_timeout"] : "",
+                timeout_warning: configSons[0]["timeout_warning"] ? configSons[0]["timeout_warning"] : "",
+                end_timeout: configSons[0]["end_timeout"] ? configSons[0]["end_timeout"] : ""
+            };
+
+            // console.log(listaConfiguracoesSons);
+        }
+    </script>
+    <!-- Configuracoes: Cores -->
+    <script>
+
+        var configCores;
+        async function getConfigCores() {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+                db.all("SELECT * FROM config_cores", (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    configCores = rows;
+                    setConfigCores();
+                });
+            });
+            db.close();
+        }
+
+        function setConfigCores() {
+
+            // console.log(configCores);
+
+            ccores_background = configCores[0]["background"] ? configCores[0]["background"] : "";
+            ccores_number_background = configCores[0]["number_background"] ? configCores[0]["number_background"] : "";
+            ccores_text_borders = configCores[0]["text_borders"] ? configCores[0]["text_borders"] : "";
+            ccores_team1_name = configCores[0]["team1_name"] ? configCores[0]["team1_name"] : "";
+            ccores_team2_name = configCores[0]["team2_name"] ? configCores[0]["team2_name"] : "";
+            ccores_main_clock = configCores[0]["main_clock"] ? configCores[0]["main_clock"] : "";
+            ccores_shot_clock = configCores[0]["shot_clock"] ? configCores[0]["shot_clock"] : "";
+            ccores_shot_clock_expiration_border = configCores[0]["shot_clock_expiration_border"] ? configCores[0]["shot_clock_expiration_border"] : "";
+            ccores_scores = configCores[0]["scores"] ? configCores[0]["scores"] : "";
+            ccores_period = configCores[0]["period"] ? configCores[0]["period"] : "";
+            ccores_shots_on_goal = configCores[0]["shots_on_goal"] ? configCores[0]["shots_on_goal"] : "";
+            ccores_fouls = configCores[0]["fouls"] ? configCores[0]["fouls"] : "";
+            ccores_penalty_player = configCores[0]["penalty_player"] ? configCores[0]["penalty_player"] : "";
+            ccores_penalty_time = configCores[0]["penalty_time"] ? configCores[0]["penalty_time"] : "";
+            ccores_display_screen_active_field = configCores[0]["display_screen_active_field"] ? configCores[0]["display_screen_active_field"] : "";
+
+            // document.querySelector(".cronometro").style.color = ccores_main_clock;
+
+            document.querySelector(".time-01 span.gols").style.color = ccores_scores;
+            document.querySelector(".time-02 span.gols").style.color = ccores_scores;
+
+            document.querySelector(".time-01 span.faltas").style.color = ccores_fouls;
+            document.querySelector(".time-02 span.faltas").style.color = ccores_fouls;
+
+        }
+
+    </script>
+
+    <!-- Configuracoes: Fotos/videos-->
+    <script>
+
+        var configListaAnexo;
+        var listaAnexosTemp = [];
+
+        async function getConfigFotos(tableId) {
+            var db = new sqlite3.Database(dbPath);
+            _ = await db.serialize(() => {
+
+                var queryString = "SELECT * FROM config_video_foto";
+                if (tableId) {
+                    queryString += " WHERE tabela_id = " + tableId;
                 }
+
+                db.all(queryString, (err, rows) => {
+                    if (err) {
+                        console.error(err.message);
+                    }
+                    // console.log(rows); // Removed: BLOB data crash
+                    configListaAnexo = rows;
+                    loadConfigFotos();
+                });
 
             });
-
-            ipcRenderer.on('loadInformacoesPartida', function (event, arg) {
-                if (carregouInfoPartida) {
-                    return;
-                }
-
-                document.querySelector(".time-01 span.gols-time").innerHTML = arg['time01']['gols'];
-                document.querySelector(".time-01 span.faltas").innerHTML = arg['time01']['faltas'];
-                document.querySelector(".time-02 span.gols-time").innerHTML = arg['time02']['gols'];
-                document.querySelector(".time-02 span.faltas").innerHTML = arg['time02']['faltas'];
-                document.querySelector(".cronometro").innerHTML = arg['cronometro'];
-                carregouInfoPartida = true;
-            });
-
-            // Define as variáveis globais
-            let partidaIniciada = false;
-
-            let tempoTotal = 0;
-            let tempoRestante = 0;
-            let contador;
-            let isContagemRegressiva = false;
-            let pausarContagem = true;
-
-            // Define a função que inicia o cronômetro
-            function iniciarCronometro(tempo, contagemRegressiva = false) {
-                pausarContagem = false;
-                tempoTotal = tempo;
-                isContagemRegressiva = contagemRegressiva;
-                if (isContagemRegressiva) {
-                    tempoRestante = tempo;
-                } else {
-                    tempoRestante = 0;
-                }
-
-                if (!carregouInfoPartida) {
-                    ipcRenderer.send("solicitaAtualizacoes", null);
-                }
-                // Define o contador com a função setInterval()
-                contador = setInterval(function () {
-                    atualizarCronometro();
-                }, 1000);
-            }
-
-            // Define a função que atualiza o cronômetro a cada segundo
-            function atualizarCronometro() {
-
-                if ((isContagemRegressiva && tempoRestante < 0) || (!isContagemRegressiva && tempoRestante > tempoTotal)) {
-                    playAudio('#player-sons', listaConfiguracoesSons['start_timeout']);
-                    clearInterval(contador);
-                    var min = config_setup_desconto_min
-                    var seg = config_setup_desconto_seg
-                    if (config_setup_desconto_min < 10) {
-                        min = "0" + config_setup_desconto_min;
-                    }
-                    if (config_setup_desconto_seg < 10) {
-                        seg = "0" + config_setup_desconto_seg;
-                    }
-                    setTimeout(function () {
-                        // document.querySelector('.desconto').innerHTML = `${min}:${seg}`;
-                        ipcRenderer.send("sendCronometroDesconto", `${min}:${seg}`);
-                        pausarContagem = true;
-                    }, 2e3)
-                    return;
-                }
-
-                // Calcula os minutos e segundos restantes
-                const minutos = Math.floor(tempoRestante / 60);
-                const segundos = tempoRestante % 60;
-
-                // Formata a saída do cronômetro
-                const minutosStr = minutos.toString().padStart(2, "0");
-                const segundosStr = segundos.toString().padStart(2, "0");
-
-                // Exibe o cronômetro na página
-                document.querySelector('.desconto').innerHTML = `${minutosStr}:${segundosStr}`;
-                ipcRenderer.send("sendCronometroDesconto", `${minutosStr}:${segundosStr}`);
-
-                // Atualiza o tempo restante de acordo com a contagem
-                if (isContagemRegressiva) {
-                    tempoRestante--;
-                } else {
-                    tempoRestante++;
-                }
-                if (config_setup_buzinar_faltar) {
-
-                    var totalFaltarSegundos = config_setup_faltar_min * 60;
-                    totalFaltarSegundos += config_setup_faltar_seg;
-                    if (isContagemRegressiva && (tempoRestante + 1 - totalFaltarSegundos != 0)) {
-
-                        return;
-                    }
-
-                    if (!listaConfiguracoesSons) {
-                        return;
-                    }
-                    playAudio('#player-sons', listaConfiguracoesSons['timeout_warning']);
-
-                }
-            }
-
-        </script>
-
-        <!-- Configurações: Variáveis -->
-        <script>
-            const sqlite3 = require('sqlite3').verbose();
-            const { ipcRenderer } = require('electron');
-            const { pathToFileURL } = require('url');
-            let dbPath = require('path').join(__dirname, '..', 'scoreboard.sqlite');
-            (async () => { try { const p = await ipcRenderer.invoke('get-db-path'); if (p) dbPath = p; } catch (e) { } })();
-
-            // Função para resolver corretamente o caminho de imagens/logos
-            function resolveImageSrcForDisplay(storedPath) {
-                if (!storedPath || typeof storedPath !== 'string') return "../resources/images/no-image.jpg";
-
-                const p = storedPath.replace(/\\/g, '/');
-
-                if (p.startsWith('file://')) return storedPath;
-                if (/^[a-zA-Z]:\//.test(p)) return pathToFileURL(p).href;
-
-                const isAsar = (window.location && window.location.href && window.location.href.includes('app.asar'));
-                const assetsPrefix = isAsar ? '../../assets/' : '../resources/assets/';
-
-                if (p.startsWith('../resources/assets/')) {
-                    return isAsar ? p.replace('../resources/assets/', '../../assets/') : p;
-                }
-
-                if (p.startsWith('images/')) {
-                    return assetsPrefix + p;
-                }
-
-                return p;
-            }
-
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-        </script>
-
-        <!-- Configuracoes: Jogo Setup -->
-        <script>
-
-            var configSetup;
-            async function getConfigSetup() {
-                var db = new sqlite3.Database(dbPath);
-                _ = await db.serialize(() => {
-                    db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
-                        if (err) {
-                            console.error(err.message);
-                        }
-                        configSetup = rows;
-                        setConfigSetup();
-                    });
-                });
-                db.close();
-            }
-
-            function setConfigSetup() {
-
-
-                tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
-                //   adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
-
-                config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
-
-                config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
-                config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"];
-
-                config_setup_desconto_min = configSetup[0]["desconto_tempo_minutos"];
-                config_setup_desconto_seg = configSetup[0]["desconto_tempo_segundos"];
-
-                var buzinaIniciar = configSetup[0]["toque_buzinar_iniciar"] === 1 ? true : false;
-                config_setup_buzinar_iniciar = buzinaIniciar;
-
-                var buzinaFaltar = configSetup[0]["toque_buzinar_final"] === 1 ? true : false;
-                config_setup_buzinar_faltar = buzinaFaltar;
-
-                var mostrarEcran = configSetup[0]["mostrar_ecran"];
-                if (mostrarEcran === "T") {
-                    config_setup_mostrar_ecran_tempo = true;
-                    config_setup_mostrar_ecran_logo = false;
-                } else {
-                    config_setup_mostrar_ecran_tempo = false;
-                    config_setup_mostrar_ecran_logo = true;
-                }
-
-                config_setup_faltar_min = configSetup[0]["tempo_final_minutos"];
-                config_setup_faltar_seg = configSetup[0]["tempo_final_segundos"];
-
-                var tempoContar = config_setup_desconto_min * 60;
-                tempoContar += config_setup_desconto_seg - 1;
-
-                iniciarCronometro(tempoContar, true);
-
-            }
-
-        </script>
-
-        <!-- Configurações: Equipe -->
-        <script>
-
-            var configEquipaTime01;
-            var configEquipaTime02;
-            async function getConfigEquipaTime(id) {
-                var db = new sqlite3.Database(dbPath);
-                _ = await db.serialize(() => {
-                    db.all("SELECT * FROM config_equipas_times where id =" + id, (err, rows) => {
-                        if (err) {
-                            console.error(err.message);
-                        }
-                        console.log(rows);
-                        // configuration = rows;
-                        if (id === "1") {
-                            configEquipaTime01 = rows;
-                        } else {
-                            configEquipaTime02 = rows;
-                        }
-                        loadConfigEquipaTime(id);
-                    });
-                });
-                db.close();
-            }
-
-            function loadConfigEquipaTime(equipeId) {
-                var configuration = equipeId === "1" ? configEquipaTime01 : configEquipaTime02;
-
-                const logoData = configuration[0]["logo_data"];
-                let imgSrc = resolveImageSrcForDisplay(configuration[0]["logo_caminho"]);
-                if (logoData && logoData.length > 0) {
-                    const base64 = Buffer.from(logoData).toString('base64');
-                    imgSrc = 'data:image/png;base64,' + base64;
-                }
-                document.querySelector("#img-cfg-equipes-t" + equipeId + "-logo").setAttribute('src', imgSrc);
-                // document.querySelector("#edit-cfg-equipes-t" + equipeId + "-nome").innerHTML = configuration[0]["nome"];
-            }
-
-        </script>
-
-        <!-- Configuracoes: Cores -->
-        <script>
-
-            var configCores;
-            async function getConfigCores() {
-                var db = new sqlite3.Database(dbPath);
-                _ = await db.serialize(() => {
-                    db.all("SELECT * FROM config_cores", (err, rows) => {
-                        if (err) {
-                            console.error(err.message);
-                        }
-                        configCores = rows;
-                        setConfigCores();
-                    });
-                });
-                db.close();
-            }
-
-            function setConfigCores() {
-
-                console.log(configCores);
-
-                ccores_background = configCores[0]["background"] ? configCores[0]["background"] : "";
-                ccores_number_background = configCores[0]["number_background"] ? configCores[0]["number_background"] : "";
-                ccores_text_borders = configCores[0]["text_borders"] ? configCores[0]["text_borders"] : "";
-                ccores_team1_name = configCores[0]["team1_name"] ? configCores[0]["team1_name"] : "";
-                ccores_team2_name = configCores[0]["team2_name"] ? configCores[0]["team2_name"] : "";
-                ccores_main_clock = configCores[0]["main_clock"] ? configCores[0]["main_clock"] : "";
-                ccores_shot_clock = configCores[0]["shot_clock"] ? configCores[0]["shot_clock"] : "";
-                ccores_shot_clock_expiration_border = configCores[0]["shot_clock_expiration_border"] ? configCores[0]["shot_clock_expiration_border"] : "";
-                ccores_scores = configCores[0]["scores"] ? configCores[0]["scores"] : "";
-                ccores_period = configCores[0]["period"] ? configCores[0]["period"] : "";
-                ccores_shots_on_goal = configCores[0]["shots_on_goal"] ? configCores[0]["shots_on_goal"] : "";
-                ccores_fouls = configCores[0]["fouls"] ? configCores[0]["fouls"] : "";
-                ccores_penalty_player = configCores[0]["penalty_player"] ? configCores[0]["penalty_player"] : "";
-                ccores_penalty_time = configCores[0]["penalty_time"] ? configCores[0]["penalty_time"] : "";
-                ccores_display_screen_active_field = configCores[0]["display_screen_active_field"] ? configCores[0]["display_screen_active_field"] : "";
-
-                // document.querySelector(".cronometro").style.color = ccores_main_clock;
-
-                document.querySelector(".time-01 span.gols-time").style.color = ccores_scores;
-                document.querySelector(".time-02 span.gols-time").style.color = ccores_scores;
-
-                document.querySelector(".time-01 span.faltas").style.color = ccores_fouls;
-                document.querySelector(".time-02 span.faltas").style.color = ccores_fouls;
-
-            }
-
-        </script>
-
-        <!-- Configuracoes: Fotos/videos-->
-        <script>
-
-            var configListaAnexo;
-            var listaAnexosTemp = [];
-
-            async function getConfigFotos(tableId) {
-                var db = new sqlite3.Database(dbPath);
-                _ = await db.serialize(() => {
-
-                    var queryString = "SELECT * FROM config_video_foto";
-                    if (tableId) {
-                        queryString += " WHERE tabela_id = " + tableId;
-                    }
-
-                    db.all(queryString, (err, rows) => {
-                        if (err) {
-                            console.error(err.message);
-                        }
-                        console.log(rows);
-                        configListaAnexo = rows;
-                        loadConfigFotos();
-                    });
-
-                });
-                db.close();
-            }
-
-            async function loadConfigFotos() {
-
-                for (let i = 0; i < configListaAnexo.length; i++) {
-
-                    let anexoAtual = configListaAnexo[i];
-
-                    id = anexoAtual['id'];
-                    lista = anexoAtual['tabela_id'];
-                    caminho = anexoAtual['caminho_arquivo'];
-                    tipo_arquivo = anexoAtual['tipo_arquivo'];
-                    duracao = anexoAtual['duracao'];
-                    const arquivo_data_blob = anexoAtual['arquivo_data'];
-
-                    // Converter BLOB para Base64 se existir
-                    let arquivo_data_base64 = null;
-                    if (arquivo_data_blob) {
+            db.close();
+        }
+
+        async function loadConfigFotos() {
+
+            for (let i = 0; i < configListaAnexo.length; i++) {
+
+                let anexoAtual = configListaAnexo[i];
+
+                id = anexoAtual['id'];
+                lista = anexoAtual['tabela_id'];
+                caminho = anexoAtual['caminho_arquivo'];
+                tipo_arquivo = anexoAtual['tipo_arquivo'];
+                duracao = anexoAtual['duracao'];
+                const arquivo_data_blob = anexoAtual['arquivo_data'];
+                console.log(`[Desconto] Item ${i}: ID=${id}, Tipo=${tipo_arquivo}, BLOB=${!!arquivo_data_blob}`);
+
+                // Converter BLOB para Base64 se existir
+                let arquivo_data_base64 = null;
+                if (arquivo_data_blob) {
+                    try {
                         arquivo_data_base64 = Buffer.from(arquivo_data_blob).toString('base64');
-                    }
-
-                    var body = {
-                        id: id,
-                        lista: lista,
-                        caminho: caminho,
-                        tipo_arquivo: tipo_arquivo,
-                        duracao: duracao,
-                        arquivo_data: arquivo_data_base64
-                    };
-                    listaAnexosTemp.push(body);
-
-                }
-
-                if (listaAnexosTemp.length <= 0) {
-                    document.querySelector("#anexoArquivoImagemSessao").classList.add("d-none");
-                    document.querySelector("#anexoArquivoVideoSessao").classList.add("d-none");
-                    return;
-                }
-
-                while (true) {
-                    for (let i = 0; i < listaAnexosTemp.length; i++) {
-                        duracao = listaAnexosTemp[i]['duracao'];
-                        const anexoAtual = listaAnexosTemp[i];
-                        verAnexo(anexoAtual);
-                        console.log(duracao);
-                        await sleep(duracao * 1000);
+                        // console.log(`[Desconto] BLOB convertido para Base64 string (size: ${arquivo_data_base64.length})`);
+                    } catch (e) {
+                        console.error('[Desconto] Erro convertendo BLOB:', e);
                     }
                 }
 
-            }
-
-            function verAnexo(anexoAtual) {
-
-                document.querySelector("#anexoArquivoVideo").pause();
-
-                // Usar data URL do BLOB se disponível, senão usar caminho (retro-compatibilidade)
-                let mediaSrc = resolveImageSrcForDisplay(anexoAtual['caminho']);
-                if (anexoAtual['arquivo_data']) {
-                    // Check if tipo_arquivo is valid mime type part, otherwise guess
-                    let mime = anexoAtual['tipo_arquivo'];
-                    // Sometimes type might be just extension like 'png' or 'mp4', needs fixing
-                    if (mime === 'png' || mime === 'jpg' || mime === 'jpeg') mime = 'image/' + mime;
-                    if (mime === 'mp4' || mime === 'webm') mime = 'video/' + mime;
-
-                    mediaSrc = `data:${mime};base64,${anexoAtual['arquivo_data']}`;
-                    console.log(`[DescontoTempo] Usando mediaSrc data URI (mime: ${mime})`);
-                } else {
-                    console.log(`[DescontoTempo] Usando mediaSrc arquivo: ${mediaSrc}`);
-                }
-
-                // Melhorar verificação de vídeo
-                let isVideo = false;
-                if (anexoAtual['tipo_arquivo']) {
-                    const t = anexoAtual['tipo_arquivo'].toLowerCase();
-                    if (t.includes('video') || t.includes('mp4') || t.includes('webm') || t.includes('mkv')) {
-                        isVideo = true;
-                    }
-                }
-
-                if (isVideo) {
-                    document.querySelector("#anexoArquivoVideoSessao").classList.remove("d-none");
-                    document.querySelector("#anexoArquivoImagemSessao").classList.add("d-none");
-                    document.querySelector("#anexoArquivoVideo source").setAttribute('src', mediaSrc);
-                    document.querySelector("#anexoArquivoVideo").load();
-                } else {
-                    document.querySelector("#anexoArquivoImagemSessao").classList.remove("d-none");
-                    document.querySelector("#anexoArquivoVideoSessao").classList.add("d-none");
-                    document.querySelector("#anexoArquivoImagem").setAttribute('src', mediaSrc);
-                }
-            }
-
-        </script>
-        <script>
-            var listaConfiguracoesSons;
-            async function getConfigSons() {
-                var db = new sqlite3.Database(dbPath);
-                _ = await db.serialize(() => {
-                    db.all("SELECT * FROM config_sons", (err, rows) => {
-                        if (err) {
-                            console.error(err.message);
-                        }
-                        configSons = rows;
-                        setConfigSons();
-                    });
-                });
-                db.close();
-            }
-
-            function setConfigSons() {
-
-                listaConfiguracoesSons = {
-                    hom: configSons[0]["hom"] ? configSons[0]["hom"] : "",
-                    buzzer: configSons[0]["buzzer"] ? configSons[0]["buzzer"] : "",
-                    end_period: configSons[0]["end_period"] ? configSons[0]["end_period"] : "",
-                    shot_clock: configSons[0]["shot_clock"] ? configSons[0]["shot_clock"] : "",
-                    start_timeout: configSons[0]["start_timeout"] ? configSons[0]["start_timeout"] : "",
-                    timeout_warning: configSons[0]["timeout_warning"] ? configSons[0]["timeout_warning"] : "",
-                    end_timeout: configSons[0]["end_timeout"] ? configSons[0]["end_timeout"] : ""
+                var body = {
+                    id: id,
+                    lista: lista,
+                    caminho: caminho,
+                    tipo_arquivo: tipo_arquivo,
+                    duracao: duracao,
+                    arquivo_data: arquivo_data_base64
                 };
+                listaAnexosTemp.push(body);
 
-                console.log(listaConfiguracoesSons);
             }
-        </script>
-        <!-- Configuração: Inicio -->
-        <script>
-            ipcRenderer.on('reloadAll', (event, args) => {
-                getConfigEquipaTime("1");
-                getConfigEquipaTime("2");
-                getConfigFotos(2);
-                // getConfigSetup();
-                getConfigSons();
-                getConfigCores();
-            })
-            function StartConfigEquipes() {
-                getConfigEquipaTime("1");
-                getConfigEquipaTime("2");
-            }
-            function StartConfigCores() {
-                getConfigCores();
-            }
-            function StartConfigFotos() {
-                getConfigFotos(2);
-            }
-            function StartConfigSetup() {
-                getConfigSetup();
-            }
-            function StartConfigSons() {
-                getConfigSons();
-            }
-            window.onload = function () {
-                StartConfigEquipes();
-                StartConfigCores();
-                StartConfigFotos();
-                StartConfigSetup();
-                StartConfigSons();
 
-                // iniciarCronometro(, true);
+            if (listaAnexosTemp.length <= 0) {
+                console.warn('[Desconto] Nenhum anexo encontrado.');
+                document.querySelector("#anexoArquivoImagemSessao").classList.add("d-none");
+                document.querySelector("#anexoArquivoVideoSessao").classList.add("d-none");
+                return;
             }
-        </script>
 
+            while (true) {
+                for (let i = 0; i < listaAnexosTemp.length; i++) {
+                    duracao = listaAnexosTemp[i]['duracao'];
+                    const anexoAtual = listaAnexosTemp[i];
+                    console.log(`[Desconto] Exibindo anexo ${i}:`, anexoAtual.tipo_arquivo);
+                    verAnexo(anexoAtual);
+                    // console.log(duracao);
+                    await sleep(duracao * 1000);
+                }
+            }
+
+        }
+
+        function verAnexo(anexoAtual) {
+
+            document.querySelector("#anexoArquivoVideo").pause();
+
+            // Usar data URL do BLOB se disponível, senão usar caminho (retro-compatibilidade)
+            let mediaSrc = resolveImageSrcForDisplay(anexoAtual['caminho']);
+            if (anexoAtual['arquivo_data']) {
+                // Check if tipo_arquivo is valid mime type part, otherwise guess
+                let mime = anexoAtual['tipo_arquivo'];
+                // Sometimes type might be just extension like 'png' or 'mp4', needs fixing
+                if (mime === 'png' || mime === 'jpg' || mime === 'jpeg') mime = 'image/' + mime;
+                if (mime === 'mp4' || mime === 'webm') mime = 'video/' + mime;
+
+                mediaSrc = `data:${mime};base64,${anexoAtual['arquivo_data']}`;
+                console.log(`[Desconto] Usando mediaSrc data URI (mime: ${mime})`);
+            } else {
+                console.log(`[Desconto] Usando mediaSrc arquivo: ${mediaSrc}`);
+            }
+
+            // Melhorar verificação de vídeo
+            let isVideo = false;
+            if (anexoAtual['tipo_arquivo']) {
+                const t = anexoAtual['tipo_arquivo'].toLowerCase();
+                if (t.includes('video') || t.includes('mp4') || t.includes('webm') || t.includes('mkv')) {
+                    isVideo = true;
+                }
+            }
+
+            if (isVideo) {
+                document.querySelector("#anexoArquivoVideoSessao").classList.remove("d-none");
+                document.querySelector("#anexoArquivoImagemSessao").classList.add("d-none");
+                document.querySelector("#anexoArquivoVideo source").setAttribute('src', mediaSrc);
+                document.querySelector("#anexoArquivoVideo").load();
+            } else {
+                document.querySelector("#anexoArquivoImagemSessao").classList.remove("d-none");
+                document.querySelector("#anexoArquivoVideoSessao").classList.add("d-none");
+                document.querySelector("#anexoArquivoImagem").setAttribute('src', mediaSrc);
+            }
+        }
+
+    </script>
+
+    <!-- Configuração: Inicio -->
+    <script>
+        ipcRenderer.on('reloadAll', (event, args) => {
+            getConfigEquipaTime("1");
+            getConfigEquipaTime("2");
+            getConfigFotos(2);
+            // getConfigSetup();
+            getConfigSons();
+            getConfigCores();
+        })
+        function StartConfigEquipes() {
+            getConfigEquipaTime("1");
+            getConfigEquipaTime("2");
+        }
+        function StartConfigCores() {
+            getConfigCores();
+        }
+        function StartConfigFotos() {
+            getConfigFotos(3);
+        }
+        function StartConfigSetup() {
+            getConfigSetup(1);
+        }
+        window.onload = function () {
+            StartConfigSetup()
+            StartConfigEquipes();
+            StartConfigCores();
+            StartConfigFotos();
+            getConfigSons();
+        }
+    </script>
+
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
 </body>
 
 </html>

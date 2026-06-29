@@ -432,8 +432,8 @@
             // Número
             var numDiv = document.createElement('div');
             numDiv.className = 'player-number';
-            var camisa = jogador.camisa ? jogador.camisa.toString() : '00';
-            numDiv.textContent = camisa.padStart(2, '0');
+            var camisa = jogador.camisa ? jogador.camisa.toString() : '0';
+            numDiv.textContent = camisa;
 
             // Tocar som/falar não é necessário aqui, é só display visual
 
@@ -478,6 +478,17 @@
             getConfigEquipaTime("1");
             getConfigSetup(); // Inicia cadeia de carregamento (Setup -> Jogadores)
         };
+    </script>
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
     </script>
 </body>
 

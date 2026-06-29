@@ -101,7 +101,8 @@
             min-height: 0;
             max-width: 100%;
             object-fit: contain;
-            object-position: center;
+            object-position: right center;
+            /* Alinha a imagem dentro do container a direita */
         }
 
         .team-name {
@@ -111,7 +112,8 @@
             font-weight: bold;
             color: white;
             margin-top: 10px;
-            text-align: center;
+            text-align: right;
+            /* Alinhar texto a direita para combinar com logo */
         }
 
         /* Grupos de Jogadores - Container unificado */
@@ -425,8 +427,8 @@
             // Número
             var numDiv = document.createElement('div');
             numDiv.className = 'player-number';
-            var camisa = jogador.camisa ? jogador.camisa.toString() : '00';
-            numDiv.textContent = camisa.padStart(2, '0');
+            var camisa = jogador.camisa ? jogador.camisa.toString() : '0';
+            numDiv.textContent = camisa;
 
             // Tocar som/falar não é necessário aqui, é só display visual
 
@@ -469,6 +471,17 @@
             getConfigEquipaTime("2");
             getConfigSetup();
         };
+    </script>
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
     </script>
 </body>
 

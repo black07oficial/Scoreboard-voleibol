@@ -621,6 +621,17 @@
 
     </script>
 
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
 </body>
 
 </html>

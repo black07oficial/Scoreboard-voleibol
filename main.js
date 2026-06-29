@@ -33,8 +33,7 @@ let logStream = null;
  */
 function initLogging() {
   try {
-    // Determinar diretório de logs
-    const logsDir = app.isPackaged
+    const logsDir = (app && app.isPackaged)
       ? path.join("C:\\Scoreboard-voleibol", "logs")
       : path.join(__dirname, "logs");
 
@@ -58,7 +57,7 @@ function initLogging() {
     writeLog("INFO", `Plataforma: ${os.platform()} ${os.arch()}`);
     writeLog("INFO", `Node Version: ${process.version}`);
     writeLog("INFO", `Electron Version: ${process.versions.electron}`);
-    writeLog("INFO", `App Packaged: ${app.isPackaged}`);
+    writeLog("INFO", `App Packaged: ${app ? app.isPackaged : false}`);
     writeLog("INFO", `Exec Path: ${process.execPath}`);
     writeLog("INFO", `CWD: ${process.cwd()}`);
     writeLog("INFO", `__dirname: ${__dirname}`);
@@ -80,22 +79,30 @@ function initLogging() {
     };
 
     console.error = function (...args) {
-      writeLog(
-        "ERROR",
-        args
-          .map((a) => (typeof a === "object" ? JSON.stringify(a) : a))
-          .join(" "),
-      );
+      const safeArgs = args.map((a) => {
+        if (typeof a === "object") {
+          try {
+            const s = JSON.stringify(a);
+            return s.length > 1000 ? s.substring(0, 1000) + '...[TRUNCATED]' : s;
+          } catch (e) { return '[Object]'; }
+        }
+        return typeof a === 'string' && a.length > 1000 ? a.substring(0, 1000) + '...[TRUNCATED]' : a;
+      });
+      writeLog("ERROR", safeArgs.join(" "));
       originalError.apply(console, args);
     };
 
     console.warn = function (...args) {
-      writeLog(
-        "WARN",
-        args
-          .map((a) => (typeof a === "object" ? JSON.stringify(a) : a))
-          .join(" "),
-      );
+      const safeArgs = args.map((a) => {
+        if (typeof a === "object") {
+          try {
+            const s = JSON.stringify(a);
+            return s.length > 1000 ? s.substring(0, 1000) + '...[TRUNCATED]' : s;
+          } catch (e) { return '[Object]'; }
+        }
+        return typeof a === 'string' && a.length > 1000 ? a.substring(0, 1000) + '...[TRUNCATED]' : a;
+      });
+      writeLog("WARN", safeArgs.join(" "));
       originalWarn.apply(console, args);
     };
 
@@ -115,7 +122,9 @@ function writeLog(level, message) {
   if (!logStream) return;
 
   const timestamp = new Date().toISOString();
-  const logLine = `[${timestamp}] [${level}] ${message}\n`;
+  // Truncar mensagens muito grandes para evitar problemas de memória
+  const safeMsg = (message && message.length > 2000) ? message.substring(0, 2000) + '...[TRUNCATED]' : message;
+  const logLine = `[${timestamp}] [${level}] ${safeMsg}\n`;
 
   try {
     logStream.write(logLine);
@@ -156,12 +165,28 @@ function setupWindowErrorLogging(window, windowName) {
     "console-message",
     (event, level, message, line, sourceId) => {
       const levelNames = ["DEBUG", "LOG", "WARN", "ERROR"];
+      // Truncar mensagens muito grandes para evitar crash do V8 Inspector (BLOB data)
+      const safeMessage = (message && message.length > 500) ? message.substring(0, 500) + '...[TRUNCATED]' : message;
       writeLog(
         `RENDERER-${levelNames[level] || "LOG"}`,
-        `[${windowName}] ${message} (${sourceId}:${line})`,
+        `[${windowName}] ${safeMessage} (${sourceId}:${line})`,
       );
     },
   );
+}
+
+/**
+ * Envia mensagem IPC de forma segura, verificando se a janela e webContents
+ * existem e não foram destruídos. Previne o erro "Render frame was disposed".
+ */
+function safeSend(win, channel, ...args) {
+  try {
+    if (win && !win.isDestroyed() && win.webContents && !win.webContents.isDestroyed()) {
+      win.webContents.send(channel, ...args);
+    }
+  } catch (e) {
+    // Silencia erros de frame destruído durante transições/reloads
+  }
 }
 
 // Capturar erros não tratados do processo principal
@@ -175,7 +200,7 @@ process.on("uncaughtException", (error) => {
       "Erro Fatal",
       `${error.message}\n\nVeja o log em: ${logFilePath}`,
     );
-  } catch (e) {}
+  } catch (e) { }
 });
 
 process.on("unhandledRejection", (reason, promise) => {
@@ -192,7 +217,7 @@ let resolvedDataRoot = null;
 function getDataRoot() {
   if (resolvedDataRoot) return resolvedDataRoot;
 
-  const preferred = app.isPackaged ? "C:\\Scoreboard-voleibol" : __dirname;
+  const preferred = (app && app.isPackaged) ? "C:\\Scoreboard-voleibol" : __dirname;
   try {
     fs.ensureDirSync(preferred);
     fs.accessSync(preferred, fs.constants.W_OK);
@@ -220,7 +245,7 @@ function initDb() {
   // Se o banco não existe no destino, copia do local de instalação
   if (!fs.existsSync(targetDbPath)) {
     let sourcePath;
-    if (app.isPackaged) {
+    if (app && app.isPackaged) {
       // O arquivo original fica junto com o executável (extraFiles)
       sourcePath = path.join(
         path.dirname(process.execPath),
@@ -266,6 +291,27 @@ function initDb() {
   } catch (err) {
     console.error("[InitDB] Erro na migração:", err.message);
   }
+
+  // Migração: Adicionar coluna partes_jogo se não existir
+  try {
+    const db2 = new sqlite.Database(targetDbPath);
+    db2.run(
+      `ALTER TABLE config_jogo_setup ADD COLUMN partes_jogo INTEGER DEFAULT 1`,
+      function (err) {
+        if (err && !err.message.includes("duplicate column")) {
+          console.error(
+            "[InitDB] Erro ao adicionar coluna partes_jogo:",
+            err.message,
+          );
+        } else if (!err) {
+          console.log("[InitDB] Coluna partes_jogo adicionada com sucesso.");
+        }
+      },
+    );
+    db2.close();
+  } catch (err) {
+    console.error("[InitDB] Erro na migração partes_jogo:", err.message);
+  }
 }
 
 /**
@@ -309,7 +355,7 @@ let numero_serial = "";
 // ============================================
 // BYPASS DE LICENÇA - ATIVO PARA TODAS PLATAFORMAS
 // ============================================
-var bypassLicense = true; // Altere para false para reativar licenciamento
+var bypassLicense = false; // Altere para false para reativar licenciamento
 if (bypassLicense) {
   console.log("🔓 Bypass de licença ativado (Voleibol)");
   app.whenReady().then(() => {
@@ -317,7 +363,7 @@ if (bypassLicense) {
     initDb();
     try {
       process.chdir(getDataRoot());
-    } catch (e) {}
+    } catch (e) { }
 
     console.log("[Main] App Path:", app.getAppPath());
     console.log("[Main] Exec Path:", process.execPath);
@@ -329,84 +375,154 @@ if (bypassLicense) {
     });
   });
 } else {
-  // Código original do Windows para licenciamento
+  // Licenciamento hardware-bound (igual ao Scoreboard-main)
   const serialNumber = require("serial-number");
   serialNumber.preferUUID = true;
   serialNumber(async function (err, value) {
     numero_serial = value;
-    db = new sqlite.Database(getDbPath());
-    try {
-      rows_security = await new Promise((resolve, reject) => {
-        db.all("SELECT * FROM config_serial", (err, rows) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(rows);
-          }
-        });
-      });
-      configSerial = rows_security[0];
-    } catch (error) {
-      console.error(error.message);
-    }
-    if (configSerial.serial == null) {
-      db.run(`UPDATE config_serial SET serial = '${numero_serial}'`);
-    }
-    try {
-      rows_security = await new Promise((resolve, reject) => {
-        db.all("SELECT * FROM config_serial", (err, rows) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(rows);
-          }
-        });
-      });
-      configSerial = rows_security[0];
-    } catch (error) {
-      console.error(error.message);
-    }
+    console.log('[License] Hardware serial:', numero_serial);
 
-    if (numero_serial == configSerial.serial && configSerial.senha == null) {
-      app.whenReady().then(createWindowImport);
-    } else {
-      const licensePath = path.join(app.getPath("userData"), "license.json");
-      var license = fs.existsSync(licensePath)
-        ? fs.readFileSync(licensePath, "utf-8")
-        : null;
-      var json = null;
-      if (license) {
-        json = JSON.parse(license)[0];
-        console.log(json);
+    app.whenReady().then(async () => {
+      // Inicializar DB
+      initDb();
+
+      // Garantir colunas de licença no banco
+      try {
+        const dbMig = new sqlite.Database(getDbPath());
+        await new Promise((resolve) => {
+          dbMig.run('ALTER TABLE config_serial ADD COLUMN senha TEXT DEFAULT NULL', () => {
+            dbMig.run('ALTER TABLE config_serial ADD COLUMN data_expiration TEXT DEFAULT NULL', () => {
+              dbMig.close();
+              resolve();
+            });
+          });
+        });
+      } catch (e) { /* colunas já existem */ }
+
+      // Ler config_serial do banco
+      let configSerial = null;
+      try {
+        const dbR = new sqlite.Database(getDbPath());
+        configSerial = await new Promise((resolve, reject) => {
+          dbR.get('SELECT * FROM config_serial WHERE id = 1', (e, row) => {
+            dbR.close();
+            if (e) reject(e); else resolve(row);
+          });
+        });
+      } catch (e) {
+        console.error('[License] Erro ao ler config_serial:', e.message);
       }
-      if (json.data_expiration != undefined && json.data_expiration != null) {
-        data_atual = moment();
-        data_vencimento = moment(json.data_expiration);
-        if (
-          data_atual.isSame(data_vencimento) ||
-          data_atual.isAfter(data_vencimento)
-        ) {
-          dialog.showErrorBox("Alerta!", "Licença expirada!");
-          app.exit();
+
+      if (!configSerial) {
+        console.log('[License] config_serial não encontrado. Abrindo importação...');
+        createWindowImport();
+        return;
+      }
+
+      // Se serial não armazenado OU hardware mudou → salva serial e limpa senha
+      if (configSerial.serial == null || configSerial.serial !== numero_serial) {
+        try {
+          const dbU = new sqlite.Database(getDbPath());
+          await new Promise((resolve, reject) => {
+            dbU.run('UPDATE config_serial SET serial = ?, senha = NULL, data_expiration = NULL WHERE id = 1',
+              [numero_serial], function (e) { dbU.close(); if (e) reject(e); else resolve(); });
+          });
+          configSerial.serial = numero_serial;
+          configSerial.senha = null;
+          configSerial.data_expiration = null;
+          console.log('[License] Serial de hardware atualizado no banco.');
+        } catch (e) {
+          console.error('[License] Erro ao salvar serial:', e.message);
         }
       }
-      if (
-        json.serial != configSerial.serial &&
-        json.password != configSerial.senha &&
-        numero_serial != json.serial
-      ) {
-        app.exit();
+
+      // Sem senha → pede importação
+      if (numero_serial === configSerial.serial && (configSerial.senha == null || configSerial.senha === '')) {
+        console.log('[License] Sem senha de licença. Abrindo importação...');
+        createWindowImport();
+        return;
       }
-      if (
-        numero_serial != configSerial.serial ||
-        json.password != configSerial.senha
-      ) {
-        app.exit();
-      } else {
-        app.whenReady().then(createWindow);
+
+      // Senha existe → validar arquivo de licença salvo
+      const savedPathFile = path.join(app.getPath('userData'), 'license_path.txt');
+      let licensePath = null;
+      let licenseJson = null;
+
+      if (fs.existsSync(savedPathFile)) {
+        licensePath = fs.readFileSync(savedPathFile, 'utf-8').trim();
       }
-    }
-    db.close();
+
+      if (!licensePath || !fs.existsSync(licensePath)) {
+        console.log('[License] Arquivo de licença não encontrado em:', licensePath);
+        // Limpar senha para forçar reimportação
+        try {
+          const dbC = new sqlite.Database(getDbPath());
+          await new Promise((resolve) => {
+            dbC.run('UPDATE config_serial SET senha = NULL WHERE id = 1', () => { dbC.close(); resolve(); });
+          });
+        } catch (e) { }
+        const msg = licensePath
+          ? 'O arquivo de licença não foi encontrado em:\n' + licensePath + '\n\nPor favor, importe a licença novamente.'
+          : 'Nenhum arquivo de licença salvo.\n\nPor favor, importe a licença.';
+        dialog.showErrorBox('Alerta!', msg);
+        createWindowImport();
+        return;
+      }
+
+      try {
+        const content = fs.readFileSync(licensePath, 'utf-8');
+        const parsed = JSON.parse(content);
+        licenseJson = Array.isArray(parsed) ? parsed[0] : parsed;
+      } catch (e) {
+        console.error('[License] Erro ao ler arquivo de licença:', e.message);
+      }
+
+      if (!licenseJson) {
+        console.log('[License] Arquivo de licença inválido. Abrindo importação...');
+        createWindowImport();
+        return;
+      }
+
+      // Verificar expiração
+      const expirationDate = licenseJson.data_expiration || configSerial.data_expiration;
+      if (expirationDate && expirationDate !== '') {
+        const data_atual = moment();
+        const data_vencimento = moment(expirationDate);
+        if (data_atual.isSame(data_vencimento, 'day') || data_atual.isAfter(data_vencimento)) {
+          console.log('[License] Licença expirada:', expirationDate);
+          dialog.showErrorBox('Alerta!', 'Sua licença expirou! Por favor, insira uma nova licença.');
+          try {
+            const dbE = new sqlite.Database(getDbPath());
+            await new Promise((resolve) => {
+              dbE.run('UPDATE config_serial SET senha = NULL, data_expiration = NULL WHERE id = 1',
+                () => { dbE.close(); resolve(); });
+            });
+          } catch (e) { }
+          if (fs.existsSync(savedPathFile)) { try { fs.unlinkSync(savedPathFile); } catch (e) { } }
+          createWindowImport();
+          return;
+        }
+      }
+
+      // Validar serial e senha
+      if (numero_serial !== configSerial.serial || licenseJson.password !== configSerial.senha) {
+        console.log('[License] Serial ou senha não confere. Abrindo importação...');
+        if (numero_serial !== configSerial.serial) {
+          dialog.showErrorBox('Licença Inválida', 'O hardware foi alterado ou não pôde ser verificado.\nPor favor, importe a licença novamente.');
+        } else {
+          dialog.showErrorBox('Licença Inválida', 'A senha da licença não corresponde.\nPor favor, importe a licença novamente.');
+        }
+        createWindowImport();
+        return;
+      }
+
+      // Licença válida → abrir aplicação
+      console.log('[License] Licença válida. Abrindo aplicação...');
+      createWindow().catch((e) => {
+        console.error('Erro ao criar janela:', e);
+        dialog.showErrorBox('Erro ao iniciar', e.message);
+      });
+    });
   });
 }
 let importWindow;
@@ -422,6 +538,7 @@ async function createWindowImport() {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
   // if (process.env.NODE_ENV !== 'development') {
   importWindow.setMenuBarVisibility(false);
@@ -472,6 +589,11 @@ function checkAndApplyMigration() {
       },
       {
         table: "config_jogo_setup",
+        column: "email_destinatario",
+        type: "TEXT DEFAULT ''",
+      },
+      {
+        table: "config_jogo_setup",
         column: "banner_web_enabled",
         type: "INTEGER DEFAULT 0",
       },
@@ -517,6 +639,16 @@ function checkAndApplyMigration() {
         table: "config_banner_color",
         column: "faltas_bg_color",
         type: "TEXT(30) DEFAULT ''",
+      },
+      {
+        table: "config_jogo_setup",
+        column: "music_folder",
+        type: "TEXT DEFAULT ''",
+      },
+      {
+        table: "config_jogo_setup",
+        column: "video_folder",
+        type: "TEXT DEFAULT ''",
       },
     ];
 
@@ -627,6 +759,7 @@ async function createWindow() {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
   janelas.push(firstWindow);
   // if (process.env.NODE_ENV !== 'development') {
@@ -649,7 +782,7 @@ async function createWindow() {
 
   // Em produção ASAR, verificar caminho alternativo
   let fileToLoad = indexPath;
-  if (!fs.existsSync(indexPath) && app.isPackaged) {
+  if (!fs.existsSync(indexPath) && (app && app.isPackaged)) {
     const unpackedPath = path.join(
       path.dirname(process.execPath),
       "resources",
@@ -684,7 +817,7 @@ async function createWindow() {
   try {
     const appPath = app.getAppPath();
     const execDir = path.dirname(process.execPath);
-    const appBasePath = app.isPackaged ? execDir : __dirname;
+    const appBasePath = (app && app.isPackaged) ? execDir : __dirname;
     const assetsPath = getUserAssetsPath();
 
     bannerServer.setAppBasePath(appBasePath);
@@ -772,6 +905,7 @@ function createSecondWindow(route) {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
 
   // Configurar logging de erros
@@ -805,6 +939,7 @@ function createConfigWindow(route) {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
 
   // Configurar logging de erros
@@ -899,6 +1034,7 @@ function createThirdWindow(route) {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
 
   // Configurar logging de erros
@@ -924,6 +1060,8 @@ function createFourthWindow() {
     minWidth: 900,
     minHeight: 300,
     closable: true,
+    resizable: false,
+    maximizable: false,
     autoHideMenuBar: true,
     fullscreen: configMonitor[3].fullscreen == 0 ? false : true,
     icon: path.join(__dirname, "resources/images/icon.png"),
@@ -932,6 +1070,7 @@ function createFourthWindow() {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
 
   // Configurar logging de erros
@@ -964,6 +1103,7 @@ function createFifthWindow() {
       contextIsolation: false,
       enableRemoteModule: true,
     },
+    backgroundColor: '#000000',
   });
 
   // Configurar logging de erros
@@ -998,34 +1138,40 @@ function updateFifthWindow(route) {
 }
 ipcMain.on("tempoJogo", (event, data) => {
   if (secondWindow) {
-    secondWindow.webContents.send("tempoJogo", data);
+    safeSend(secondWindow, "tempoJogo", data);
   }
 });
 ipcMain.on("getClickedButton", (event, data) => {
   if (secondWindow) {
-    secondWindow.webContents.send("getClickedButton", data);
+    safeSend(secondWindow, "getClickedButton", data);
   }
   if (fourthWindow) {
-    fourthWindow.webContents.send("getClickedButton", data);
+    safeSend(fourthWindow, "getClickedButton", data);
   }
   // Atualizar banner web
   bannerServer.updateServe(data);
 });
 ipcMain.on("reload", (event, arg) => {
   if (firstWindow) {
-    firstWindow.webContents.send("reloadAll", arg);
+    safeSend(firstWindow, "force-graceful-reload");
   }
   if (secondWindow) {
-    secondWindow.webContents.send("reloadAll", arg);
+    safeSend(secondWindow, "force-graceful-reload");
+  }
+  if (thirdWindow) {
+    safeSend(thirdWindow, "force-graceful-reload");
   }
   if (fourthWindow) {
-    fourthWindow.webContents.send("reloadAll", arg);
+    safeSend(fourthWindow, "force-graceful-reload");
+  }
+  if (fifthWindow) {
+    safeSend(fifthWindow, "force-graceful-reload");
   }
   // Sincronizar com banner web
   syncBannerConfigToServer();
 });
 ipcMain.on("sendNovoSet", (event, arg) => {
-  if (secondWindow) secondWindow.webContents.send("sendNovoSet", arg);
+  safeSend(secondWindow, "sendNovoSet", arg);
 });
 ipcMain.on("solicitarLicenca", async (event, data) => {
   const db = new sqlite.Database(getDbPath());
@@ -1048,19 +1194,15 @@ ipcMain.on("solicitarLicenca", async (event, data) => {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "ideiasdeletra@gmail.com",
-      pass: "jdgnujxoojrbidex",
+      user: "pcscoreboard26@gmail.com",
+      pass: "bmuqemjdiaprjrmw",
     },
   });
   const mailOptions = {
-    from: "ideiasdeletra@gmail.com",
-    to: "vitor@ideiasdeletra.com",
-    subject: "Número de Serial",
-    text: `Olá, segue a solicitação da licença do scoreboard.
-    Segue as informações:
-      Email: ${data.email}
-      Serial: ${serial}
-    `,
+    from: '"Scoreboard" <pcscoreboard@ideiasdeletra.com>',
+    to: "pcscoreboard26@gmail.com",
+    subject: "Scoreboard Voleibol - Solicitação de Licença",
+    text: `Solicitação de licença:\n\nEmail do cliente: ${data.email}\nSerial: ${serial}\n\nData: ${new Date().toISOString()}`,
   };
 
   // Enviar o e-mail
@@ -1071,72 +1213,115 @@ ipcMain.on("solicitarLicenca", async (event, data) => {
       console.log("E-mail enviado com sucesso:", info.response);
     }
   });
-  importWindow.webContents.send(
+  safeSend(importWindow,
     "encaminhadoEmail",
     "Licença solicitada com sucesso!",
   );
 });
-ipcMain.on("importarLicenca", async (event, data) => {
-  var arquivo = data;
-  console.log(arquivo);
-  var configLicense;
-  const filePath = arquivo.arquivo;
-  console.log(filePath);
-  const newFilePath = path.join(app.getPath("userData"), "license.json");
-  fs.copyFileSync(filePath, newFilePath);
-  var newFile = fs.readFileSync(newFilePath, "utf-8");
-  var json = JSON.parse(newFile);
-  if ("serial" in json[0]) {
-    db = new sqlite.Database(getDbPath());
+ipcMain.on("selecionarArquivoLicenca", async (event) => {
+  const result = await dialog.showOpenDialog(importWindow, {
+    title: 'Selecione o arquivo de licença',
+    properties: ['openFile'],
+    filters: [{ name: 'JSON', extensions: ['json'] }]
+  });
+  if (!result.canceled && result.filePaths.length > 0) {
+    const filePath = result.filePaths[0];
     try {
-      rows = await new Promise((resolve, reject) => {
-        db.all("SELECT * FROM config_serial", (err, rows) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(rows);
-          }
-        });
-      });
-      configLicense = rows[0];
-    } catch (error) {
-      console.error(error.message);
+      const conteudo = fs.readFileSync(filePath, 'utf-8');
+      event.reply('licencaSelecionada', { arquivo: filePath, conteudo: conteudo });
+    } catch (e) {
+      dialog.showErrorBox("Erro", "Não foi possível ler o arquivo de licença.");
     }
-    if (configLicense.serial !== json[0].serial) {
-      importWindow.webContents.send(
-        "atualizarLicenca-erro",
-        "Licença não válida!",
-      );
-      return;
-    }
-    if (configLicense.senha === null) {
-      db.run(`UPDATE config_serial SET senha = '${json[0].password}'`);
-      if (
-        configLicense.data_expiration === null &&
-        json[0].data_expiration !== null &&
-        json[0].data_expiration !== undefined &&
-        json[0].data_expiration !== ""
-      ) {
-        db.run(
-          `UPDATE config_serial SET data_expiration = '${json[0].data_expiration}'`,
-        );
-      }
-      db.close();
-      importWindow.webContents.send(
-        "atualizarLicenca",
-        "Licença importada com sucesso!",
-      );
-    }
-  } else {
-    importWindow.webContents.send(
-      "atualizarLicenca-erro",
-      "Licença não válida!",
-    );
-    return;
   }
 });
-ipcMain.on("abrirTelas", (event, data) => {
-  createWindow();
+
+ipcMain.on("importarLicenca", async (event, data) => {
+  try {
+    const filePath = data.arquivo;
+    const conteudo = data.conteudo;
+    console.log('[License] Importando licença de:', filePath);
+
+    // Salvar caminho do arquivo em license_path.txt (igual ao Scoreboard-main)
+    const savedPathFile = path.join(app.getPath('userData'), 'license_path.txt');
+    if (filePath) {
+      fs.writeFileSync(savedPathFile, filePath, 'utf-8');
+      console.log('[License] Caminho salvo em license_path.txt:', filePath);
+    }
+
+    // Ler conteúdo
+    let fileContent = conteudo;
+    if (!fileContent) {
+      if (!filePath || !fs.existsSync(filePath)) {
+        safeSend(importWindow, 'atualizarLicenca-erro', 'Arquivo de licença não encontrado.');
+        return;
+      }
+      fileContent = fs.readFileSync(filePath, 'utf-8');
+    }
+
+    // Parse JSON
+    let json;
+    try {
+      json = JSON.parse(fileContent);
+    } catch (e) {
+      safeSend(importWindow, 'atualizarLicenca-erro', 'Arquivo de licença inválido (JSON mal formatado).');
+      return;
+    }
+
+    const lic = Array.isArray(json) ? json[0] : json;
+
+    if (!lic || !('serial' in lic)) {
+      safeSend(importWindow, 'atualizarLicenca-erro', 'Licença inválida: campo serial em falta.');
+      return;
+    }
+
+    // Usar numero_serial global (já obtido no início, sem nova chamada ao serialNumber)
+    console.log('[License] Serial da licença:', lic.serial);
+    console.log('[License] Serial do hardware:', numero_serial);
+
+    if (numero_serial !== lic.serial) {
+      safeSend(importWindow, 'atualizarLicenca-erro',
+        'Licença não válida para este computador.\n\nSerial da licença: ' + lic.serial + '\nSerial deste PC: ' + numero_serial);
+      return;
+    }
+
+    // Atualizar banco de dados
+    const dbW = new sqlite.Database(getDbPath());
+    await new Promise((resolve, reject) => {
+      dbW.run('UPDATE config_serial SET serial = ?, senha = ? WHERE id = 1',
+        [lic.serial, lic.password], function (e) {
+          if (e) reject(e); else resolve();
+        });
+    });
+
+    if (lic.data_expiration != null && lic.data_expiration !== undefined && lic.data_expiration !== '') {
+      await new Promise((resolve) => {
+        dbW.run('UPDATE config_serial SET data_expiration = ? WHERE id = 1',
+          [lic.data_expiration], () => resolve());
+      });
+    } else {
+      // Limpar data_expiration se a nova licença não tem
+      await new Promise((resolve) => {
+        dbW.run('UPDATE config_serial SET data_expiration = NULL WHERE id = 1', () => resolve());
+      });
+    }
+    dbW.close();
+
+    console.log('[License] Licença importada com sucesso. serial=', lic.serial, 'expires=', lic.data_expiration || 'nunca');
+    safeSend(importWindow, 'atualizarLicenca', 'Licença importada com sucesso!');
+  } catch (e) {
+    console.error('[License] Erro ao importar licença:', e.message);
+    safeSend(importWindow, 'atualizarLicenca-erro', 'Erro ao importar licença: ' + e.message);
+  }
+});
+
+ipcMain.on("abrirTelas", async (event, data) => {
+  console.log('[License] abrirTelas: Licença aceite, abrindo aplicação...');
+  try {
+    await createWindow();
+  } catch (e) {
+    console.error('Erro ao criar janela principal:', e);
+    dialog.showErrorBox('Erro ao iniciar', e.message);
+  }
 });
 
 // Função para sincronizar configurações com o banner streaming server
@@ -1258,6 +1443,7 @@ async function syncBannerConfigToServer() {
       camisaVisitadaColor: cores?.camisa_visitada_color || "",
       camisaVisitanteColor: cores?.camisa_visitante_color || "",
       // === Cores do banner (config_banner_color) ===
+      fundoColor: cores?.fundo_color || "",
       golosColor: cores?.golos_color || "",
       faltasColor: cores?.faltas_color || "",
       equipaNomeColor: cores?.equipa_nome_color || "",
@@ -1278,9 +1464,43 @@ async function syncBannerConfigToServer() {
   }
 }
 
+function updateSecondWindow(route) {
+  if (secondWindow) {
+    secondWindow.loadFile(path.join(__dirname, "views", route));
+    // Re-send desconto painel state after placar loads
+    if (route === 'placar.html') {
+      secondWindow.webContents.once('did-finish-load', () => {
+        if (descontoPainelState.equipe1 !== null) {
+          safeSend(secondWindow, 'setDescontoPainel', descontoPainelState.equipe1);
+        }
+        if (descontoPainelState.equipe2 !== null) {
+          safeSend(secondWindow, 'setDescontoPainel', descontoPainelState.equipe2);
+        }
+        if (atualizaDescontoState !== null) {
+          safeSend(secondWindow, 'atualizaDesconto', atualizaDescontoState);
+        }
+      });
+    }
+  }
+}
+
 ipcMain.on("openSecondWindow", (event, data) => {
   if (!secondWindow) {
     createSecondWindow(data);
+    // Re-send desconto painel state after placar loads
+    if (data === 'placar.html') {
+      secondWindow.webContents.once('did-finish-load', () => {
+        if (descontoPainelState.equipe1 !== null) {
+          safeSend(secondWindow, 'setDescontoPainel', descontoPainelState.equipe1);
+        }
+        if (descontoPainelState.equipe2 !== null) {
+          safeSend(secondWindow, 'setDescontoPainel', descontoPainelState.equipe2);
+        }
+        if (atualizaDescontoState !== null) {
+          safeSend(secondWindow, 'atualizaDesconto', atualizaDescontoState);
+        }
+      });
+    }
   } else {
     updateSecondWindow(data);
   }
@@ -1309,7 +1529,8 @@ ipcMain.on("save-config-setup", (event, data) => {
     toque_buzinar_final = ?,
     tocar_ao_finalizar_desconto = ?,
     mostrar_ataque = ?,
-    tocar_ao_finalizar_ataque = ?
+    tocar_ao_finalizar_ataque = ?,
+    partes_jogo = ?
     WHERE id = 1`;
 
   const params = [
@@ -1334,6 +1555,7 @@ ipcMain.on("save-config-setup", (event, data) => {
     data.tocar_ao_finalizar_desconto,
     data.mostrar_ataque,
     data.tocar_ao_finalizar_ataque,
+    data.partes_jogo || 1,
   ];
 
   db.run(sql, params, function (err) {
@@ -1356,33 +1578,36 @@ ipcMain.on("copyToClipboard", (event, text) => {
 });
 
 ipcMain.on("getDisplays", (event, data) => {
-  configWindow.webContents.send("getDisplays_", screen.getAllDisplays());
+  safeSend(configWindow, "getDisplays_", screen.getAllDisplays());
 });
 
 ipcMain.on("alterarPontuacaoPlacar", (event, arg) => {
   if (secondWindow) {
-    secondWindow.webContents.send("updatesFromControl", arg);
+    safeSend(secondWindow, "updatesFromControl", arg);
   } // sends the stuff from Window1 to Window2.
   if (thirdWindow) {
-    thirdWindow.webContents.send("updatesFromControl", arg); // sends the stuff from Window1 to Window2.
+    safeSend(thirdWindow, "updatesFromControl", arg); // sends the stuff from Window1 to Window2.
   }
   if (fourthWindow) {
-    fourthWindow.webContents.send("updatesFromControl", arg);
+    safeSend(fourthWindow, "updatesFromControl", arg);
   }
   if (fifthWindow) {
-    fifthWindow.webContents.send("updatesFromControl", arg);
+    safeSend(fifthWindow, "updatesFromControl", arg);
   }
   // Atualizar banner web
   bannerServer.updatePontuacao(arg);
 });
 
+let atualizaDescontoState = null;
+
 ipcMain.on("atualizarDesconto", (event, data) => {
-  if (secondWindow) secondWindow.webContents.send("atualizaDesconto", data);
+  atualizaDescontoState = data;
+  safeSend(secondWindow, "atualizaDesconto", data);
 });
 
 ipcMain.on("alterarPosicao", (event, data) => {
   console.log(data);
-  if (secondWindow) secondWindow.webContents.send("alterarPosicao", data);
+  safeSend(secondWindow, "alterarPosicao", data);
 });
 
 ipcMain.on("exportar-equipe-1", async (event, data) => {
@@ -1560,9 +1785,9 @@ ipcMain.on("exportar-t3", async (event, data) => {
 });
 ipcMain.on("validPassword", async (event, arg) => {
   if (arg === "Scoreboard@2310") {
-    configWindow.webContents.send("validPassword", true);
+    safeSend(configWindow, "validPassword", true);
   } else {
-    configWindow.webContents.send("validPassword", false);
+    safeSend(configWindow, "validPassword", false);
   }
 });
 ipcMain.on("exportar-equipe-2", async (event, data) => {
@@ -1735,48 +1960,56 @@ ipcMain.on("atualizacaoTelas", async (event, data) => {
   }
 });
 ipcMain.on("alterarCronometro", (event, arg) => {
-  if (secondWindow) secondWindow.webContents.send("updateCronometro", arg); // sends the stuff from Window1 to Window2.
-  if (thirdWindow) thirdWindow.webContents.send("updateCronometro", arg);
-  if (fourthWindow) fourthWindow.webContents.send("updateCronometro", arg);
-  if (fifthWindow) fifthWindow.webContents.send("updateCronometro", arg);
+  safeSend(secondWindow, "updateCronometro", arg); // sends the stuff from Window1 to Window2.
+  safeSend(thirdWindow, "updateCronometro", arg);
+  safeSend(fourthWindow, "updateCronometro", arg);
+  safeSend(fifthWindow, "updateCronometro", arg);
   // Atualizar banner web
   bannerServer.updateCronometro(arg);
 });
 
 ipcMain.on("sendCronometroFixed", (event, arg) => {
-  if (secondWindow) secondWindow.webContents.send("listingCronometro", arg);
+  safeSend(secondWindow, "listingCronometro", arg);
 });
 
 ipcMain.on("sendCronometroAquecimento", (event, arg) => {
-  if (firstWindow) firstWindow.webContents.send("updateAquecimento", arg);
+  safeSend(firstWindow, "updateAquecimento", arg);
 });
 
 ipcMain.on("sendCronometroDesconto", (event, arg) => {
-  if (firstWindow) firstWindow.webContents.send("updateDesconto", arg);
+  safeSend(firstWindow, "updateDesconto", arg);
 });
 
 ipcMain.on("sendCronometroIntervalo", (event, arg) => {
-  if (firstWindow) firstWindow.webContents.send("updateIntervalo", arg);
+  safeSend(firstWindow, "updateIntervalo", arg);
 });
 
 ipcMain.on("solicitaAtualizacoes", (event, arg) => {
-  if (firstWindow) firstWindow.webContents.send("getInformacoesPartida", arg);
+  safeSend(firstWindow, "getInformacoesPartida", arg);
 });
 
 ipcMain.on("sendInformacoesPartida", (event, arg) => {
-  if (secondWindow)
-    secondWindow.webContents.send("loadInformacoesPartida", arg);
+  safeSend(secondWindow, "loadInformacoesPartida", arg);
 });
 
 ipcMain.on("sendNovaExclusao", (event, arg) => {
-  if (secondWindow) secondWindow.webContents.send("addNovaExclusao", arg);
+  safeSend(secondWindow, "addNovaExclusao", arg);
   // Atualizar banner web com exclusões
   bannerServer.updateExclusao(arg);
 });
 
+// Store desconto painel state so it can be re-sent when placar reloads
+let descontoPainelState = { equipe1: null, equipe2: null };
+
 ipcMain.on("sendDescontoPainel", (event, arg) => {
-  if (secondWindow) secondWindow.webContents.send("setDescontoPainel", arg);
-  if (firstWindow) firstWindow.webContents.send("setDescontoPainel", arg);
+  // Store the state
+  if (arg.origem === 'btn-desconto-equipe1') {
+    descontoPainelState.equipe1 = arg;
+  } else {
+    descontoPainelState.equipe2 = arg;
+  }
+  safeSend(secondWindow, "setDescontoPainel", arg);
+  safeSend(firstWindow, "setDescontoPainel", arg);
 });
 
 ipcMain.handle("get-user-assets-path", () => {
@@ -1827,7 +2060,7 @@ ipcMain.on("verificarArquivo", async (event, arg) => {
     data = "existe";
   }
   console.log(data);
-  configWindow.webContents.send("arquivoVerificado", data);
+  safeSend(configWindow, "arquivoVerificado", data);
 });
 
 ipcMain.on("excluirArquivo", async (event, arg) => {
@@ -1868,6 +2101,16 @@ ipcMain.on("select-music-folder", async (event) => {
   });
   if (!result.canceled && result.filePaths.length > 0) {
     const folderPath = result.filePaths[0];
+    try {
+        const dbPath = getDbPath();
+        const dbM = new sqlite.Database(dbPath);
+        await new Promise((resolve) => {
+            dbM.run('UPDATE config_jogo_setup SET music_folder = ? WHERE id = 1', [folderPath], () => {
+                dbM.close();
+                resolve();
+            });
+        });
+    } catch(e) {}
     event.sender.send("music-folder-selected", folderPath);
     // Carregar arquivos automaticamente
     loadMusicFilesFromFolder(event.sender, folderPath);
@@ -1896,11 +2139,124 @@ function loadMusicFilesFromFolder(sender, folderPath) {
   }
 }
 
+// ====== Video Player - Seleção de pasta de vídeos ======
+ipcMain.on("select-video-folder", async (event) => {
+  const result = await dialog.showOpenDialog({
+    properties: ["openDirectory"],
+    title: "Selecione a pasta de vídeos",
+  });
+  if (!result.canceled && result.filePaths.length > 0) {
+    const folderPath = result.filePaths[0];
+    try {
+        const dbPath = getDbPath();
+        const dbV = new sqlite.Database(dbPath);
+        await new Promise((resolve) => {
+            dbV.run('UPDATE config_jogo_setup SET video_folder = ? WHERE id = 1', [folderPath], () => {
+                dbV.close();
+                resolve();
+            });
+        });
+    } catch(e) {}
+    event.sender.send("video-folder-selected", folderPath);
+    // Carregar arquivos automaticamente
+    try {
+      const files = fs.readdirSync(folderPath);
+      const videoExtensions = [".mp4", ".webm", ".avi", ".mkv", ".mov", ".wmv"];
+      const videoFiles = files
+        .filter((file) =>
+          videoExtensions.includes(path.extname(file).toLowerCase()),
+        )
+        .map((file) => path.join(folderPath, file));
+      event.sender.send("video-files-loaded", videoFiles);
+      console.log(`🎬 ${videoFiles.length} vídeos carregados de ${folderPath}`);
+    } catch (err) {
+      console.error("Erro ao carregar vídeos:", err);
+      event.sender.send("video-files-loaded", []);
+    }
+  }
+});
+
+ipcMain.on('load-video-files', (event, folderPath) => {
+    try {
+        if (fs.existsSync(folderPath)) {
+            const files = fs.readdirSync(folderPath);
+            const videoExtensions = [".mp4", ".webm", ".avi", ".mkv", ".mov", ".wmv"];
+            const videoFiles = files
+                .filter((file) => videoExtensions.includes(path.extname(file).toLowerCase()))
+                .map((file) => path.join(folderPath, file));
+            event.sender.send("video-files-loaded", videoFiles);
+        } else {
+            event.sender.send("video-files-loaded", []);
+        }
+    } catch (err) {
+        console.error("Erro ao carregar vídeos:", err);
+        event.sender.send("video-files-loaded", []);
+    }
+});
+
+ipcMain.handle('get-saved-folders', async () => {
+    const dbPath = getDbPath();
+    const dbF = new sqlite.Database(dbPath);
+    try {
+        return await new Promise((resolve) => {
+            dbF.get('SELECT music_folder, video_folder FROM config_jogo_setup WHERE id = 1', (err, row) => {
+                dbF.close();
+                if (err) resolve({ music_folder: '', video_folder: '' });
+                else resolve(row || { music_folder: '', video_folder: '' });
+            });
+        });
+    } catch (e) {
+        return { music_folder: '', video_folder: '' };
+    }
+});
+
+// Video Player - Exibir vídeo no placar (secondWindow)
+ipcMain.on("play-video-placar", (event, filePath) => {
+  if (secondWindow) {
+    safeSend(secondWindow, "play-video-placar", filePath);
+  }
+});
+
+// Video Player - Parar vídeo no placar
+ipcMain.on("stop-video-placar", (event) => {
+  if (secondWindow) {
+    safeSend(secondWindow, "stop-video-placar");
+  }
+});
+
+// Video Player - Ajustar volume no placar
+ipcMain.on("set-video-volume", (event, value) => {
+  if (secondWindow) {
+    safeSend(secondWindow, "set-video-volume", value);
+  }
+});
+
+// Video Player - Atualizar progresso no placar
+ipcMain.on("video-progress-update", (event, progress) => {
+  if (firstWindow) {
+    safeSend(firstWindow, "video-progress-update", progress);
+  }
+});
+
+// Video Player - Definir progresso do placar
+ipcMain.on("set-video-progress", (event, progress) => {
+  if (secondWindow) {
+    safeSend(secondWindow, "set-video-progress", progress);
+  }
+});
+
+// Video Player - Pausar/Retomar vídeo no placar
+ipcMain.on("pause-video-placar", (event) => {
+  if (secondWindow) {
+    safeSend(secondWindow, "pause-video-placar");
+  }
+});
+
 // ====== Controles de Apresentação de Jogadores ======
 // Recebe status da apresentação e retransmite para o painel
 ipcMain.on("presentation-status", (event, status) => {
   if (firstWindow && firstWindow.webContents) {
-    firstWindow.webContents.send("presentation-status-update", status);
+    safeSend(firstWindow, "presentation-status-update", status);
   }
 });
 
@@ -1911,35 +2267,35 @@ ipcMain.on("presentation-status", (event, status) => {
 // Comandos: Control Panel (index.html) -> Presentation Windows
 ipcMain.on("presentation-control-pause", (event) => {
   if (secondWindow && !secondWindow.isDestroyed())
-    secondWindow.webContents.send("presentation-control-pause");
+    safeSend(secondWindow, "presentation-control-pause");
   if (thirdWindow && !thirdWindow.isDestroyed())
-    thirdWindow.webContents.send("presentation-control-pause");
+    safeSend(thirdWindow, "presentation-control-pause");
   if (fourthWindow && !fourthWindow.isDestroyed())
-    fourthWindow.webContents.send("presentation-control-pause");
+    safeSend(fourthWindow, "presentation-control-pause");
   if (fifthWindow && !fifthWindow.isDestroyed())
-    fifthWindow.webContents.send("presentation-control-pause");
+    safeSend(fifthWindow, "presentation-control-pause");
 });
 
 ipcMain.on("presentation-control-next", (event) => {
   if (secondWindow && !secondWindow.isDestroyed())
-    secondWindow.webContents.send("presentation-control-next");
+    safeSend(secondWindow, "presentation-control-next");
   if (thirdWindow && !thirdWindow.isDestroyed())
-    thirdWindow.webContents.send("presentation-control-next");
+    safeSend(thirdWindow, "presentation-control-next");
   if (fourthWindow && !fourthWindow.isDestroyed())
-    fourthWindow.webContents.send("presentation-control-next");
+    safeSend(fourthWindow, "presentation-control-next");
   if (fifthWindow && !fifthWindow.isDestroyed())
-    fifthWindow.webContents.send("presentation-control-next");
+    safeSend(fifthWindow, "presentation-control-next");
 });
 
 ipcMain.on("presentation-control-prev", (event) => {
   if (secondWindow && !secondWindow.isDestroyed())
-    secondWindow.webContents.send("presentation-control-prev");
+    safeSend(secondWindow, "presentation-control-prev");
   if (thirdWindow && !thirdWindow.isDestroyed())
-    thirdWindow.webContents.send("presentation-control-prev");
+    safeSend(thirdWindow, "presentation-control-prev");
   if (fourthWindow && !fourthWindow.isDestroyed())
-    fourthWindow.webContents.send("presentation-control-prev");
+    safeSend(fourthWindow, "presentation-control-prev");
   if (fifthWindow && !fifthWindow.isDestroyed())
-    fifthWindow.webContents.send("presentation-control-prev");
+    safeSend(fifthWindow, "presentation-control-prev");
 });
 
 // Solicitacao de status (Handshake inicial)
@@ -1947,19 +2303,19 @@ ipcMain.on("presentation-get-status", (event) => {
   // Envia solicitacao para todas as janelas de apresentacao
   // Elas irao responder com presentation-status-update se estiverem ativas
   if (secondWindow && !secondWindow.isDestroyed())
-    secondWindow.webContents.send("presentation-get-status");
+    safeSend(secondWindow, "presentation-get-status");
   if (thirdWindow && !thirdWindow.isDestroyed())
-    thirdWindow.webContents.send("presentation-get-status");
+    safeSend(thirdWindow, "presentation-get-status");
   if (fourthWindow && !fourthWindow.isDestroyed())
-    fourthWindow.webContents.send("presentation-get-status");
+    safeSend(fourthWindow, "presentation-get-status");
   if (fifthWindow && !fifthWindow.isDestroyed())
-    fifthWindow.webContents.send("presentation-get-status");
+    safeSend(fifthWindow, "presentation-get-status");
 });
 
 // Status: Presentation Windows -> Control Panel (index.html)
 ipcMain.on("presentation-status-update", (event, status) => {
   if (firstWindow && !firstWindow.isDestroyed()) {
-    firstWindow.webContents.send("presentation-status-update", status);
+    safeSend(firstWindow, "presentation-status-update", status);
   }
 });
 
@@ -1974,7 +2330,7 @@ function startServeoTunnel(sender = null) {
       if (sender && !sender.isDestroyed())
         sender.send("updateBannerUrl", activeTunnel.publicUrl + "/banner2");
       if (configWindow && !configWindow.isDestroyed())
-        configWindow.webContents.send(
+        safeSend(configWindow,
           "updateBannerUrl",
           activeTunnel.publicUrl + "/banner2",
         );
@@ -2018,9 +2374,9 @@ function startServeoTunnel(sender = null) {
       try {
         if (sender && !sender.isDestroyed())
           sender.send("updateBannerUrl", finalUrl);
-      } catch (e) {}
+      } catch (e) { }
       if (configWindow && !configWindow.isDestroyed())
-        configWindow.webContents.send("updateBannerUrl", finalUrl);
+        safeSend(configWindow, "updateBannerUrl", finalUrl);
     }
   });
 
@@ -2039,9 +2395,9 @@ function startServeoTunnel(sender = null) {
       try {
         if (sender && !sender.isDestroyed())
           sender.send("updateBannerUrl", finalUrl);
-      } catch (e) {}
+      } catch (e) { }
       if (configWindow && !configWindow.isDestroyed())
-        configWindow.webContents.send("updateBannerUrl", finalUrl);
+        safeSend(configWindow, "updateBannerUrl", finalUrl);
     }
   });
 
@@ -2068,7 +2424,7 @@ function startServeoTunnel(sender = null) {
     try {
       if (sender && !sender.isDestroyed())
         sender.send("updateBannerUrl", "Erro: SSH não disponível");
-    } catch (e) {}
+    } catch (e) { }
   });
 }
 
@@ -2084,9 +2440,9 @@ function stopServeoTunnel(sender = null) {
   try {
     if (sender && !sender.isDestroyed())
       sender.send("updateBannerUrl", localUrl);
-  } catch (e) {}
+  } catch (e) { }
   if (configWindow && !configWindow.isDestroyed())
-    configWindow.webContents.send("updateBannerUrl", localUrl);
+    safeSend(configWindow, "updateBannerUrl", localUrl);
 }
 
 // Toggle Banner Web Server em tempo real
@@ -2205,25 +2561,107 @@ ipcMain.handle("getBannerWebStatus", async (event) => {
 
   return new Promise((resolve, reject) => {
     db.get(
-      "SELECT banner_web_enabled FROM config_jogo_setup WHERE id = 1",
+      "SELECT banner_web_enabled, email_destinatario FROM config_jogo_setup WHERE id = 1",
       (err, row) => {
         db.close();
         if (err) {
           console.error("Erro ao ler banner_web_enabled:", err);
-          resolve(false);
+          resolve({ enabled: false, url: null, email: '' });
         } else {
           const status = row && row.banner_web_enabled == 1;
+          const userEmail = row && row.email_destinatario ? row.email_destinatario : '';
+          const currentUrl = status && activeTunnel && activeTunnel.publicUrl ? activeTunnel.publicUrl + "/banner2" : null;
+
           if (status && activeTunnel && activeTunnel.publicUrl) {
             event.sender.send(
               "updateBannerUrl",
-              activeTunnel.publicUrl + "/banner2",
+              currentUrl,
             );
           }
-          resolve(status);
+          resolve({ enabled: status, url: currentUrl, email: userEmail });
         }
       },
     );
   });
+});
+
+// -- Save Email Destinatário --
+ipcMain.handle('saveEmailDestinatario', async (event, email) => {
+  try {
+    const dbPath = getDbPath();
+    const db = new sqlite.Database(dbPath);
+    await new Promise((resolve, reject) => {
+      db.run('UPDATE config_jogo_setup SET email_destinatario = ? WHERE id = 1', [email || ''], (err) => {
+        db.close();
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+    return { success: true };
+  } catch (e) {
+    console.error('saveEmailDestinatario error: ' + e.message);
+    return { success: false, error: e.message };
+  }
+});
+
+// -- Silent Email --
+ipcMain.on('emailBannerUrl', async (event, url) => {
+  console.log('IPC: emailBannerUrl -> ' + url);
+  try {
+    // Ler email do destinatário do banco de dados
+    let emailDestinatario = '';
+    const dbPath = getDbPath();
+    const db = new sqlite.Database(dbPath);
+    try {
+      const row = await new Promise((resolve, reject) => {
+        db.get('SELECT email_destinatario FROM config_jogo_setup WHERE id = 1', (err, r) => {
+          if (err) reject(err);
+          else resolve(r);
+        });
+      });
+      if (row && row.email_destinatario) emailDestinatario = row.email_destinatario;
+    } catch (e) {
+      console.log('Erro ao ler email_destinatario: ' + e.message);
+    } finally {
+      db.close();
+    }
+
+    if (!emailDestinatario) {
+      console.log('Nenhum email destinatário configurado');
+      if (event.sender && !event.sender.isDestroyed()) {
+        event.sender.send('sendEmailResult', { success: false, error: 'Nenhum email destinatário configurado. Defina nas Configurações.' });
+      }
+      return;
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: "pcscoreboard26@gmail.com",
+        pass: "bmuqemjdiaprjrmw",
+      }
+    });
+
+    const mailOptions = {
+      from: '"Scoreboard" <pcscoreboard26@gmail.com>',
+      to: emailDestinatario,
+      subject: "Scoreboard - Link do Banner Web",
+      text: `Olá,\n\nAqui está o link de acesso ao Banner Web:\n\n${url}\n\nObrigado.`,
+      html: `<p>Olá,</p><p>Aqui está o link de acesso ao Banner Web:</p><p><a href="${url}">${url}</a></p><p><i>Obrigado.</i></p>`
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email enviado: ' + info.response);
+
+    if (event.sender && !event.sender.isDestroyed()) {
+      event.sender.send('sendEmailResult', { success: true });
+    }
+  } catch (err) {
+    console.error('Erro geral ao enviar email: ', err);
+    if (event.sender && !event.sender.isDestroyed()) {
+      event.sender.send('sendEmailResult', { success: false, error: err.message });
+    }
+  }
 });
 
 // ============================================

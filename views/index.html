@@ -60,12 +60,22 @@
 
     body {
       background-color: #C6C5C3;
-      /* overflow: hidden; */
       font-family: 'Gobold';
       margin: 0;
       padding: 0;
       display: flex;
       width: 100%;
+      overflow: hidden;
+      justify-content: center;
+    }
+
+    #scale-wrapper {
+      width: 1224px;
+      min-height: 768px;
+      transform-origin: top center;
+      transition: transform 0.05s linear;
+      flex-shrink: 0;
+      margin: 0 auto;
     }
 
     * {
@@ -181,7 +191,7 @@
 
     .label-time-extra {
       font-family: 'Digital Dismay', sans-serif;
-      font-size: 120px;
+      font-size: 130px;
       text-align: center;
     }
 
@@ -298,12 +308,11 @@
       }
     } */
     .modal {
-      background-color: rgba(0, 0, 0, 0.0);
+      /* Removido o background-color transparente que podia causar confusão no empilhamento */
     }
 
     .modal-backdrop.show {
-      width: 100% !important;
-      height: 100% !important;
+      /* Removido o override de width e height que bloqueava interações */
     }
 
     .timeout-active {
@@ -318,13 +327,13 @@
     }
 
     .font-points {
-      font-size: 180px !important;
-      line-height: 160px;
+      font-size: 145px !important;
+      line-height: 130px;
     }
 
     .font-sets {
-      font-size: 120px !important;
-      line-height: 70px;
+      font-size: 110px !important;
+      line-height: 100px;
     }
 
     .font-period {
@@ -334,13 +343,21 @@
 
     .layout-bottom-panel {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .layout-bottom-panel > div {
+      flex-shrink: 1;
+      min-width: 0;
     }
   </style>
 </head>
 
 <body>
+  <div id="scale-wrapper">
   <div id="painel-fundo" class="container-fluid">
     <!-- Primeira linha com 3 colunas -->
     <div class="row">
@@ -372,13 +389,13 @@
           <!-- Quarta linha com três botões -->
           <div class="row mt-3">
             <div class="col-12 d-flex justify-content-center">
-              <div class="text-left">
+              <div class="d-flex flex-nowrap justify-content-center gap-1">
                 <button id="btn-desconto-equipe1" type="button"
-                  class="custom-button-simple btn-dark-green ft-size-14 pd-7 ml-7 bd-r-10">Desconto de tempo</button>
+                  class="custom-button-simple btn-dark-green ft-size-12 pd-5 bd-r-10">Desconto de tempo</button>
                 <button id="btn-equipe-equipe1" type="button"
-                  class="custom-button-simple btn-purple ft-size-14 pd-7 ml-7 bd-r-10">Equipa</button>
+                  class="custom-button-simple btn-purple ft-size-12 pd-5 bd-r-10">Equipa</button>
                 <button id="btn-individual-equipe1" type="button"
-                  class="custom-button-simple btn-pink ft-size-14 pd-7 ml-7 bd-r-10">Individual</button>
+                  class="custom-button-simple btn-pink ft-size-12 pd-5 bd-r-10">Individual</button>
               </div>
             </div>
           </div>
@@ -443,28 +460,32 @@
                   class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10 flex-fill">Start/Stop</button>
                 <button id="btn-buzina" type="button"
                   class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10 flex-fill">Buzina</button>
+                <button id="btn-video" type="button" data-bs-toggle="modal" data-bs-target="#videoModal"
+                  class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10 flex-fill"
+                  style="background-color: orange; color: white;"><i class="fa fa-video-camera"></i>
+                  Vídeo</button>
               </div>
             </div>
           </div>
 
           <div class="row pt-2">
             <div class="col-12 d-flex justify-content-center">
-              <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
+              <div class="d-flex flex-nowrap justify-content-center align-items-center gap-2">
                 <div class="d-flex flex-column text-center">
-                  <button id="btn-aquecimento" type="button" style="min-width: 150px;"
+                  <button id="btn-aquecimento" type="button" style="min-width: 120px;"
                     class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10">Aquecimento</button>
                   <span id="time-aquecimento" class="mt-1 fs-5"
                     style="color:#925F39; font-family:'Digital Dismay', sans-serif;">00:00</span>
                 </div>
                 <div class="d-flex flex-column text-center">
-                  <button id="btn-desconto" type="button" style="min-width: 150px;"
+                  <button id="btn-desconto" type="button" style="min-width: 120px;"
                     class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10">Desconto de
                     tempo</button>
                   <span id="time-desconto" class="mt-1 fs-5"
                     style="color:#925F39; font-family:'Digital Dismay', sans-serif;">00:00</span>
                 </div>
                 <div class="d-flex flex-column text-center">
-                  <button id="btn-intervalo" type="button" style="min-width: 150px;"
+                  <button id="btn-intervalo" type="button" style="min-width: 120px;"
                     class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10">Intervalo</button>
                   <span id="time-intervalo" class="mt-1 fs-5"
                     style="color:#925F39; font-family:'Digital Dismay', sans-serif;">00:00</span>
@@ -472,26 +493,17 @@
                 <div class="d-flex flex-column text-center">
                   <button id="btn-musica" type="button" data-bs-toggle="modal" data-bs-target="#musicModal"
                     class="custom-button-simple btn-dark-purple ft-size-12 pd-5 bd-r-10"
-                    style="min-width: 150px; background-color: orange; color: white;"><i class="fa fa-music"></i>
+                    style="min-width: 120px; background-color: orange; color: white;"><i class="fa fa-music"></i>
                     Música</button>
                   <span class="mt-1 fs-5" style="visibility:hidden;">00:00</span>
                 </div>
+
               </div>
             </div>
           </div>
 
-          <div class="row mt-2">
-            <div class="col-6 d-flex justify-content-end">
-              <button id="btn-iniciar-partida" type="button"
-                class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10" style="background-color: #1A4B5A;">Ecrã
-                Público</button>
-            </div>
-            <div class="col-6 d-flex justify-content-start">
-              <button id="btn-alterar-posicao" type="button"
-                class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10"
-                style="background-color: #1e1a5a;">Alterar Posição</button>
-            </div>
-          </div>
+          <!-- Space filler row where buttons used to be -->
+
 
         </div>
       </div>
@@ -525,13 +537,13 @@
           <!-- Quarta linha com três botões -->
           <div class="row mt-3">
             <div class="col-12 d-flex justify-content-center">
-              <div class="text-left">
+              <div class="d-flex flex-nowrap justify-content-center gap-1">
                 <button id="btn-desconto-equipe2" type="button"
-                  class="custom-button-simple btn-dark-green ft-size-14 pd-7 ml-7 bd-r-10">Desconto de tempo</button>
+                  class="custom-button-simple btn-dark-green ft-size-12 pd-5 bd-r-10">Desconto de tempo</button>
                 <button id="btn-equipe-equipe2" type="button"
-                  class="custom-button-simple btn-purple ft-size-14 pd-7 ml-7 bd-r-10">Equipa</button>
+                  class="custom-button-simple btn-purple ft-size-12 pd-5 bd-r-10">Equipa</button>
                 <button id="btn-individual-equipe2" type="button"
-                  class="custom-button-simple btn-pink ft-size-14 pd-7 ml-7 bd-r-10">Individual</button>
+                  class="custom-button-simple btn-pink ft-size-12 pd-5 bd-r-10">Individual</button>
               </div>
             </div>
           </div>
@@ -542,64 +554,60 @@
 
     <!-- Segunda linha com 3 colunas -->
     <div class="d-flex flex-row">
-      <div class="custom-column" style="width: 35%;">
+      <div class="custom-column" style="width: 30%; overflow: hidden;">
 
         <div class="row">
           <div class="col-12">
-            <div class="container-fluid" style="margin-top: -10px;">
-              <div class="row">
-                <div class="col-12 d-flex justify-content-center">
-                  <strong>Pontos</strong>
-                </div>
-              </div>
-
+            <div class="container-fluid mt-5">
               <!-- Pontos layout team 01 -->
-              <div class="layout-bottom-panel px-2 mt-2 w-100 flex-wrap">
+              <div class="row align-items-start gx-3" style="margin-top: 0px;">
                 <!-- Desconto -->
-                <div class="d-flex flex-column align-items-center box-desconto">
-                  <div class="text-center mb-2" style="font-size: 14px;"><b>Desconto de Tempo</b></div>
-                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
-                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
-                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                <div class="col-3 d-flex flex-column align-items-center box-desconto">
+                  <div class="text-center mb-2" style="font-size: 13px; line-height: 1.1;"><b>Desconto de Tempo</b></div>
+                  <div class="d-flex align-items-center mb-1 w-100" style="gap: 6px; justify-content: center;">
+                    <div style="background-color: #14d15d; height: 22px; width: 22px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <input type="checkbox" style="accent-color: #000; width: 22px;height: 22px; border-radius:2px;"
                       id="check_time1_val1" onchange="descontoTempo('check_time1_val1', 1);">
                   </div>
-                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
-                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
-                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                  <div class="d-flex align-items-center mb-1 w-100" style="gap: 6px; justify-content: center;">
+                    <div style="background-color: #14d15d; height: 22px; width: 22px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <input type="checkbox" style="accent-color: #000; width: 22px;height: 22px; border-radius:2px;"
                       id="check_time1_val2" onchange="descontoTempo('check_time1_val2', 1);">
                   </div>
-                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
-                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
-                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                  <div class="d-flex align-items-center mb-1 w-100" style="gap: 6px; justify-content: center;">
+                    <div style="background-color: #14d15d; height: 22px; width: 22px; border-radius: 50%; flex-shrink: 0;"></div>
+                    <input type="checkbox" style="accent-color: #000; width: 22px;height: 22px; border-radius:2px;"
                       id="check_time1_val3" onchange="descontoTempo('check_time1_val3', 1);">
                   </div>
                 </div>
 
-                <!-- Score -->
-                <div class="d-flex flex-column align-items-center justify-content-center px-2"
-                  style="flex:1; max-width: 250px;">
-                  <button id="btn-add-gols-time-01"
-                    onclick="adicionarPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-add-gols-time-01', 99, 'true',1);"
-                    type="button" class="custom-button-simple btn-time btn-green bd-r-10 w-100 pt-1 pb-1 mb-1"><i
-                      class="fa fa-caret-up"></i></button>
-                  <p id="label-gols-time-01" class="label-time-extra font-points m-0"
-                    style="color: orange; line-height: 1;">00</p>
-                  <input id="input-gols-time-01" type="hidden" value="0" />
-                  <button id="btn-sub-gols-time-01"
-                    onclick="subtrairPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-sub-gols-time-01');"
-                    type="button" class="custom-button-simple btn-time btn-red bd-r-10 w-100 pt-1 pb-1 mt-1"><i
-                      class="fa fa-caret-down"></i></button>
+                <!-- Central Score + Title -->
+                <div class="col-6 d-flex flex-column align-items-center">
+                  <strong class="mb-1" style="font-size: 18px;">Pontos</strong>
+                  <div class="d-flex flex-column align-items-center w-100" style="max-width: 210px;">
+                    <button id="btn-add-gols-time-01"
+                      onclick="adicionarPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-add-gols-time-01', 99, 'true',1);"
+                      type="button" class="custom-button-simple btn-time btn-green bd-r-10 w-100 pt-1 pb-1 mb-1"><i
+                        class="fa fa-caret-up"></i></button>
+                    <p id="label-gols-time-01" class="label-time-extra font-points m-0"
+                      style="color: orange; line-height: 1;">0</p>
+                    <input id="input-gols-time-01" type="hidden" value="0" />
+                    <button id="btn-sub-gols-time-01"
+                      onclick="subtrairPontuacao('#input-gols-time-01', '#label-gols-time-01', '#btn-sub-gols-time-01');"
+                      type="button" class="custom-button-simple btn-time btn-red bd-r-10 w-100 pt-1 pb-1 mt-1"><i
+                        class="fa fa-caret-down"></i></button>
+                  </div>
                 </div>
 
                 <!-- Sets -->
-                <div class="d-flex flex-column align-items-center box-set">
-                  <div class="text-center mb-1"><strong>Set</strong></div>
+                <div class="col-3 d-flex flex-column align-items-center box-set">
+                  <div class="text-center mb-1"><strong style="font-size: 18px;">Set</strong></div>
                   <button id="btn-add-faltas-time-01"
                     onclick="adicionarPontuacao('#input-faltas-time-01', '#label-faltas-time-01', '#btn-add-faltas-time-01');"
                     type="button" class="custom-button-simple btn-green bd-r-10 w-100 mb-1"><i
                       class="fa fa-caret-up"></i></button>
                   <p id="label-faltas-time-01" class="label-time-extra font-sets m-0"
-                    style="color: yellow; line-height: 1;">00</p>
+                    style="color: yellow; line-height: 1;">0</p>
                   <input id="input-faltas-time-01" type="hidden" value="0" />
                   <button id="btn-sub-faltas-time-01"
                     onclick="subtrairPontuacao('#input-faltas-time-01', '#label-faltas-time-01', '#btn-sub-faltas-time-01');"
@@ -631,8 +639,8 @@
                     </td>
                     <td style="vertical-align: top;">
                       <i onclick="setCronogramaModal('#inputExcMinutos1', '#inputExcSegundos1');"
-                        class="fa fa-plus btn-icon" data-bs-toggle="modal" data-bs-target="#addRowModal1"
-                        style="color: #1f307c; font-size: 25px;"></i>
+                         class="fa fa-plus btn-icon" data-bs-toggle="modal" data-bs-target="#addRowModal1"
+                         style="color: #1f307c; font-size: 25px;"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -644,8 +652,21 @@
 
       </div>
 
-      <div class="custom-column" style="width: 30%;">
-        <div class="row mt-3">
+      <div class="custom-column" style="width: 40%;">
+        <div class="row mt-2">
+          <div class="col-6 d-flex justify-content-end">
+            <button id="btn-iniciar-partida" type="button"
+              class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10" style="background-color: #1A4B5A;">Ecrã
+              Público</button>
+          </div>
+          <div class="col-6 d-flex justify-content-start">
+            <button id="btn-alterar-posicao" type="button"
+              class="custom-button-simple btn-main ft-size-14 pd-10 bd-r-10"
+              style="background-color: #1e1a5a;">Alterar Posição</button>
+          </div>
+        </div>
+
+        <div class="row mt-2">
           <div class="col-12 d-flex justify-content-center" style="padding-top: 8px; font-size: 20px;">
             <strong>Resultado Set's</strong>
           </div>
@@ -660,7 +681,7 @@
                       <div class="col-4 gray-text d-flex justify-content-center" style="font-size: 20px;">
                         Set
                       </div>
-                      <div class=" col-8 d-flex justify-content-start" style="font-size: 20px;">
+                      <div class="col-8 d-flex justify-content-center" style="font-size: 20px;">
                         Pontuação
                       </div>
                     </div>
@@ -673,7 +694,7 @@
             </div>
             <div style="width: 10%; margin-left: 20px;">
               <i class="fa fa-plus" id="btn-adicionar-set" class="btn-icon" type=" button" data-bs-toggle="modal"
-                data-bs-target="#addRowModal1" style="color: #1f307c; font-size: 25px; margin-left:-5px;"></i>
+                data-bs-target="#modalSets" style="color: #1f307c; font-size: 25px; margin-left:-5px;"></i>
             </div>
           </div>
         </div>
@@ -754,29 +775,23 @@
 
       </div>
 
-      <div class="custom-column" style="width: 35%; border-right-width: 0px;">
+      <div class="custom-column" style="width: 30%; overflow: hidden; border-right-width: 0px;">
 
         <div class="row m-0">
           <div class="col-12">
-            <div class="container-fluid" style="margin-top: -10px;">
-
-              <div class="row">
-                <div class="col-12 d-flex justify-content-center">
-                  <strong>Pontos</strong>
-                </div>
-              </div>
+            <div class="container-fluid mt-5">
 
               <!-- Pontos layout team 02 -->
-              <div class="layout-bottom-panel px-2 mt-2 w-100 flex-wrap">
+              <div class="row align-items-start gx-3" style="margin-top: 0px;">
                 <!-- Sets -->
-                <div class="d-flex flex-column align-items-center box-set">
-                  <div class="text-center mb-1"><strong>Set</strong></div>
+                <div class="col-3 d-flex flex-column align-items-center box-set">
+                  <div class="text-center mb-1"><strong style="font-size: 18px;">Set</strong></div>
                   <button id="btn-add-faltas-time-02"
                     onclick="adicionarPontuacao('#input-faltas-time-02', '#label-faltas-time-02', '#btn-add-faltas-time-02');"
                     type="button" class="custom-button-simple btn-green bd-r-10 w-100 mb-1"><i
                       class="fa fa-caret-up"></i></button>
                   <p id="label-faltas-time-02" class="label-time-extra font-sets m-0"
-                    style="color: yellow; line-height: 1;">00</p>
+                    style="color: yellow; line-height: 1;">0</p>
                   <input id="input-faltas-time-02" type="hidden" value="0" />
                   <button id="btn-sub-faltas-time-02"
                     onclick="subtrairPontuacao('#input-faltas-time-02', '#label-faltas-time-02', '#btn-sub-faltas-time-02');"
@@ -784,39 +799,41 @@
                       class="fa fa-caret-down"></i></button>
                 </div>
 
-                <!-- Score -->
-                <div class="d-flex flex-column align-items-center justify-content-center px-1"
-                  style="flex:1; max-width: 250px;">
-                  <button id="btn-add-gols-time-02"
-                    onclick="adicionarPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02',99, 'true',2);"
-                    type="button" class="custom-button-simple btn-time btn-green bd-r-10 w-100 pt-1 pb-1 mb-1"><i
-                      class="fa fa-caret-up"></i></button>
-                  <p id="label-gols-time-02" class="label-time-extra font-points m-0"
-                    style="color: orange; line-height: 1;">00</p>
-                  <input id="input-gols-time-02" type="hidden" value="0" />
-                  <button id="btn-sub-gols-time-02"
-                    onclick="subtrairPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02');"
-                    type="button" class="custom-button-simple btn-time btn-red bd-r-10 w-100 pt-1 pb-1 mt-1"><i
-                      class="fa fa-caret-down"></i></button>
+                <!-- Central Score + Title -->
+                <div class="col-6 d-flex flex-column align-items-center">
+                  <strong class="mb-1" style="font-size: 18px;">Pontos</strong>
+                  <div class="d-flex flex-column align-items-center w-100" style="max-width: 210px;">
+                    <button id="btn-add-gols-time-02"
+                      onclick="adicionarPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02',99, 'true',2);"
+                      type="button" class="custom-button-simple btn-time btn-green bd-r-10 w-100 pt-1 pb-1 mb-1"><i
+                        class="fa fa-caret-up"></i></button>
+                    <p id="label-gols-time-02" class="label-time-extra font-points m-0"
+                      style="color: orange; line-height: 1;">0</p>
+                    <input id="input-gols-time-02" type="hidden" value="0" />
+                    <button id="btn-sub-gols-time-02"
+                      onclick="subtrairPontuacao('#input-gols-time-02', '#label-gols-time-02', '#btn-sub-gols-time-02');"
+                      type="button" class="custom-button-simple btn-time btn-red bd-r-10 w-100 pt-1 pb-1 mt-1"><i
+                        class="fa fa-caret-down"></i></button>
+                  </div>
                 </div>
 
                 <!-- Desconto -->
-                <div class="d-flex flex-column align-items-center box-desconto">
-                  <div class="text-center mb-2" style="font-size: 14px;"><b>Desconto de Tempo</b></div>
-                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
-                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                <div class="col-3 d-flex flex-column align-items-center box-desconto">
+                  <div class="text-center mb-2" style="font-size: 13px; line-height: 1.1;"><b>Desconto de Tempo</b></div>
+                  <div class="d-flex align-items-center mb-1 w-100" style="gap: 6px; justify-content: center;">
+                    <input type="checkbox" style="accent-color: #000; width: 22px;height: 22px; border-radius:2px;"
                       id="check_time2_val1" onchange="descontoTempo('check_time2_val1', 2);">
-                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                    <div style="background-color: #14d15d; height: 22px; width: 22px; border-radius: 50%; flex-shrink: 0;"></div>
                   </div>
-                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
-                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                  <div class="d-flex align-items-center mb-1 w-100" style="gap: 6px; justify-content: center;">
+                    <input type="checkbox" style="accent-color: #000; width: 22px;height: 22px; border-radius:2px;"
                       id="check_time2_val2" onchange="descontoTempo('check_time2_val2', 2);">
-                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                    <div style="background-color: #14d15d; height: 22px; width: 22px; border-radius: 50%; flex-shrink: 0;"></div>
                   </div>
-                  <div class="d-flex align-items-center mb-2 w-100" style="gap: 5px;">
-                    <input type="checkbox" style="accent-color: #000; width: 18px;height: 18px; border-radius:2px;"
+                  <div class="d-flex align-items-center mb-1 w-100" style="gap: 6px; justify-content: center;">
+                    <input type="checkbox" style="accent-color: #000; width: 22px;height: 22px; border-radius:2px;"
                       id="check_time2_val3" onchange="descontoTempo('check_time2_val3', 2);">
-                    <div style="background-color: #14d15d; height: 18px; flex-grow: 1;" class="bd-r-10"></div>
+                    <div style="background-color: #14d15d; height: 22px; width: 22px; border-radius: 50%; flex-shrink: 0;"></div>
                   </div>
                 </div>
               </div>
@@ -858,27 +875,27 @@
       </div>
     </div>
 
-    <!-- Modal para adicionar nova linha -->
-    <div class="modal fade" id="addRowModal1" tabindex="-1" aria-labelledby="addRowModalLabel" aria-hidden="true">
+    <!-- Modal para adicionar resultado dos sets -->
+    <div class="modal fade" id="modalSets" tabindex="-1" aria-labelledby="modalSetsLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addRowModalLabel">Resultado Set's</h5>
+            <h5 class="modal-title" id="modalSetsLabel">Resultado Set's</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="value1" class="form-label">Set</label>
+              <label for="inputExcSet" class="form-label">Set</label>
               <input type="number" class="form-control" id="inputExcSet" min="0">
             </div>
             <div class="mb-3">
               <div class="row">
                 <div class="col">
-                  <label for="value1" class="form-label">Visitante</label>
+                  <label for="inputExcSet1" class="form-label">Visitante</label>
                   <input type="number" class="form-control" id="inputExcSet1" min="0">
                 </div>
                 <div class="col">
-                  <label for="value2" class="form-label">Visitada</label>
+                  <label for="inputExcSet2" class="form-label">Visitada</label>
                   <input type="number" class="form-control" id="inputExcSet2" min="0">
                 </div>
               </div>
@@ -887,6 +904,104 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary" id="addRowBtn1">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para adicionar nova exclusão (Team 1) -->
+    <div class="modal fade" id="addRowModal1" tabindex="-1" aria-labelledby="addRowModalLabel1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addRowModalLabel1">Nova Exclusão</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="inputExcJogador1" class="form-label">Jogador</label>
+              <input type="number" class="form-control" id="inputExcJogador1" min="0">
+            </div>
+            <div class="mb-3">
+              <label for="inputExcMinutos1" class="form-label">Tempo</label>
+              <div class="row">
+                <div class="col">
+                  <input type="number" class="form-control" id="inputExcMinutos1" min="0">
+                </div>
+                <div class="col">
+                  <input type="number" class="form-control" id="inputExcSegundos1" min="0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="addRowBtnExclusao1">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Vídeo -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background-color: #C6C5C3; color: #333;">
+          <div class="modal-header" style="border-bottom: 1px solid #B2804A; background-color: #2F2E81;">
+            <h5 class="modal-title" id="videoModalLabel" style="color: white;"><i class="fa fa-video-camera"></i> Painel de Vídeo</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Controles do Player de Vídeo -->
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3" style="background-color: #EAE1D0; border-radius: 10px; border: 1px solid #B2804A;">
+              <div style="flex: 1;">
+                <div id="video-title" style="font-size: 18px; font-weight: bold; color: #28235B;">Nenhum vídeo em exibição</div>
+              </div>
+              <div class="d-flex align-items-center gap-3">
+                <!-- Controles de Navegação -->
+                <div class="d-flex align-items-center gap-1">
+                  <button onclick="previousVideoPlacar()" class="btn btn-sm" style="background-color: #28235B; color: white;">
+                    <i class="fa fa-step-backward"></i>
+                  </button>
+                  <button id="btn-pause-video" onclick="togglePauseVideoPlacar()" class="btn btn-sm" style="background-color: #0D6635; color: white; width: 40px;">
+                    <i class="fa fa-pause"></i>
+                  </button>
+                  <button onclick="nextVideoPlacar()" class="btn btn-sm" style="background-color: #28235B; color: white;">
+                    <i class="fa fa-step-forward"></i>
+                  </button>
+                </div>
+                <!-- Controle de Volume do Vídeo -->
+                <div class="d-flex align-items-center gap-2 px-2" style="border-left: 1px solid #B2804A;">
+                  <i class="fa fa-volume-down" style="color: #925F39;"></i>
+                  <input type="range" id="video-volume" min="0" max="100" value="100" oninput="setVideoVolume(this.value)"
+                    style="width: 80px; accent-color: #92652A;">
+                  <span id="video-volume-label" style="color: #925F39; font-size: 11px; min-width: 35px;">100%</span>
+                </div>
+                <button onclick="stopVideoPlacar()" class="btn btn-danger btn-sm"><i class="fa fa-stop"></i></button>
+              </div>
+            </div>
+
+            <!-- Barra de Progresso de Vídeo -->
+            <div class="mb-3 px-3">
+              <input type="range" id="video-progress" min="0" max="100" value="0"
+                style="width: 100%; accent-color: #92652A;">
+            </div>
+
+            <!-- Botão Selecionar Pasta -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <strong style="color: #2F2E81;">Lista de Vídeos</strong>
+              <div class="d-flex gap-2">
+                <button onclick="selectAllVideos(true)" class="btn btn-sm" style="background-color: #28235B; color: white;">Selecionar Todos</button>
+                <button onclick="selectAllVideos(false)" class="btn btn-sm" style="background-color: #925F39; color: white;">Desmarcar Todos</button>
+                <button onclick="selectVideoFolder()" class="btn btn-sm" style="background-color: #0D6635; color: white;"><i class="fa fa-folder-open"></i> Selecionar Pasta</button>
+              </div>
+            </div>
+
+            <!-- Lista de Vídeos -->
+            <div id="video-list-container" style="max-height: 300px; overflow-y: auto; background-color: #EAE1D0; border-radius: 10px; padding: 10px; border: 1px solid #B2804A;">
+              <div id="video-list" style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="color: #925F39; text-align: center; padding: 20px;">Nenhum vídeo carregado. Clique em Selecionar Pasta.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -984,9 +1099,13 @@
             <!-- Botão Selecionar Pasta -->
             <div class="d-flex justify-content-between align-items-center mb-3">
               <strong style="color: #28235B;">Lista de Músicas</strong>
-              <button onclick="selectMusicFolder()" class="btn btn-sm"
-                style="background-color: #0D6635; color: white;"><i class="fa fa-folder-open"></i> Selecionar
-                Pasta</button>
+              <div class="d-flex gap-2">
+                <button onclick="selectAllMusic(true)" class="btn btn-sm" style="background-color: #28235B; color: white;">Selecionar Todos</button>
+                <button onclick="selectAllMusic(false)" class="btn btn-sm" style="background-color: #925F39; color: white;">Desmarcar Todos</button>
+                <button onclick="selectMusicFolder()" class="btn btn-sm"
+                  style="background-color: #0D6635; color: white;"><i class="fa fa-folder-open"></i> Selecionar
+                  Pasta</button>
+              </div>
             </div>
 
             <!-- Lista de Músicas -->
@@ -1010,57 +1129,42 @@
           location.reload();
         }
       });
-      let widthWindowPad = 1570;
-      let heightWindowPad = 870;
-      document.body.style.zoom = 1;
-      let oldWindowWidth = widthWindowPad;
-      let oldWindowHeight = heightWindowPad;
-      function calculateScale(width) {
-        const widthIncrement = 1000;
-        const scaleIncrement = 1;
-        const maxScale = 4; // Define a escala máxima
+      // Variáveis legadas mantidas para compatibilidade (não usadas no novo sistema de escala)
+      let widthWindowPad = 1224;
+      let heightWindowPad = 768;
 
-        const widthDiff = width - widthWindowPad;
-        let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
-        scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
-        console.log(scaleFactor);
-        return scaleFactor;
-      }
-
+      // adjustZoom unificado: delega para autoScale (transform: scale)
       function adjustZoom() {
-        const baseWidth = 1570;
-        const baseHeight = 870;
-        const aspectRatio = window.innerWidth / window.innerHeight;
-        const baseAspectRatio = baseWidth / baseHeight;
-        let scale
-        if (aspectRatio < baseAspectRatio) {
-          scale = window.innerWidth / baseWidth;
-          document.body.style.width = '100%';
-        } else {
-          scale = window.innerHeight / baseHeight;
-          document.body.style.width = (100 / (aspectRatio * 0.5)) + '%'; // Ajuste o valor 0.5 conforme necessário
+        if (typeof autoScale === 'function') {
+          autoScale();
         }
-        document.body.style.zoom = scale;
-        document.body.style.height = (window.innerHeight / scale) + 'px';
-        document.body.style.alignItems = "center";
       }
 
 
 
 
       // Chama a função de ajuste de zoom quando o DOM estiver pronto
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", async function () {
         adjustZoom();
+        try {
+          const folders = await ipcRenderer.invoke('get-saved-folders');
+          if (folders.music_folder) {
+            ipcRenderer.send('load-music-files', folders.music_folder);
+            // Voleibol doesn't seem to have a music-artist element by default, but let's be safe
+            const artistEl = document.getElementById('music-artist');
+            if(artistEl) artistEl.innerText = folders.music_folder.split(/[\\/]/).pop();
+          }
+          if (folders.video_folder) {
+            ipcRenderer.send('load-video-files', folders.video_folder);
+          }
+        } catch (e) {
+          console.error('Error loading saved folders:', e);
+        }
       });
 
       // Chama a função de ajuste de zoom sempre que a janela for redimensionada
       window.addEventListener("resize", function () {
-
-        widthWindowPad = 1570;
-        heightWindowPad = 870;
-        document.body.style.zoom = 1;
-        oldWindowWidth = widthWindowPad;
-        oldWindowHeight = heightWindowPad;
+        adjustZoom();
       });
       let secondWindowRoute = "placar";
     </script>
@@ -1182,7 +1286,7 @@
         }
 
         if (formata === "true") {
-          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
+          var pontuacaoFormatada = pontuacao.toString();
           $(label).html(pontuacaoFormatada);
           data["pontuacaoFormatada"] = pontuacaoFormatada;
         } else {
@@ -1191,6 +1295,204 @@
 
         ipcRenderer.send("alterarPontuacaoPlacar", data);
 
+      }
+
+      // === Período (Partes de Jogo) ===
+      function adicionarPontuacaoPeriodo(input, label, button, limite = 9, formata = "false") {
+        var pontuacao = $(input).val();
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao >= parseInt(limite)) { return; }
+        pontuacao = pontuacao + 1;
+        $(input).val(pontuacao);
+        $(label).html(pontuacao.toString());
+        let data = {
+          inputOrigin: input,
+          labelOrigin: label,
+          pontuacaoFormatada: pontuacao.toString(),
+          pontuacao: pontuacao,
+        };
+        ipcRenderer.send("alterarPontuacaoPlacar", data);
+      }
+
+      function subtrairPontuacaoPeriodo(input, label, button, limite = 1, formata = "false") {
+        var pontuacao = $(input).val();
+        pontuacao = parseInt(pontuacao);
+        if (pontuacao <= parseInt(limite)) { return; }
+        pontuacao = pontuacao - 1;
+        $(input).val(pontuacao);
+        $(label).html(pontuacao.toString());
+        let data = {
+          inputOrigin: input,
+          labelOrigin: label,
+          pontuacaoFormatada: pontuacao.toString(),
+          pontuacao: pontuacao,
+        };
+        ipcRenderer.send("alterarPontuacaoPlacar", data);
+      }
+
+      // === Vídeo ===
+      function selectVideoFolder() {
+        ipcRenderer.send('select-video-folder');
+      }
+
+      ipcRenderer.on('video-folder-selected', (event, folderPath) => {
+        // Pasta selecionada
+      });
+
+      let videoFiles = [];
+      let selectedVideos = new Set();
+      let currentVideoIndex = -1;
+      let isVideoPaused = false;
+
+      function selectAllVideos(select) {
+        if (select) {
+          videoFiles.forEach((f, i) => selectedVideos.add(i));
+        } else {
+          selectedVideos.clear();
+        }
+        renderVideoList();
+      }
+
+      function renderVideoList() {
+        const list = document.getElementById('video-list');
+        list.innerHTML = '';
+        if(videoFiles.length === 0) {
+          list.innerHTML = '<div style="color: #925F39; text-align: center; padding: 20px;">Nenhum vídeo carregado. Clique em Selecionar Pasta.</div>';
+          return;
+        }
+        videoFiles.forEach((file, index) => {
+          const fileName = file.split(/[\\/]/).pop();
+          const isSelected = selectedVideos.has(index);
+          const isPlaying = index === currentVideoIndex;
+          const div = document.createElement('div');
+          div.style.padding = '8px';
+          div.style.borderBottom = '1px solid #ccc';
+          div.style.background = isPlaying ? '#0D6635' : (isSelected ? '#d4edda' : '#f5f5f5');
+          div.style.display = 'flex';
+          div.style.justifyContent = 'space-between';
+          div.style.alignItems = 'center';
+          div.style.color = isPlaying ? 'white' : 'black';
+          
+          div.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+              <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleVideoSelection(${index})" style="accent-color: #0D6635; width: 18px; height: 18px; cursor: pointer;">
+              <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${fileName}</span>
+            </div>
+            ${isSelected ? `<button class="btn btn-sm ${isPlaying ? 'btn-light' : 'btn-success'}" onclick="playVideoPlacarByIndex(${index})"><i class="fa fa-play"></i></button>` : ''}
+          `;
+          list.appendChild(div);
+        });
+      }
+
+      function toggleVideoSelection(index) {
+        if (selectedVideos.has(index)) {
+          selectedVideos.delete(index);
+        } else {
+          selectedVideos.add(index);
+        }
+        renderVideoList();
+      }
+
+      ipcRenderer.on('video-files-loaded', (event, files) => {
+        videoFiles = files;
+        selectedVideos.clear();
+        files.forEach((f, i) => selectedVideos.add(i));
+        renderVideoList();
+      });
+
+      function playVideoPlacarByIndex(index) {
+        if (index < 0 || index >= videoFiles.length) return;
+        currentVideoIndex = index;
+        const filePath = videoFiles[index];
+        const fileName = filePath.split(/[\\/]/).pop();
+        document.getElementById('video-title').innerText = fileName;
+        isVideoPaused = false;
+        document.querySelector('#btn-pause-video i').className = 'fa fa-pause';
+        ipcRenderer.send('play-video-placar', filePath);
+        renderVideoList();
+      }
+
+      function playVideoPlacar(filePath, fileName) {
+        // Encontrar o index se possível
+        const index = videoFiles.indexOf(filePath);
+        if (index !== -1) {
+          playVideoPlacarByIndex(index);
+        } else {
+          document.getElementById('video-title').innerText = fileName;
+          ipcRenderer.send('play-video-placar', filePath);
+        }
+      }
+
+      function stopVideoPlacar() {
+        document.getElementById('video-title').innerText = "Nenhum vídeo em exibição";
+        currentVideoIndex = -1;
+        isVideoPaused = false;
+        document.querySelector('#btn-pause-video i').className = 'fa fa-pause';
+        ipcRenderer.send('stop-video-placar');
+        renderVideoList();
+      }
+
+      function togglePauseVideoPlacar() {
+        if (currentVideoIndex === -1) return;
+        isVideoPaused = !isVideoPaused;
+        document.querySelector('#btn-pause-video i').className = isVideoPaused ? 'fa fa-play' : 'fa fa-pause';
+        ipcRenderer.send('pause-video-placar');
+      }
+
+      ipcRenderer.on('video-progress-update', (event, progress) => {
+        const progSlider = document.getElementById('video-progress');
+        if (progSlider && !progSlider.matches(':active')) {
+          progSlider.value = progress;
+        }
+      });
+
+      document.getElementById('video-progress')?.addEventListener('input', (e) => {
+        ipcRenderer.send('set-video-progress', e.target.value);
+      });
+
+      document.getElementById('videoModal')?.addEventListener('hidden.bs.modal', function () {
+        if (currentVideoIndex !== -1 && !isVideoPaused) {
+          stopVideoPlacar();
+        }
+      });
+
+      document.getElementById('musicModal')?.addEventListener('hidden.bs.modal', function () {
+        if (musicPlayer.isPlaying) {
+          togglePlayMusic();
+        }
+      });
+
+      function previousVideoPlacar() {
+        if (videoFiles.length === 0) return;
+        let attempts = videoFiles.length;
+        let idx = currentVideoIndex === -1 ? 0 : currentVideoIndex;
+        do {
+          idx = (idx - 1 + videoFiles.length) % videoFiles.length;
+          attempts--;
+        } while (!selectedVideos.has(idx) && attempts > 0);
+        
+        if (attempts > 0 || selectedVideos.has(idx)) {
+          playVideoPlacarByIndex(idx);
+        }
+      }
+
+      function nextVideoPlacar() {
+        if (videoFiles.length === 0) return;
+        let attempts = videoFiles.length;
+        let idx = currentVideoIndex === -1 ? -1 : currentVideoIndex;
+        do {
+          idx = (idx + 1) % videoFiles.length;
+          attempts--;
+        } while (!selectedVideos.has(idx) && attempts > 0);
+        
+        if (attempts > 0 || selectedVideos.has(idx)) {
+          playVideoPlacarByIndex(idx);
+        }
+      }
+
+      function setVideoVolume(value) {
+        document.getElementById('video-volume-label').textContent = value + '%';
+        ipcRenderer.send('set-video-volume', value);
       }
 
       function adicionarPontuacao(input, label, button, limite = 99, formata = "true", pontos = null) {
@@ -1219,7 +1521,7 @@
         }
 
         if (formata === "true") {
-          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
+          var pontuacaoFormatada = pontuacao.toString();
           $(label).html(pontuacaoFormatada);
           data["pontuacaoFormatada"] = pontuacaoFormatada;
         } else {
@@ -1361,7 +1663,7 @@
           pontuacao: pontuacao,
         }
         if (formata === "true") {
-          var pontuacaoFormatada = pontuacao.toString().padStart(2, "0");
+          var pontuacaoFormatada = pontuacao.toString();
           $(label).html(pontuacaoFormatada);
           data["pontuacaoFormatada"] = pontuacaoFormatada;
         } else {
@@ -1381,35 +1683,31 @@
 
       // Ported from Scoreboard-main: Visual Indicator for Timeout (Panel Background)
       document.getElementById("btn-desconto-equipe1").addEventListener("click", () => {
+        // Toggle green background on team 1 panel
+        const painelTime1 = document.getElementById("painel-time-01");
+        const isActive = painelTime1.style.backgroundColor !== "rgb(57, 170, 73)";
+        painelTime1.style.backgroundColor = isActive ? "#39AA49" : "";
         // Quando trocaPosicao está ativa, inverter a origem para que o desconto
         // seja associado à equipe correta no placar
         let body = {
-          origem: trocaPosicao ? "btn-desconto-equipe2" : "btn-desconto-equipe1"
+          origem: trocaPosicao ? "btn-desconto-equipe2" : "btn-desconto-equipe1",
+          ativo: isActive
         }
         ipcRenderer.send("sendDescontoPainel", body);
-        // Toggle green background on team 1 panel
-        const painelTime1 = document.getElementById("painel-time-01");
-        if (painelTime1.style.backgroundColor === "rgb(57, 170, 73)") { // #39AA49 in rgb
-          painelTime1.style.backgroundColor = "";
-        } else {
-          painelTime1.style.backgroundColor = "#39AA49";
-        }
       });
 
       document.getElementById("btn-desconto-equipe2").addEventListener("click", () => {
+        // Toggle green background on team 2 panel
+        const painelTime2 = document.getElementById("painel-time-02");
+        const isActive = painelTime2.style.backgroundColor !== "rgb(57, 170, 73)";
+        painelTime2.style.backgroundColor = isActive ? "#39AA49" : "";
         // Quando trocaPosicao está ativa, inverter a origem para que o desconto
         // seja associado à equipe correta no placar
         let body = {
-          origem: trocaPosicao ? "btn-desconto-equipe1" : "btn-desconto-equipe2"
+          origem: trocaPosicao ? "btn-desconto-equipe1" : "btn-desconto-equipe2",
+          ativo: isActive
         }
         ipcRenderer.send("sendDescontoPainel", body);
-        // Toggle green background on team 2 panel
-        const painelTime2 = document.getElementById("painel-time-02");
-        if (painelTime2.style.backgroundColor === "rgb(57, 170, 73)") { // #39AA49 in rgb
-          painelTime2.style.backgroundColor = "";
-        } else {
-          painelTime2.style.backgroundColor = "#39AA49";
-        }
       });
 
       function sleep(ms) {
@@ -1490,6 +1788,7 @@
       let intervalId1 = null;
 
       function diminuiTempoEquipe() {
+        if (typeof linhas === 'undefined' || !linhas || typeof segundos === 'undefined' || !segundos) return;
         linhas.forEach((linha, index) => {
           if (segundos[index] >= 0) {
             console.log(segundos[index] + ' - ' + tempoRestante);
@@ -1502,6 +1801,7 @@
             linha.children[1].innerHTML = '00:00';
           }
         });
+        if (typeof linhas2 === 'undefined' || !linhas2 || typeof segundos2 === 'undefined' || !segundos2) return;
         linhas2.forEach((linha, index) => {
           if (segundos2[index] >= 0) {
             segundos2[index] -= 0.1;
@@ -1571,7 +1871,7 @@
           segundos = 0
         }
         // Formata a saída do cronômetro
-        const minutosStr = minutos.toString().padStart(2, "0");
+        const minutosStr = minutos.toString();
         const segundosStr = segundos.toString().padStart(2, "0");
         return minutosStr + ":" + segundosStr
 
@@ -1955,15 +2255,7 @@
         if (set.toString().charAt(0) === '0') {
           set = set.toString().substring(1);
         }
-        if (time1 < 10) {
-          time1 = '0' + time1
-        }
-        if (time2 < 10) {
-          time2 = '0' + time2
-        }
-        if (set < 10) {
-          set = '0' + set
-        }
+        
         var arr = {
           id: id,
           set: set,
@@ -1990,15 +2282,17 @@
               style="font-size: 30px;">
               ${element.set}
             </div>
-            <div class=" col-8 d-flex justify-content-center" style="gap: 20px;">
-              <div class="digital_dismay" style="font-size: 30px; color: red;">
-                <b>${element.time1}</b>
-              </div>
-              <div class="digital_dismay" style="font-size: 30px;">
-                <b>${element.time2}</b>
-              </div>
-              <div class="digital_dismay" style="font-size: 30px;">
-                <b><i class="fa fa-trash" style="cursor: pointer; color: red;" onclick="removerLinhaSet(${element.id}, '#set'+${element.id})"></i></b>
+            <div class="col-8 d-flex justify-content-center align-items-center">
+              <div class="d-flex align-items-center" style="gap: 20px;">
+                <div class="digital_dismay" style="font-size: 30px; color: red;">
+                  <b>${element.time1}</b>
+                </div>
+                <div class="digital_dismay" style="font-size: 30px;">
+                  <b>${element.time2}</b>
+                </div>
+                <div class="digital_dismay" style="font-size: 30px;">
+                  <b><i class="fa fa-trash" style="cursor: pointer; color: red;" onclick="removerLinhaSet(${element.id}, '#set'+${element.id})"></i></b>
+                </div>
               </div>
             </div>
           </div>
@@ -2354,7 +2648,7 @@
     <script>
       tempoRestanteOld = 0;
       function setCronogramaModal(elemMinutos, elemSegundos) {
-        let cronometroAtualModal = document.querySelector('.label-time-extra').innerHTML;
+        let cronometroAtualModal = document.querySelector('.label-time-extra-temp').innerHTML;
         cronometroAtualModal = cronometroAtualModal.replaceAll(" ", "");
         cronometroAtualModal = cronometroAtualModal.split(":");
 
@@ -2411,37 +2705,9 @@
             _tempoPartidaSegundos = config_setup_duracao_jogo_min * 60;
             _tempoPartidaSegundos += config_setup_duracao_jogo_seg;
 
-            if (config_setup_buzinar_iniciar) {
-
-              if (!listaConfiguracoesSons) {
-                return;
-              }
-
-              // playAudio('#player-sons', listaConfiguracoesSons['buzzer']);
-
-            }
-
             iniciarCronometro(_tempoPartidaSegundos, _isContagemRegressiva);
           }
-          // alert("Nova partida iniciada!");
-          if (secondWindowRoute != "placar") {
-            secondWindowRoute = "placar";
-            ipcRenderer.send("openSecondWindow", "placar.html");
-
-            let countTentativas = 0;
-            setInterval(function () {
-              let cronometroAtual = document.querySelector('.label-time-extra').innerHTML;
-              ipcRenderer.send("alterarCronometro", cronometroAtual);
-              if (countTentativas >= 3) {
-                return;
-              }
-              countTentativas++;
-            }, 1000);
-
-          }
         }
-
-
 
       });
       document.getElementById('btn-add-time-minutes').addEventListener('click', function () {
@@ -2450,12 +2716,12 @@
         if (pausarContagem) {
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2476,12 +2742,12 @@
         if (pausarContagem) {
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2499,12 +2765,12 @@
         if (pausarContagem) {
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2525,12 +2791,12 @@
         if (pausarContagem) {
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2547,12 +2813,12 @@
         if (pausarContagem) {
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2573,12 +2839,12 @@
         if (pausarContagem) {
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2596,6 +2862,8 @@
 
     <script>
       // Define as variáveis globais
+      let config_setup_partes_jogo = 1;
+      let partes_tocadas = [];
       let partidaIniciada = false;
       let zeraCronometro = false;
       let tempoTotal = 0;
@@ -2642,6 +2910,19 @@
 
       // Define a função que inicia o cronômetro
       function iniciarCronometro(tempo, contagemRegressiva = false) {
+        partes_tocadas = [];
+        // Resetar período para 1 ao iniciar novo cronômetro
+        $('#input-periodo').val(1);
+        $('#label-periodo').html('1');
+        ipcRenderer.send('alterarPontuacaoPlacar', {
+            inputOrigin: '#input-periodo',
+            labelOrigin: '#label-periodo',
+            buttonOrigin: '#btn-sub-periodo',
+            limiteOrigin: 99,
+            formataOrigin: 'true',
+            pontuacao: '1',
+            pontuacaoFormatada: '1',
+        });
         pausarContagem = false;
         tempoTotal = tempo;
         isContagemRegressiva = contagemRegressiva;
@@ -2720,7 +3001,7 @@
           //       minutos++;
           //       segundos = 0;
           //     }
-          //     const minutosStr = minutos.toString().padStart(2, "0");
+          //     const minutosStr = minutos.toString();
           //     const segundosStr = segundos.toString().padStart(2, "0");
           //     document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           //     ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2776,19 +3057,84 @@
             tempoRestanteOld = tempoRestante
             tempoRestante += 0.1;
           }
-          if (tempoRestante <= 0) {
+          // Fix JavaScript Floating Point math precision
+          tempoRestante = Math.round(tempoRestante * 10) / 10;
+          if (isContagemRegressiva && tempoRestante <= 0) {
             tempoRestante = 0;
+            if (!partes_tocadas.includes('FINAL')) {
+                partes_tocadas.push('FINAL');
+                pausarContagem = true;
+                zeraCronometro = true;
+                if (config_setup_buzinar_faltar) {
+                    playAudio('#player-sons', listaConfiguracoesSons['end_timeout']);
+                }
+            }
+          } else if (!isContagemRegressiva && tempoTotal > 0 && tempoRestante >= tempoTotal) {
+            tempoRestante = tempoTotal;
+            if (!partes_tocadas.includes('FINAL')) {
+                partes_tocadas.push('FINAL');
+                pausarContagem = true;
+                zeraCronometro = true;
+                if (config_setup_buzinar_faltar) {
+                    playAudio('#player-sons', listaConfiguracoesSons['end_timeout']);
+                }
+            }
+          }
+
+          // === Partes de Jogo: detecção automática de fronteira ===
+          if (config_setup_partes_jogo > 1 && tempoTotal > 0) {
+              const duracaoParte = tempoTotal / config_setup_partes_jogo;
+              for (let _parte = 1; _parte < config_setup_partes_jogo; _parte++) {
+                  let boundary = isContagemRegressiva ? tempoTotal - (duracaoParte * _parte) : duracaoParte * _parte;
+                  let crossed = false;
+                  if (isContagemRegressiva && tempoRestanteOld > boundary && tempoRestante <= boundary) {
+                      crossed = true;
+                  } else if (!isContagemRegressiva && tempoRestanteOld < boundary && tempoRestante >= boundary) {
+                      crossed = true;
+                  }
+                  if (crossed && !partes_tocadas.includes(_parte)) {
+                      partes_tocadas.push(_parte);
+
+                      // 1) Pausar o cronômetro
+                      pausarContagem = true;
+
+                      // 2) Tocar som de fim do tempo
+                      playAudio('#player-sons', listaConfiguracoesSons['end_timeout']);
+
+                      // 3) Incrementar o período automaticamente DEPOIS da buzina
+                      setTimeout(() => {
+                          let periodoAtual = parseInt($('#input-periodo').val()) || 1;
+                          periodoAtual++;
+                          $('#input-periodo').val(periodoAtual);
+                          $('#label-periodo').html(periodoAtual.toString());
+
+                          // 4) Enviar atualização do período para todas as telas
+                          let dataPeriodo = {
+                              inputOrigin: '#input-periodo',
+                              labelOrigin: '#label-periodo',
+                              buttonOrigin: '#btn-sub-periodo',
+                              limiteOrigin: 99,
+                              formataOrigin: 'true',
+                              pontuacao: periodoAtual.toString(),
+                              pontuacaoFormatada: periodoAtual.toString(),
+                          };
+                          ipcRenderer.send('alterarPontuacaoPlacar', dataPeriodo);
+                      }, 2500);
+
+                      break; // Só processar uma fronteira por tick
+                  }
+              }
           }
           // Calcula os minutos e segundos restantes
           // const minutos = Math.floor(tempoRestante / 60);
           // if (tempoRestante >= 60) {
           let minutos = Math.floor(tempoRestante / 60);
-          let segundos = Math.floor(tempoRestante % 60);
+          let segundos = (isContagemRegressiva && tempoRestante % 60 > 0) ? Math.ceil(tempoRestante % 60) : Math.floor(tempoRestante % 60);
           if (segundos >= 60 && segundos <= 60.9) {
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -2942,12 +3288,10 @@
         const somAudio = document.querySelector(elemId);
         if (!somAudio) return;
 
+        // Stop any current playback and reset to start
+        somAudio.pause();
+        somAudio.currentTime = 0;
         somAudio.setAttribute("src", filePath);
-
-        if (!somAudio.paused) {
-          return;
-        }
-
         somAudio.volume = volume;
         somAudio.play().catch(function (err) {
           console.warn('[playAudio] Erro ao reproduzir áudio:', err);
@@ -3026,7 +3370,7 @@
           buttonOrigin: '',
           limiteOrigin: 99,
           formataOrigin: "true",
-          pontuacaoFormatada: parseInt($('#input-gols-time-01').val()).toString().padStart(2, "0"),
+          pontuacaoFormatada: parseInt($('#input-gols-time-01').val()).toString(),
         }
         let dataPontuacao2 = {
           inputOrigin: '#input-gols-time-02',
@@ -3034,7 +3378,7 @@
           buttonOrigin: '',
           limiteOrigin: 99,
           formataOrigin: "true",
-          pontuacaoFormatada: parseInt($('#input-gols-time-02').val()).toString().padStart(2, "0"),
+          pontuacaoFormatada: parseInt($('#input-gols-time-02').val()).toString(),
         }
         let dataPontuacao3 = {
           inputOrigin: '#input-faltas-time-02',
@@ -3042,7 +3386,7 @@
           buttonOrigin: '',
           limiteOrigin: 99,
           formataOrigin: "true",
-          pontuacaoFormatada: parseInt($('#input-faltas-time-02').val()).toString().padStart(2, "0"),
+          pontuacaoFormatada: parseInt($('#input-faltas-time-02').val()).toString(),
         }
         let dataPontuacao4 = {
           inputOrigin: '#input-faltas-time-01',
@@ -3050,7 +3394,7 @@
           buttonOrigin: '',
           limiteOrigin: 99,
           formataOrigin: "true",
-          pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString().padStart(2, "0"),
+          pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString(),
         }
         let dataPontuacao5 = {
           inputOrigin: '#input-faltas-time-01',
@@ -3058,7 +3402,7 @@
           buttonOrigin: '',
           limiteOrigin: 99,
           formataOrigin: "true",
-          pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString().padStart(2, "0"),
+          pontuacaoFormatada: parseInt($('#input-faltas-time-01').val()).toString(),
         }
         let dataPontuacao6 = {
           inputOrigin: '#input-periodo',
@@ -3126,6 +3470,7 @@
         tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
         window.tempo_atq_cont = tempo_ataque;
         adicionarPontuacaoDefault('#input-tempo-ataque', '#label-tempo-ataque', '#btn-adicionar-tempo-ataque', tempo_ataque);
+        config_setup_partes_jogo = configSetup[0]["partes_jogo"] || 1;
         config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
         config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
         config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
@@ -3143,7 +3488,7 @@
             minutos++;
             segundos = 0;
           }
-          const minutosStr = minutos.toString().padStart(2, "0");
+          const minutosStr = minutos.toString();
           const segundosStr = segundos.toString().padStart(2, "0");
           document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
           ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -3207,6 +3552,7 @@
       }
       function setConfigSetupReload() {
         tempo_ataque = configSetup[0]["tempo_ataque"] ? configSetup[0]["tempo_ataque"] : 0;
+        config_setup_partes_jogo = configSetup[0]["partes_jogo"] || 1;
         config_setup_tempo_jogo = configSetup[0]["tempo_jogo"];
         config_setup_duracao_jogo_min = configSetup[0]["duracao_jogo_minutos"];
         config_setup_duracao_jogo_seg = configSetup[0]["duracao_jogo_segundos"]
@@ -3231,7 +3577,7 @@
         //       minutos++;
         //       segundos = 0;
         //     }
-        //     const minutosStr = minutos.toString().padStart(2, "0");
+        //     const minutosStr = minutos.toString();
         //     const segundosStr = segundos.toString().padStart(2, "0");
         //     document.querySelector('.label-time-extra-temp').innerHTML = `${minutosStr}:${segundosStr}`;
         //     ipcRenderer.send("alterarCronometro", `${minutosStr}:${segundosStr}`);
@@ -3458,6 +3804,8 @@
 
       ipcRenderer.on('music-files-loaded', (event, files) => {
         musicPlayer.playlist = files;
+        musicPlayer.selectedTracks = new Set();
+        files.forEach((f, i) => musicPlayer.selectedTracks.add(i));
         if (files.length > 0) {
           musicPlayer.currentIndex = 0;
           updateMusicDisplay();
@@ -3474,6 +3822,27 @@
         ipcRenderer.send('load-music-files', folderPath);
       }
 
+      function selectAllMusic(select) {
+        if (!musicPlayer.selectedTracks) musicPlayer.selectedTracks = new Set();
+        if (select) {
+          musicPlayer.playlist.forEach((f, i) => musicPlayer.selectedTracks.add(i));
+        } else {
+          musicPlayer.selectedTracks.clear();
+        }
+        renderMusicList();
+      }
+
+      function toggleMusicSelection(index, event) {
+        event.stopPropagation();
+        if (!musicPlayer.selectedTracks) musicPlayer.selectedTracks = new Set();
+        if (musicPlayer.selectedTracks.has(index)) {
+          musicPlayer.selectedTracks.delete(index);
+        } else {
+          musicPlayer.selectedTracks.add(index);
+        }
+        renderMusicList();
+      }
+
       function renderMusicList() {
         const listContainer = document.getElementById('music-list');
         if (!listContainer) return;
@@ -3483,6 +3852,7 @@
         musicPlayer.playlist.forEach((filePath, index) => {
           const fileName = filePath.split(/[/\\]/).pop().replace(/\.[^/.]+$/, '');
           const isCurrentSong = index === musicPlayer.currentIndex;
+          const isSelected = musicPlayer.selectedTracks && musicPlayer.selectedTracks.has(index);
 
           const item = document.createElement('div');
           item.id = 'music-item-' + index;
@@ -3491,22 +3861,24 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 15px;
-            background-color: ${isCurrentSong ? '#0D6635' : '#C6C5C3'};
+            background-color: ${isCurrentSong ? '#0D6635' : (isSelected ? '#d4edda' : '#C6C5C3')};
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.2s;
             border: 1px solid #B2804A;
+            opacity: ${isSelected ? '1' : '0.6'};
           `;
           item.onmouseover = function () { if (!isCurrentSong) this.style.backgroundColor = '#EAE1D0'; };
-          item.onmouseout = function () { if (!isCurrentSong) this.style.backgroundColor = '#C6C5C3'; };
-          item.onclick = function () { playMusicByIndex(index); };
+          item.onmouseout = function () { if (!isCurrentSong) this.style.backgroundColor = isSelected ? '#d4edda' : '#C6C5C3'; };
+          item.onclick = function () { if (isSelected) playMusicByIndex(index); };
 
           item.innerHTML = `
             <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+              <input type="checkbox" ${isSelected ? 'checked' : ''} onclick="toggleMusicSelection(${index}, event)" style="accent-color: #0D6635; width: 18px; height: 18px; cursor: pointer;">
               <span style="color: #925F39; font-size: 12px; min-width: 25px;">${(index + 1).toString().padStart(2, '0')}</span>
               <span style="color: ${isCurrentSong ? 'white' : '#28235B'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${fileName}</span>
             </div>
-            <button onclick="event.stopPropagation(); playMusicByIndex(${index});" class="btn btn-sm" style="background-color: transparent; border: none; color: ${isCurrentSong ? 'white' : '#0D6635'};">
+            <button onclick="event.stopPropagation(); if(${isSelected}) playMusicByIndex(${index});" class="btn btn-sm" style="background-color: transparent; border: none; color: ${isCurrentSong ? 'white' : (isSelected ? '#0D6635' : '#999')};">
               <i class="fa ${isCurrentSong && musicPlayer.isPlaying ? 'fa-pause' : 'fa-play'}"></i>
             </button>
           `;
@@ -3550,16 +3922,32 @@
 
       function previousMusic() {
         if (musicPlayer.playlist.length === 0) return;
-        musicPlayer.currentIndex = (musicPlayer.currentIndex - 1 + musicPlayer.playlist.length) % musicPlayer.playlist.length;
+        let attempts = musicPlayer.playlist.length;
+        let idx = musicPlayer.currentIndex;
+        do {
+          idx = (idx - 1 + musicPlayer.playlist.length) % musicPlayer.playlist.length;
+          attempts--;
+        } while (musicPlayer.selectedTracks && !musicPlayer.selectedTracks.has(idx) && attempts > 0);
+        if (attempts <= 0) return;
+        musicPlayer.currentIndex = idx;
         playCurrentTrack();
       }
 
       function nextMusic() {
         if (musicPlayer.playlist.length === 0) return;
         if (musicPlayer.isShuffled) {
-          musicPlayer.currentIndex = Math.floor(Math.random() * musicPlayer.playlist.length);
+          const selected = musicPlayer.selectedTracks ? Array.from(musicPlayer.selectedTracks) : [...Array(musicPlayer.playlist.length).keys()];
+          if (selected.length === 0) return;
+          musicPlayer.currentIndex = selected[Math.floor(Math.random() * selected.length)];
         } else {
-          musicPlayer.currentIndex = (musicPlayer.currentIndex + 1) % musicPlayer.playlist.length;
+          let attempts = musicPlayer.playlist.length;
+          let idx = musicPlayer.currentIndex;
+          do {
+            idx = (idx + 1) % musicPlayer.playlist.length;
+            attempts--;
+          } while (musicPlayer.selectedTracks && !musicPlayer.selectedTracks.has(idx) && attempts > 0);
+          if (attempts <= 0) return;
+          musicPlayer.currentIndex = idx;
         }
         playCurrentTrack();
       }
@@ -3625,6 +4013,36 @@
     <!-- Controles de Apresentação de Jogadores -->
     <script src="../resources/js/presentation-controls.js"></script>
 
+
+    <!-- Auto-scale script for proportional resizing -->
+    <script>
+      function autoScale() {
+        var wrapper = document.getElementById('scale-wrapper');
+        if (!wrapper) return;
+        var refWidth = 1224;
+        var refHeight = 768;
+        var scaleX = window.innerWidth / refWidth;
+        var scaleY = window.innerHeight / refHeight;
+        var scale = Math.min(scaleX, scaleY);
+        wrapper.style.transform = 'scale(' + scale + ')';
+        wrapper.style.transformOrigin = 'top center';
+        wrapper.style.margin = '0 auto';
+      }
+      window.addEventListener('resize', autoScale);
+      window.addEventListener('load', autoScale);
+    </script>
+  </div> <!-- end scale-wrapper -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modals = ['videoModal', 'musicModal', 'modalSets', 'addRowModal1', 'addRowModal2', 'configModal'];
+      modals.forEach(id => {
+        const modal = document.getElementById(id);
+        if (modal) {
+          document.body.appendChild(modal);
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

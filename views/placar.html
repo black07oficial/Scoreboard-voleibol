@@ -119,21 +119,26 @@
             line-height: 70px;
             color: red;
             margin-bottom: 0px;
+            margin-top: 25px;
+            letter-spacing: 10px;
         }
 
         .painel-cronometro {
-            min-height: 120px;
+            min-height: 134px;
             background-color: black;
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
-            -webkit-border-bottom-right-radius: 10px;
-            -webkit-border-bottom-left-radius: 10px;
-            -moz-border-radius-bottomright: 10px;
-            -moz-border-radius-bottomleft: 10px;
-            border-bottom-right-radius: 10px;
-            border-bottom-left-radius: 10px;
+            border-radius: 0 0 20px 20px !important;
+        }
+
+        #painel-info-time-01 {
+            border-radius: 0 0 20px 0 !important;
+        }
+
+        #painel-info-time-02 {
+            border-radius: 0 0 0 20px !important;
         }
 
         .painel-tempo-ataque {
@@ -156,38 +161,34 @@
 
         .painel-pontuacao-time-01 {
             background-color: black;
-            height: 100%;
-            padding-top: 4px;
+            height: 92% !important;
+            max-height: 100%;
+            min-height: 0;
             width: 100%;
-            padding-right: 5px;
             overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            -webkit-border-top-right-radius: 10px;
-            -webkit-border-bottom-right-radius: 10px;
-            -moz-border-radius-topright: 10px;
-            -moz-border-radius-bottomright: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
+            justify-content: center;
+            border-radius: 0 20px 20px 0 !important;
+            flex-shrink: 1;
+            flex-wrap: nowrap;
+            position: relative;
         }
 
         .painel-pontuacao-time-02 {
             background-color: black;
-            padding-top: 4px;
-            padding-left: 12px;
-            height: 100%;
+            height: 92% !important;
+            max-height: 100%;
+            min-height: 0;
             width: 100%;
             overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            -webkit-border-top-left-radius: 10px;
-            -webkit-border-bottom-left-radius: 10px;
-            -moz-border-radius-topleft: 10px;
-            -moz-border-radius-bottomleft: 10px;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
+            justify-content: center;
+            border-radius: 20px 0 0 20px !important;
+            flex-shrink: 1;
+            flex-wrap: nowrap;
+            position: relative;
         }
 
         .pontuacao {
@@ -200,7 +201,12 @@
         .pontuacao-container {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .linhas-decorativas {
@@ -239,7 +245,7 @@
             text-align: center;
             padding: 2px;
             border-radius: 5px;
-            margin-top: 60px;
+            margin-top: 55px;
             height: 80px;
             width: 80px;
             /* margin-left: -25px; */
@@ -253,7 +259,7 @@
             text-align: center;
             padding: 2px;
             border-radius: 5px;
-            margin-top: 60px;
+            margin-top: 55px;
             height: 80px;
             width: 80px;
             /* margin-left: 40px; */
@@ -294,11 +300,11 @@
         }
 
         .painel-anuncio {
-            border-radius: 10px;
+            border-radius: 15px !important;
             height: auto;
             position: static;
-            /* background-color: white; */
-            padding: 4px;
+            background-color: black !important;
+            padding: 10px;
             margin: 0 auto;
             display: flex;
             justify-content: center;
@@ -311,14 +317,12 @@
         }
 
         .painel-sets {
-            width: 100%;
+            width: 90% !important;
+            margin: 0 auto !important;
             height: 100%;
-            border-top-right-radius: 10px;
-            border-top-left-radius: 10px;
-            border-top: 2px solid rgb(19, 19, 19);
-            border-right: 2px solid rgb(19, 19, 19);
-            border-left: 2px solid rgb(19, 19, 19);
+            border-radius: 20px 20px 0 0 !important;
             background-color: #000000;
+            overflow: hidden !important;
         }
 
         .faltas {
@@ -346,6 +350,7 @@
         .painel-periodo {
             margin-left: 5px;
             margin-right: 5px;
+            margin-top: 55px;
             padding-top: 0px;
             color: white;
             display: flex;
@@ -377,14 +382,8 @@
             margin-top: -65px;
             margin-bottom: 10px;
         }
-
         .desconto-ativo {
-            -webkit-border-top-right-radius: 10px;
-            -webkit-border-bottom-right-radius: 10px;
-            -moz-border-radius-topright: 10px;
-            -moz-border-radius-bottomright: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
+            border-radius: 20px !important;
             background-color: #39AA49 !important;
             padding: 8px;
             height: 100%;
@@ -394,14 +393,9 @@
             align-items: center;
             overflow: hidden;
         }
-
+ 
         .desconto-ativo-black {
-            -webkit-border-top-right-radius: 10px;
-            -webkit-border-bottom-right-radius: 10px;
-            -moz-border-radius-topright: 10px;
-            -moz-border-radius-bottomright: 10px;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
+            border-radius: 20px !important;
             background-color: #000000 !important;
             padding: 8px;
             height: 100%;
@@ -411,14 +405,9 @@
             align-items: center;
             overflow: hidden;
         }
-
+ 
         .desconto-ativo-2 {
-            -webkit-border-top-left-radius: 10px;
-            -webkit-border-bottom-left-radius: 10px;
-            -moz-border-radius-topleft: 10px;
-            -moz-border-radius-bottomleft: 10px;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
+            border-radius: 20px !important;
             background-color: #39AA49 !important;
             padding: 8px;
             height: 100%;
@@ -428,14 +417,9 @@
             align-items: center;
             overflow: hidden;
         }
-
+ 
         .desconto-ativo-black-2 {
-            -webkit-border-top-left-radius: 10px;
-            -webkit-border-bottom-left-radius: 10px;
-            -moz-border-radius-topleft: 10px;
-            -moz-border-radius-bottomleft: 10px;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
+            border-radius: 20px !important;
             background-color: #000000 !important;
             padding: 8px;
             height: 100%;
@@ -463,8 +447,9 @@
         .lista-azul {
             background-color: #14d15d;
             height: 18px;
+            width: 18px;
             margin-top: 5px;
-            width: 55px;
+            border-radius: 50%;
         }
 
         .cronometro {
@@ -473,6 +458,7 @@
             line-height: 70px;
             color: red;
             margin-bottom: 0px;
+            letter-spacing: 10px;
         }
 
         .faltas {
@@ -488,7 +474,7 @@
             text-align: center;
             padding: 2px;
             border-radius: 5px;
-            margin-top: 0px;
+            margin-top: 55px;
             height: 100px;
             width: 100px;
         }
@@ -498,13 +484,17 @@
             text-align: center;
             padding: 2px;
             border-radius: 5px;
-            margin-top: 0px;
+            margin-top: 55px;
             height: 100px;
             width: 100px;
         }
 
-        /* Media Queries para Responsividade */
-        @media (max-width: 1200px) {
+        #pontuacao1 i, #pontuacao2 i, #pontuacao3 i, #pontuacao4 i {
+            font-size: 140px !important;
+        }
+
+        /* Media Queries DESABILITADOS - Usando zoom scaling ao invés de responsive */
+        /* @media (max-width: 1200px) {
             .pontuacao {
                 font-size: 140px;
                 line-height: 95px;
@@ -537,6 +527,10 @@
             .linhas-decorativas {
                 gap: 10px;
                 height: 80px;
+            }
+
+            #pontuacao1 i, #pontuacao2 i, #pontuacao3 i, #pontuacao4 i {
+                font-size: 110px !important;
             }
         }
 
@@ -591,6 +585,10 @@
             #edit-cfg-equipes-t3-nome,
             #edit-cfg-equipes-t4-nome {
                 font-size: 20px;
+            }
+
+            #pontuacao1 i, #pontuacao2 i, #pontuacao3 i, #pontuacao4 i {
+                font-size: 85px !important;
             }
         }
 
@@ -653,50 +651,54 @@
                 min-height: 80px;
                 padding-top: 40px;
             }
-        }
+
+            #pontuacao1 i, #pontuacao2 i, #pontuacao3 i, #pontuacao4 i {
+                font-size: 65px !important;
+            }
+        } */
     </style>
 
 </head>
 
 <body>
-    <div class="" style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+    <div class="" style="width: 100%; height: 100%; display: flex; flex-direction: column; padding: 0; gap: 11px; box-sizing: border-box;">
         <!-- ROW 1: Logos + Cronometro -->
-        <div class="d-flex" style="flex: 0 0 27%; overflow: hidden;">
-            <div id="painel-info-time-01" class=" text-center informacoes-time desconto-ativo-black d-flex flex-column justify-content-center align-items-center"
-                style="width:33.33333333%">
-                <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" style="max-height: 70%;" />
+        <div class="d-flex justify-content-between" style="flex: 0 0 34%; gap: 12px; overflow: hidden;">
+            <div id="painel-info-time-01" class="text-center informacoes-time desconto-ativo-black d-flex flex-column justify-content-center align-items-center"
+                style="flex: 0 0 31.6%; min-width: 0;">
+                <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" style="max-height: 60%;" />
                 <p id="edit-cfg-equipes-t1-nome" class="gobold-bold" style="margin-top: 5px; margin-bottom: 0; font-size: 24px;"></p>
-                <img id="img-cfg-equipes-t3-logo" class="icone-time d-none" alt="Imagem" style="max-height: 70%;" />
+                <img id="img-cfg-equipes-t3-logo" class="icone-time d-none" alt="Imagem" style="max-height: 60%;" />
                 <p id="edit-cfg-equipes-t3-nome" class="gobold-bold d-none" style="margin-top: 5px; margin-bottom: 0; font-size: 24px;"></p>
             </div>
-            <div class="" style="width: 33.33333333%; margin-right: 7px; margin-left: 7px;">
+            <div class="" style="flex: 0 0 33.5%; min-width: 0;">
                 <div class="painel-cronometro">
                     <span class="cronometro">00:00</span>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="painel-tempo-ataque d-none" id="ataque">
-                        <span class="tempo-ataque">00</span>
+                        <span class="tempo-ataque">0</span>
                     </div>
                 </div>
             </div>
-            <div id="painel-info-time-02" class=" text-center informacoes-time desconto-ativo-black-2 d-flex flex-column justify-content-center align-items-center"
-                style="width:33.33333333%">
-                <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" style="max-height: 70%;" />
+            <div id="painel-info-time-02" class="text-center informacoes-time desconto-ativo-black-2 d-flex flex-column justify-content-center align-items-center"
+                style="flex: 0 0 31.6%; min-width: 0;">
+                <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" style="max-height: 60%;" />
                 <p id="edit-cfg-equipes-t2-nome" class="gobold-bold" style="margin-top: 5px; margin-bottom: 0; font-size: 24px;"></p>
-                <img id="img-cfg-equipes-t4-logo" class="icone-time d-none" alt="Imagem" style="max-height: 70%;" />
+                <img id="img-cfg-equipes-t4-logo" class="icone-time d-none" alt="Imagem" style="max-height: 60%;" />
                 <p id="edit-cfg-equipes-t4-nome" class="gobold-bold d-none" style="margin-top: 5px; margin-bottom: 0; font-size: 24px;"></p>
             </div>
         </div>
         <!-- ROW 2: Pontuação + Faltas/Período -->
-        <div class="d-flex faltas-tabela" style="flex: 0 0 24%; margin: 0; margin-top: 6px;">
-            <div style="padding-left: 0px; width:33.33333333%; height: 100%;">
+        <div class="d-flex faltas-tabela" style="flex: 0 0 34%; margin: 0; gap: 12px;">
+            <div style="padding-left: 0px; flex: 0 0 31.6%; min-width: 0; height: 100%;">
                 <table style="width: 100%; height: 100%;">
                     <tbody style="height: 100%;">
                         <tr style="height: 100%;">
                             <td width="90%" style="height: 100%;">
-                                <div class="painel-pontuacao-time-01 d-flex justify-content-end" style="gap:10px;">
+                                <div class="painel-pontuacao-time-01 d-flex justify-content-end" style="gap:10px; position: relative; top: -15px;">
                                     <div id="flex-lista-1" class="d-flex"
-                                        style=" flex-direction: column; margin-left: -10px;">
+                                        style=" flex-direction: column; position: absolute; left: 10px; flex-shrink: 0;">
                                         <div class="d-flex d-none lst-margin" id="time-1-1">
                                             <div class="lista-azul"></div>
                                         </div>
@@ -708,7 +710,7 @@
                                         </div>
                                     </div>
                                     <div id="flex-lista-3" class="d-none"
-                                        style="flex-direction: column; margin-left: -10px;">
+                                        style="flex-direction: column; position: absolute; left: 10px; flex-shrink: 0;">
                                         <div class="d-flex d-none lst-margin" id="time-3-1">
                                             <div class="lista-azul"></div>
                                         </div>
@@ -725,7 +727,7 @@
                                             <div class="linha-decorativa"></div>
                                             <div class="linha-decorativa"></div>
                                         </div>
-                                        <span class="pontuacao" id="pontuacao-1" style="margin-right: 10px;">00</span>
+                                        <span class="pontuacao" id="pontuacao-1" style="margin-right: 10px;">0</span>
                                     </div>
                                     <div class="pontuacao-container d-none" id="container-pontuacao-3">
                                         <div class="linhas-decorativas">
@@ -733,15 +735,15 @@
                                             <div class="linha-decorativa"></div>
                                             <div class="linha-decorativa"></div>
                                         </div>
-                                        <span class="pontuacao" id="pontuacao-3" style="margin-right: 10px;">00</span>
+                                        <span class="pontuacao" id="pontuacao-3" style="margin-right: 10px;">0</span>
                                     </div>
-                                    <div class="d-none align-items-center" id="pontuacao1">
+                                    <div class="align-items-center d-flex" id="pontuacao1" style="visibility: hidden; position: absolute; right: 10px;">
                                         <i class="fa fa-caret-left"
-                                            style="color: rgb(255, 166, 0); margin: 5px; font-size: 160px; margin-top:0px; line-height: 1;"></i>
+                                            style="color: #FFFF00; margin: 5px; font-size: 140px; margin-top:0px; line-height: 1;"></i>
                                     </div>
-                                    <div class="d-none align-items-center" id="pontuacao3">
+                                    <div class="d-none align-items-center" id="pontuacao3" style="position: absolute; right: 10px;">
                                         <i class="fa fa-caret-left"
-                                            style="color: rgb(255, 166, 0); margin: 5px; font-size: 160px; margin-top:0px; line-height: 1;"></i>
+                                            style="color: #FFFF00; margin: 5px; font-size: 140px; margin-top:0px; line-height: 1;"></i>
                                     </div>
                                 </div>
                             </td>
@@ -749,50 +751,48 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex flex-column justify-content-center align-items-center" style="width:33.33333333%; margin-left: 7px; margin-right: 7px; height: 100%;">
-                <!-- Logo BOARD no topo da coluna central -->
-                <div class="painel-anuncio" style="width: 200px; height: 65px; flex-shrink: 0;">
+            <div class="d-flex flex-column justify-content-center align-items-center" style="flex: 0 0 33.5%; min-width: 0; height: 100%; position: relative; top: -15px;">
+                <!-- Logo BOARD no topo da coluna central - Position Absolute para independência -->
+                <div class="painel-anuncio" style="width: 100%; height: 80px; flex-shrink: 0; position: absolute; top: -30px; left: 0;">
                     <img style="width: 100%; height: 100%; object-fit: contain;" />
                 </div>
-                <!-- Faltas + Período abaixo da logo -->
-                <div class="d-flex flex-row justify-content-between align-items-center" style="width: 100%; flex: 1;">
+                <!-- Faltas + Período - Agora independente da logo -->
+                <div class="d-flex flex-row justify-content-between align-items-center" style="width: 100%; position: relative; top: 0px;">
                     <div class="d-flex justify-content-start">
-                        <div class="painel-faltas-time-01">
-                            <span class="faltas" id="faltas-1">0</span>
-                            <span class="faltas d-none" id="faltas-3">0</span>
+                        <div class="painel-faltas-time-01 d-flex justify-content-center align-items-center">
+                            <span class="faltas" id="faltas-1" style="color: #FFFF00;">0</span>
+                            <span class="faltas d-none" id="faltas-3" style="color: #FFFF00;">0</span>
                         </div>
                     </div>
                     <div class="painel-periodo d-flex justify-content-center">
-                        <div class="periodo-painel">
-                            <div id="label-periodo" class="cobold-bold lab-periodo d-none">Jogo</div>
-                            </br>
-                            <div id="value-periodo" class="periodo" style="text-align: center;">1</div>
+                        <div class="d-flex justify-content-center align-items-center" id="painel-periodo-box" style="background-color: transparent !important; border: none;">
+                            <span id="value-periodo" class="periodo" style="text-align: center; color: white; line-height: 1;">1</span>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <div class="painel-faltas-time-02">
-                            <span class="faltas" id="faltas-2">0</span>
-                            <span class="faltas d-none" id="faltas-4">0</span>
+                        <div class="painel-faltas-time-02 d-flex justify-content-center align-items-center">
+                            <span class="faltas" id="faltas-2" style="color: #FFFF00;">0</span>
+                            <span class="faltas d-none" id="faltas-4" style="color: #FFFF00;">0</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div style="padding-right: 0px; width:33.33333333%; height: 100%;">
+            <div style="padding-right: 0px; flex: 0 0 31.6%; min-width: 0; height: 100%;">
                 <table style="width: 100%; height: 100%;">
                     <tbody style="height: 100%;">
                         <tr style="height: 100%;">
-                            <td width="90%" style="height: 100%;">
-                                <div class="painel-pontuacao-time-02 d-flex justify-content-start" style="gap:3px;">
-                                    <div id="pontuacao2" class="d-none align-items-center" style="margin-left: -10px;">
+                            <td width="100%" style="height: 100%; padding-right: 0px;">
+                                <div class="painel-pontuacao-time-02 d-flex justify-content-end" style="gap:3px; position: relative; top: -15px; padding-right: 0px; margin-right: 0px;">
+                                    <div id="pontuacao2" class="align-items-center d-flex" style="visibility: hidden; position: absolute; left: 10px;">
                                         <i class="fa fa-caret-right"
-                                            style="color: rgb(255, 166, 0); font-size: 160px; margin-top:0px; line-height: 1;"></i>
+                                            style="color: #FFFF00; margin: 5px; font-size: 140px; margin-top:0px; line-height: 1;"></i>
                                     </div>
-                                    <div id="pontuacao4" class="d-none align-items-center" style="margin-left: -10px;">
+                                    <div id="pontuacao4" class="d-none align-items-center" style="position: absolute; left: 10px;">
                                         <i class="fa fa-caret-right"
-                                            style="color: rgb(255, 166, 0); font-size: 160px; margin-top:0px; line-height: 1;"></i>
+                                            style="color: #FFFF00; margin: 5px; font-size: 140px; margin-top:0px; line-height: 1;"></i>
                                     </div>
                                     <div class="pontuacao-container d-flex" id="container-pontuacao-2">
-                                        <span class="pontuacao" id="pontuacao-2" style="margin-left: 10px;">00</span>
+                                        <span class="pontuacao" id="pontuacao-2" style="margin-left: 10px;">0</span>
                                         <div class="linhas-decorativas">
                                             <div class="linha-decorativa"></div>
                                             <div class="linha-decorativa"></div>
@@ -800,14 +800,14 @@
                                         </div>
                                     </div>
                                     <div class="pontuacao-container d-none" id="container-pontuacao-4">
-                                        <span class="pontuacao" id="pontuacao-4" style="margin-left: 10px;">00</span>
+                                        <span class="pontuacao" id="pontuacao-4" style="margin-left: 10px;">0</span>
                                         <div class="linhas-decorativas">
                                             <div class="linha-decorativa"></div>
                                             <div class="linha-decorativa"></div>
                                             <div class="linha-decorativa"></div>
                                         </div>
                                     </div>
-                                    <div id="flex-lista-2" class="d-flex" style="flex-direction: column;">
+                                    <div id="flex-lista-2" class="d-flex" style="flex-direction: column; position: absolute; right: 10px; flex-shrink: 0;">
                                         <div class="d-flex d-none lst-margin" id="time-2-1">
                                             <div class="lista-azul"></div>
                                         </div>
@@ -818,7 +818,7 @@
                                             <div class="lista-azul"></div>
                                         </div>
                                     </div>
-                                    <div id="flex-lista-4" class="d-none" style="flex-direction: column;">
+                                    <div id="flex-lista-4" class="d-none" style="flex-direction: column; position: absolute; right: 10px; flex-shrink: 0;">
                                         <div class="d-flex d-none lst-margin" id="time-4-1">
                                             <div class="lista-azul"></div>
                                         </div>
@@ -837,23 +837,23 @@
             </div>
         </div>
         <!-- ROW 3: Sets -->
-        <div style="flex: 1; min-height: 0; display: flex; justify-content: center; align-items: stretch; padding-top: 8px; overflow: hidden;">
-            <div class="painel-sets d-flex flex-column justify-content-center" style="width: 100%; overflow: hidden;">
+        <div style="flex: 1; min-height: 0; display: flex; justify-content: center; align-items: stretch; overflow: hidden; margin-top: -28px; position: relative; z-index: 10;">
+            <div class="painel-sets d-flex flex-column" style="width: 93.75% !important; overflow: hidden; height: 100%;">
                 <!-- Time 1 -->
-                <div class="d-flex align-items-center" style="flex: 1; border-bottom: 2px solid white; width: 80%; margin: 0 auto; overflow: hidden;" id="set-1">
-                    <div style="flex: 0 0 15%; display: flex; justify-content: center; align-items: center; padding: 4px; height: 100%;">
+                <div class="d-flex align-items-end" style="height: 50%; width: 100%; overflow: hidden; padding-bottom: 0px;" id="set-1">
+                    <div style="flex: 0 0 20%; display: flex; justify-content: center; align-items: flex-end; padding: 0px 4px 0px 24px; height: 100%; overflow: hidden;">
                         <span style="display: none;" class="gobold-bold" id="nome-equipe-1">TESTE</span>
-                        <img id="img-equipe-1" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
+                        <img id="img-equipe-1" style="max-width: 100%; max-height: 85%; width: auto; height: auto; object-fit: contain;">
                     </div>
-                    <div style="flex: 1; display: flex; justify-content: center; align-items: center; flex-wrap: wrap;" id="time1"></div>
+                    <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center; overflow: hidden; height: 100%;" id="time1"></div>
                 </div>
                 <!-- Time 2 -->
-                <div class="d-flex align-items-center" style="flex: 1; width: 80%; margin: 0 auto; overflow: hidden;" id="set-2">
-                    <div style="flex: 0 0 15%; display: flex; justify-content: center; align-items: center; padding: 4px; height: 100%;">
+                <div class="d-flex align-items-start" style="height: 50%; width: 100%; overflow: hidden; padding-top: 0px;" id="set-2">
+                    <div style="flex: 0 0 20%; display: flex; justify-content: center; align-items: flex-start; padding: 0px 4px 0px 24px; height: 100%; overflow: hidden;">
                         <span style="display: none;" class="gobold-bold" id="nome-equipe-2">TESTE</span>
-                        <img id="img-equipe-2" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
+                        <img id="img-equipe-2" style="max-width: 100%; max-height: 85%; width: auto; height: auto; object-fit: contain;">
                     </div>
-                    <div style="flex: 1; display: flex; justify-content: center; align-items: center; flex-wrap: wrap;" id="time2"></div>
+                    <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center; overflow: hidden; height: 100%;" id="time2"></div>
                 </div>
             </div>
         </div>
@@ -1010,12 +1010,14 @@
                 pontuacaoSize = proportionSet(120, 130);
             }
             painelTempoAtq.style.marginTop = marginTop + "px";
-            document.querySelector("#label-periodo").style.marginBottom = labMargin + "px";
+            if (document.querySelector("#label-periodo")) {
+                document.querySelector("#label-periodo").style.marginBottom = labMargin + "px";
+            }
             marginLista.forEach((item) => {
                 item.style.marginTop = marginTop + "px";
             })
             listaAzul.forEach((item) => {
-                item.style.width = listaAzulW + "px";
+                item.style.width = listaAzulH + "px";
                 item.style.height = listaAzulH + "px";
             })
             playerNumber.forEach((item) => {
@@ -1033,7 +1035,9 @@
                 item.style.lineHeight = (pontuacaoSize - 20) + "px";
             })
             periodo.style.fontSize = periodoSize + "px";
-            labelPeriodo.style.fontSize = labelPeriodoSize + "px";
+            if (labelPeriodo) {
+                labelPeriodo.style.fontSize = labelPeriodoSize + "px";
+            }
             painelPontuacao2.style.height = painelPontSize + "px";
             cronometroTime.style.fontSize = cronometroTimeSize + "px";
             painelfaltas1.style.width = painelWSize + "px";
@@ -1065,195 +1069,39 @@
         document.addEventListener("DOMContentLoaded", function () {
             // adjustStyles();
         });
-
-        // Chama a função de ajuste de zoom sempre que a janela for redimensionada
-        let widthWindowPad = 720;
-        let heightWindowPad = 520;
-        document.body.style.zoom = 1;
-        let oldWindowWidth = widthWindowPad;
-        let oldWindowHeight = heightWindowPad;
-        function calculateScale(width) {
-            const widthIncrement = 1000;
-            const scaleIncrement = 1;
-            const maxScale = 10; // Define a escala máxima
-
-            const widthDiff = width - widthWindowPad;
-            let scaleFactor = Math.max(1 + (Math.floor(widthDiff / widthIncrement) * scaleIncrement), 1);
-            scaleFactor = Math.min(scaleFactor, maxScale); // Limita a escala ao máximo definido
-            // // console.log(scaleFactor);
-            return scaleFactor;
-        }
-
+        // Sistema de zoom fixed-size: o placar mantém proporções fixas e só o fundo cresce
         function adjustZoom() {
             const baseWidth = 720;
             const baseHeight = 520;
             const aspectRatio = window.innerWidth / window.innerHeight;
             const baseAspectRatio = baseWidth / baseHeight;
-            let scale
-            var cronometroElements = document.getElementsByClassName('cronometro');
-            var faltasElements = document.getElementsByClassName('faltas');
-            var painelFaltasTime02Elements = document.getElementsByClassName('painel-faltas-time-02');
-            var painelFaltasTime01Elements = document.getElementsByClassName('painel-faltas-time-01');
-            var periodo = document.getElementsByClassName('periodo');
-            var periodoLab = document.getElementsByClassName('lab-periodo');
-            var periodoPainel = document.getElementsByClassName('periodo-painel');
-            var painelAnuncio = document.getElementsByClassName('painel-anuncio');
-            function applyStyles(elements, styles) {
-                for (var i = 0; i < elements.length; i++) {
-                    for (var style in styles) {
-                        elements[i].style[style] = styles[style];
-                    }
-                }
-            }
+            let scale;
+
             if (aspectRatio < baseAspectRatio) {
+                // Tela mais alta que larga - escala baseada na largura
                 scale = window.innerWidth / baseWidth;
                 document.body.style.width = '100%';
-                cronometroStyles = {
-                    fontFamily: 'Digital Dismay, sans-serif',
-                    fontSize: '110px',
-                    lineHeight: '70px',
-                    marginLeft: '2px',
-                    color: 'red',
-                    marginBottom: '0px'
-                };
-
-                faltasStyles = {
-                    fontFamily: 'Digital Dismay, sans-serif',
-                    fontSize: '97px',
-                    lineHeight: '97px',
-                    fontWeight: '100',
-                    marginLeft: '4px',
-                };
-                periodoStyles = {
-                    fontSize: "92px",
-                    lineHeight: "0px"
-                }
-                periodoPainelStyles = {
-                    marginTop: "0px"
-                }
-                painelFaltasStyles = {
-                    textAlign: 'center',
-                    padding: '2px',
-                    borderRadius: '5px',
-                    marginTop: '0px',
-                    height: '100px',
-                    width: '100px'
-                };
-                applyStyles(cronometroElements, cronometroStyles);
-                applyStyles(faltasElements, faltasStyles);
-                applyStyles(painelFaltasTime02Elements, painelFaltasStyles);
-                applyStyles(painelFaltasTime01Elements, painelFaltasStyles);
-                applyStyles(periodo, periodoStyles);
-                applyStyles(periodoPainel, periodoPainelStyles);
             } else {
-                cronometroStyles = {
-                    fontFamily: 'Digital Dismay, sans-serif',
-                    fontSize: '150px',
-                    lineHeight: '70px',
-                    color: 'red',
-                    marginLeft: '7px',
-                    marginBottom: '0px'
-                };
-                periodoStyles = {
-                    fontSize: "120px",
-                    lineHeight: "0px"
-                }
-                periodoPainelStyles = {
-                    marginTop: "0px"
-                }
-                faltasStyles = {
-                    fontFamily: 'Digital Dismay, sans-serif',
-                    fontSize: '110px',
-                    lineHeight: '110px',
-                    marginLeft: '4px',
-                    fontWeight: '100'
-                };
-
-                painelFaltasStyles = {
-                    textAlign: 'center',
-                    padding: '2px',
-                    borderRadius: '5px',
-                    marginTop: '0px',
-                    height: '110px',
-                    width: '110px'
-                };
-                if (100 / (aspectRatio * 0.5) < 112.6) {
-                    applyStyles(cronometroElements, cronometroStyles);
-                    applyStyles(faltasElements, faltasStyles);
-                    applyStyles(painelFaltasTime02Elements, painelFaltasStyles);
-                    applyStyles(painelFaltasTime01Elements, painelFaltasStyles);
-                    applyStyles(periodo, periodoStyles);
-                    applyStyles(periodoPainel, periodoPainelStyles);
-                } else {
-                    cronometroStyles = {
-                        fontFamily: 'Digital Dismay, sans-serif',
-                        fontSize: '110px',
-                        lineHeight: '70px',
-                        marginLeft: '7px',
-                        color: 'red',
-                        marginBottom: '0px'
-                    };
-
-                    faltasStyles = {
-                        fontFamily: 'Digital Dismay, sans-serif',
-                        fontSize: '97px',
-                        lineHeight: '97px',
-                        marginLeft: '4px',
-                        fontWeight: '100'
-                    };
-                    periodoStyles = {
-                        fontSize: "92px",
-                        lineHeight: "0px"
-                    }
-                    periodoPainelStyles = {
-                        marginTop: "0px"
-                    }
-                    painelFaltasStyles = {
-                        textAlign: 'center',
-                        padding: '2px',
-                        borderRadius: '5px',
-                        marginTop: '0px',
-                        height: '100px',
-                        width: '100px'
-                    };
-                    applyStyles(cronometroElements, cronometroStyles);
-                    applyStyles(faltasElements, faltasStyles);
-                    applyStyles(painelFaltasTime02Elements, painelFaltasStyles);
-                    applyStyles(painelFaltasTime01Elements, painelFaltasStyles);
-                    applyStyles(periodo, periodoStyles);
-                    applyStyles(periodoPainel, periodoPainelStyles);
-                }
+                // Tela mais larga que alta - escala baseada na altura e limita largura
                 scale = window.innerHeight / baseHeight;
-                document.body.style.width = (100 / (aspectRatio * 0.5)) + '%'; // Ajuste o valor 0.5 conforme necessário
+                document.body.style.width = (100 / (aspectRatio * 0.5)) + '%'; // Limita a largura do body para criar espaço de fundo
             }
 
-
-            // Função para aplicar estilos a uma lista de elementos
-
+            // Aplica o zoom para escalar todo o conteúdo proporcionalmente
             document.body.style.zoom = scale;
             document.body.style.height = (window.innerHeight / scale) + 'px';
-            document.body.style.alignItems = "center";
         }
 
 
         // Chama a função de ajuste de zoom quando o DOM estiver pronto
         document.addEventListener("DOMContentLoaded", function () {
             adjustZoom();
-            ipcRenderer.send('reload');
         });
 
         var arraySets = [];
 
-
-
         // Chama a função de ajuste de zoom sempre que a janela for redimensionada
         window.addEventListener("resize", function () {
-
-            widthWindowPad = 720;
-            heightWindowPad = 520;
-            document.body.style.zoom = 1;
-            oldWindowWidth = widthWindowPad;
-            oldWindowHeight = heightWindowPad;
             adjustZoom();
         });
         let carregouInfoPartida = false;
@@ -1268,48 +1116,39 @@
                 setTimeout(() => {
                     if (!posicao) {
                         if (arg == 1) {
-                            $('#pontuacao4').addClass('d-none');
-                            $('#pontuacao3').addClass('d-none');
-                            $('#pontuacao1').removeClass('d-none').addClass('d-flex');
+                            $('#pontuacao4').css('visibility', 'hidden');
+                            $('#pontuacao3').css('visibility', 'hidden');
+                            $('#pontuacao1').css('visibility', 'visible');
                             $('#pontuacao1').css('margin-right', '-10px');
                             $('#pontuacao-1').css('margin-right', '-10px');
-                            if ($('#pontuacao2').hasClass('d-flex')) {
-                                // $('#pontuacao-2').css('margin-left', '10px');
-                                $('#pontuacao2').removeClass('d-flex').addClass('d-none');
-                            }
+                            $('#pontuacao2').css('visibility', 'hidden');
                         }
                         if (arg == 2) {
-                            $('#pontuacao4').addClass('d-none');
-                            $('#pontuacao3').addClass('d-none');
-                            $('#pontuacao2').removeClass('d-none').addClass('d-flex');
+                            $('#pontuacao4').css('visibility', 'hidden');
+                            $('#pontuacao3').css('visibility', 'hidden');
+                            $('#pontuacao2').css('visibility', 'visible');
                             // $('#pontuacao-2').css('margin-left', '10px');
                             $('#pontuacao1').css('margin-right', '-10px');
                             $('#pontuacao-1').css('margin-right', '10px');
-                            if ($('#pontuacao1').hasClass('d-flex')) {
-                                $('#pontuacao1').removeClass('d-flex').addClass('d-none');
-                            }
+                            $('#pontuacao1').css('visibility', 'hidden');
                         }
                     } else {
                         if (arg == 1) {
-                            $('#pontuacao1').addClass('d-none');
-                            $('#pontuacao2').addClass('d-none');
-                            $('#pontuacao4').removeClass('d-none').addClass('d-flex');
+                            $('#pontuacao1').css('visibility', 'hidden');
+                            $('#pontuacao2').css('visibility', 'hidden');
+                            $('#pontuacao4').css('visibility', 'visible');
                             // $('#pontuacao-4').css('margin-right', '-10px');
                             $('#pontuacao3').css('margin-right', '-10px');
                             $('#pontuacao-3').css('margin-right', '10px');
-                            if ($('#pontuacao3').hasClass('d-flex')) {
-                                $('#pontuacao3').removeClass('d-flex').addClass('d-none');
-                            }
+                            $('#pontuacao3').css('visibility', 'hidden');
                         }
                         if (arg == 2) {
-                            $('#pontuacao1').addClass('d-none');
-                            $('#pontuacao2').addClass('d-none');
-                            $('#pontuacao3').removeClass('d-none').addClass('d-flex');
+                            $('#pontuacao1').css('visibility', 'hidden');
+                            $('#pontuacao2').css('visibility', 'hidden');
+                            $('#pontuacao3').css('visibility', 'visible');
                             $('#pontuacao-3').css('margin-right', '-10px');
                             $('#pontuacao3').css('margin-right', '-10px');
-                            if ($('#pontuacao4').hasClass('d-flex')) {
-                                $('#pontuacao4').removeClass('d-flex').addClass('d-none');
-                            }
+                            $('#pontuacao4').css('visibility', 'hidden');
                         }
                     }
                 }, 500);
@@ -1318,63 +1157,54 @@
 
             if (!posicao) {
                 if (arg == 1) {
-                    $('#pontuacao4').addClass('d-none');
-                    $('#pontuacao3').addClass('d-none');
-                    $('#pontuacao1').removeClass('d-none').addClass('d-flex');
+                    $('#pontuacao4').css('visibility', 'hidden');
+                    $('#pontuacao3').css('visibility', 'hidden');
+                    $('#pontuacao1').css('visibility', 'visible');
                     $('#pontuacao1').css('margin-right', '-10px');
                     $('#pontuacao-1').css('margin-right', '-10px');
-                    if ($('#pontuacao2').hasClass('d-flex')) {
-                        // $('#pontuacao-2').css('margin-left', '10px');
-                        $('#pontuacao2').removeClass('d-flex').addClass('d-none');
-                    }
+                    $('#pontuacao2').css('visibility', 'hidden');
                 }
                 if (arg == 2) {
-                    $('#pontuacao4').addClass('d-none');
-                    $('#pontuacao3').addClass('d-none');
-                    $('#pontuacao2').removeClass('d-none').addClass('d-flex');
+                    $('#pontuacao4').css('visibility', 'hidden');
+                    $('#pontuacao3').css('visibility', 'hidden');
+                    $('#pontuacao2').css('visibility', 'visible');
                     // $('#pontuacao-2').css('margin-left', '10px');
                     $('#pontuacao1').css('margin-right', '-10px');
                     $('#pontuacao-1').css('margin-right', '10px');
-                    if ($('#pontuacao1').hasClass('d-flex')) {
-                        $('#pontuacao1').removeClass('d-flex').addClass('d-none');
-                    }
+                    $('#pontuacao1').css('visibility', 'hidden');
                 }
             } else {
                 if (arg == 1) {
-                    $('#pontuacao1').addClass('d-none');
-                    $('#pontuacao2').addClass('d-none');
-                    $('#pontuacao4').removeClass('d-none').addClass('d-flex');
+                    $('#pontuacao1').css('visibility', 'hidden');
+                    $('#pontuacao2').css('visibility', 'hidden');
+                    $('#pontuacao4').css('visibility', 'visible');
                     // $('#pontuacao-4').css('margin-right', '-10px');
                     $('#pontuacao3').css('margin-right', '-10px');
                     $('#pontuacao-3').css('margin-right', '10px');
-                    if ($('#pontuacao3').hasClass('d-flex')) {
-                        $('#pontuacao3').removeClass('d-flex').addClass('d-none');
-                    }
+                    $('#pontuacao3').css('visibility', 'hidden');
                 }
                 if (arg == 2) {
-                    $('#pontuacao1').addClass('d-none');
-                    $('#pontuacao2').addClass('d-none');
-                    $('#pontuacao3').removeClass('d-none').addClass('d-flex');
+                    $('#pontuacao1').css('visibility', 'hidden');
+                    $('#pontuacao2').css('visibility', 'hidden');
+                    $('#pontuacao3').css('visibility', 'visible');
                     $('#pontuacao-3').css('margin-right', '-10px');
                     $('#pontuacao3').css('margin-right', '-10px');
-                    if ($('#pontuacao4').hasClass('d-flex')) {
-                        $('#pontuacao4').removeClass('d-flex').addClass('d-none');
-                    }
+                    $('#pontuacao4').css('visibility', 'hidden');
                 }
             }
         });
 
 
 
-        $('#set-1').css('padding-bottom', '10px');
-        $('#set-2').css('padding-top', '10px');
+        $('#set-1').css('padding-bottom', '0px');
+        $('#set-2').css('padding-top', '0px');
         ipcRenderer.on('sendNovoSet', function (event, arg) {
             arraySets = arg;
             $("#time1").html("");
             $("#time2").html("");
             if (arraySets.length <= 0) {
-                $('#set-1').css('padding-bottom', '10px');
-                $('#set-2').css('padding-top', '10px');
+                $('#set-1').css('padding-bottom', '0px');
+                $('#set-2').css('padding-top', '0px');
             } else {
                 $('#set-1').css('padding-bottom', '0px');
                 $('#set-2').css('padding-top', '0px');
@@ -1405,7 +1235,7 @@
                 if (element.time1) {
                     html1 += `
                     <div class="digital_dismay"
-                        style="font-size: 96px; ${index === arraySets.length - 1 ? 'border-right: 0px;' : 'border-right: 2px solid white;'} padding-right: 16px; padding-left: 16px; color: ${color1}; line-height:90px;">
+                        style="font-size: 96px; min-width: 110px; width: 110px; text-align: center; color: ${color1}; line-height:80px; margin-right: 30px; margin-top: 10px;">
                         ${element.time1}
                     </div>
                     `
@@ -1413,7 +1243,7 @@
                 if (element.time2) {
                     html2 += `
                     <div class="digital_dismay"
-                        style="font-size: 96px; ${index === arraySets.length - 1 ? 'border-right: 0px;' : 'border-right: 2px solid white;'} padding-right: 16px; padding-left: 16px; color: ${color2}; line-height:90px;">
+                        style="font-size: 96px; min-width: 110px; width: 110px; text-align: center; color: ${color2}; line-height:80px; margin-right: 30px; margin-top: -10px;">
                         ${element.time2}
                     </div>
                     `
@@ -1584,9 +1414,9 @@
                 return;
             }
 
-            const isActive = element.classList.contains("desconto-ativo") || element.classList.contains("desconto-ativo-2");
+            const isActive = data.ativo;
 
-            if (isActive) {
+            if (!isActive) {
                 // Deactivating
                 element.classList.remove("desconto-ativo");
                 element.classList.remove("desconto-ativo-2");
@@ -2155,7 +1985,9 @@
             document.querySelector("body").style.backgroundColor = ccores_background;
 
             document.querySelector("body").style.color = ccores_text_borders;
-            document.querySelector("#label-periodo").style.color = ccores_text_borders;
+            if (document.querySelector("#label-periodo")) {
+                document.querySelector("#label-periodo").style.color = ccores_text_borders;
+            }
 
             document.querySelector("#edit-cfg-equipes-t1-nome").style.color = ccores_team1_name;
             document.querySelector("#edit-cfg-equipes-t2-nome").style.color = ccores_team2_name;
@@ -2202,6 +2034,75 @@
         }
     </script>
 
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
+
+    <!-- Video Overlay -->
+    <div id="video-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:black; z-index:99999;">
+        <video id="video-player" style="width:100%; height:100%; object-fit:contain;"></video>
+    </div>
+    <script>
+        (function() {
+            const { ipcRenderer: vidIpc } = require('electron');
+            const overlay = document.getElementById('video-overlay');
+            const player = document.getElementById('video-player');
+            let currentVolume = 1;
+
+            vidIpc.on('play-video-placar', (event, filePath) => {
+                player.src = filePath;
+                player.volume = currentVolume;
+                overlay.style.display = 'block';
+                player.play();
+            });
+
+            vidIpc.on('stop-video-placar', () => {
+                player.pause();
+                player.src = '';
+                overlay.style.display = 'none';
+            });
+
+            vidIpc.on('set-video-volume', (event, value) => {
+                currentVolume = value / 100;
+                if (player) {
+                    player.volume = currentVolume;
+                }
+            });
+
+            vidIpc.on('pause-video-placar', () => {
+                if (player.paused) {
+                    player.play();
+                } else {
+                    player.pause();
+                }
+            });
+
+            player.addEventListener('ended', () => {
+                overlay.style.display = 'none';
+                player.src = '';
+            });
+
+            player.addEventListener('timeupdate', () => {
+                if (player.duration) {
+                    vidIpc.send('video-progress-update', (player.currentTime / player.duration) * 100);
+                }
+            });
+
+            vidIpc.on('set-video-progress', (event, percentage) => {
+                if (player && player.duration) {
+                    player.currentTime = (percentage / 100) * player.duration;
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

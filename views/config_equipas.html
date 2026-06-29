@@ -116,8 +116,6 @@
             background-color: #B98035;
         }
 
-        table {}
-
         .lista-jogadores {
 
             border-collapse: collapse !important;
@@ -1039,6 +1037,34 @@
 
     </script>
 
+    <!-- Helper: resolveImageSrcForDisplay -->
+    <script>
+        const { pathToFileURL } = require('url');
+
+        // Função para resolver corretamente o caminho de imagens/logos
+        function resolveImageSrcForDisplay(storedPath) {
+            if (!storedPath || typeof storedPath !== 'string') return "../resources/images/no-image.jpg";
+
+            const p = storedPath.replace(/\\/g, '/');
+
+            if (p.startsWith('file://')) return storedPath;
+            if (/^[a-zA-Z]:\//.test(p)) return pathToFileURL(p).href;
+
+            const isAsar = (window.location && window.location.href && window.location.href.includes('app.asar'));
+            const assetsPrefix = isAsar ? '../../assets/' : '../resources/assets/';
+
+            if (p.startsWith('../resources/assets/')) {
+                return isAsar ? p.replace('../resources/assets/', '../../assets/') : p;
+            }
+
+            if (p.startsWith('images/')) {
+                return assetsPrefix + p;
+            }
+
+            return p;
+        }
+    </script>
+
     <!-- Configuracoes: Equipas -->
     <script>
 
@@ -1241,6 +1267,7 @@
             await deleteConfigEquipaTimeJogadores(equipeId);
 
             // Finally reload
+            ipcRenderer.send('send-alert', 'Equipa salva com sucesso!');
             ipcRenderer.send('reload');
         }
 
@@ -1278,7 +1305,6 @@
                     if (err) {
                         console.error(err.message);
                     }
-                    console.log(rows);
                     configEquipaGeral = rows;
                     loadConfigEquipaGeral();
                 });
@@ -1465,7 +1491,7 @@
                     if (err) {
                         console.error(err.message);
                     }
-                    console.log(rows);
+                    // console.log(rows); // Removed: BLOB data crash
                     // configuration = rows;
                     if (id === "1") {
                         configEquipaTime01 = rows;
@@ -1646,7 +1672,7 @@
                     if (err) {
                         console.error(err.message);
                     }
-                    console.log(rows);
+                    // console.log(rows); // Removed: BLOB data crash
                     if (timeId === "1") {
                         configEquipaJogadores01 = rows;
                     } else {
@@ -1735,7 +1761,7 @@
             const cell2 = document.createElement("td");
             const span1 = document.createElement("span");
             span1.classList.add("campo-texto");
-            span1.textContent = camisa.toString().padStart(3, '0');
+            span1.textContent = parseInt(camisa, 10);
             span1.style.padding = "4px";
             span1.style.border = "1px solid #C9A680";
             span1.style.borderRadius = "10px";
@@ -1963,6 +1989,17 @@
         }
     </script>
 
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
 </body>
 
 </html>

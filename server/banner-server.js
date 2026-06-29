@@ -48,6 +48,7 @@ let bannerState = {
   faltasColor: "",
   equipaNomeColor: "",
   chromaKeyColor: "",
+  fundoColor: "",
   golosBgColor: "",
   faltasBgColor: "",
 };
@@ -75,6 +76,7 @@ function startServer(port = 3000) {
   io = new Server(server, {
     cors: { origin: "*", methods: ["GET", "POST"] },
     transports: ["websocket"],
+    perMessageDeflate: false
   });
 
   const fs = require("fs");
@@ -259,6 +261,7 @@ function updateFullConfig(config) {
   if (config.equipaNomeColor)
     bannerState.equipaNomeColor = config.equipaNomeColor;
   if (config.chromaKeyColor) bannerState.chromaKeyColor = config.chromaKeyColor;
+  if (config.fundoColor) bannerState.fundoColor = config.fundoColor;
   if (config.golosBgColor) bannerState.golosBgColor = config.golosBgColor;
   if (config.faltasBgColor) bannerState.faltasBgColor = config.faltasBgColor;
   if (typeof config.mostrarAtaque !== "undefined")

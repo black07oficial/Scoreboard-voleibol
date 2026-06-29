@@ -62,6 +62,7 @@
             line-height: 280px;
             color: rgb(255, 255, 255) !important;
             margin-top: 32px;
+            letter-spacing: 10px;
         }
 
         #fundo-ataque {
@@ -96,7 +97,7 @@
                     <div class="row" style="height: 100%;">
                         <div class="col-12 d-flex justify-content-center" style="height: 100%;">
                             <div id="fundo-ataque" class="d-flex justify-content-center">
-                                <span>00</span>
+                                <span>0</span>
                             </div>
                         </div>
                     </div>
@@ -342,6 +343,17 @@
         }
     </script>
 
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
 </body>
 
 </html>

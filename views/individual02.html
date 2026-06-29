@@ -72,6 +72,7 @@
             line-height: 68px;
             color: red;
             margin-top: 32px;
+            letter-spacing: 10px;
         }
 
         .faltas-time {
@@ -193,7 +194,7 @@
                     <!-- Numero -->
                     <div class="row flex-grow-1">
                         <div class="col-12 d-flex justify-content-center align-items-center">
-                            <span id="camisa" style="line-height: 1; margin: 0;">00</span>
+                            <span id="camisa" style="line-height: 1; margin: 0;">0</span>
                         </div>
                     </div>
 
@@ -262,7 +263,7 @@
             sessaoJogadorFoto.style.width = sessaoJogadorFotoSize + "px";
             sessaoJogadorFoto.style.height = sessaoJogadorFotoSize + "px";
             infoContainer.style.height = sessaoJogadorFotoSize + "px";
-            logoFoto.style.height = logoFotoSize + "px";
+            // logoFoto.style.height = logoFotoSize + "px"; // Let CSS handle percentage
             camisa.style.fontSize = camisaSize + "px";
             camisa.style.marginTop = "0px";
             nome.style.fontSize = nomeSize + "px";
@@ -347,7 +348,7 @@
                     if (err) {
                         console.error(err.message);
                     }
-                    console.log(rows);
+                    // console.log(rows); // Removed: BLOB data crash
                     configEquipaTime = rows;
                     loadConfigEquipaTime(id);
                 });
@@ -380,7 +381,7 @@
                     if (err) {
                         console.error(err.message);
                     }
-                    console.log(rows);
+                    // console.log(rows); // Removed: BLOB data crash
                     config = rows;
                 });
             });
@@ -389,15 +390,14 @@
                     if (err) {
                         console.error(err.message);
                     }
-                    console.log(rows);
+                    // console.log(rows); // Removed: BLOB data crash
                     configEquipaJogadores = rows;
                     loadConfigEquipaTimeJogadores(timeId);
                 });
             });
             db.close();
         }
-        ipcRenderer.send('reload');
-
+        
         // Variáveis de controle da apresentação
         let isPaused = false;
         let currentIndex = 0;
@@ -454,9 +454,9 @@
                 nomeFormatado = nome;
             }
 
-            camisa = camisa.toString().padStart(2, '0');
+            camisa = camisa.toString();
             if (
-                camisa.substring(0, 2) == '00' ||
+                camisa.substring(0, 2) == '0' ||
                 camisa == '' ||
                 camisa == null ||
                 camisa == undefined
@@ -595,6 +595,17 @@
         }
     </script>
 
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
 </body>
 
 </html>

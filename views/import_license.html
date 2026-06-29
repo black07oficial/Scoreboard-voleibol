@@ -104,16 +104,19 @@
         window.$ = window.jQuery = require('jquery');
         const { ipcRenderer } = require('electron')
         ipcRenderer.on('atualizarLicenca', (event, arg) => {
-            alert(arg);
-            ipcRenderer.send('abrirTelas')
+            ipcRenderer.send('send-alert-imp', arg);
+            ipcRenderer.send('abrirTelas');
         })
         ipcRenderer.on('encaminhadoEmail', (event, arg) => {
             vue.loading = false;
             vue.email = null;
-            alert(arg);
+            ipcRenderer.send('send-alert-imp', arg);
+        })
+        ipcRenderer.on('licencaSelecionada', (event, arg) => {
+            ipcRenderer.send('importarLicenca', arg);
         })
         ipcRenderer.on('atualizarLicenca-erro', (event, arg) => {
-            alert(arg);
+            ipcRenderer.send('send-alert-imp', arg);
         })
 
         var vue = new Vue({
@@ -126,13 +129,10 @@
             },
             methods: {
                 importar() {
-                    $('#file').click();
+                    ipcRenderer.send('selecionarArquivoLicenca');
                 },
                 importarArquivo(event) {
-                    this.arquivo = event.target.files[0];
-                    ipcRenderer.send('importarLicenca', {
-                        arquivo: vue.arquivo.path
-                    });
+                    const file = event.target.files[0]; if (file) { this.arquivo = file; const reader = new FileReader(); reader.onload = (e) => { ipcRenderer.send('importarLicenca', { arquivo: file.path, conteudo: e.target.result }); }; reader.readAsText(file); }
                 },
                 solicitarLicenca() {
                     this.loading = true;
@@ -142,6 +142,17 @@
                 }
             }
         })
+    </script>
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
     </script>
 </body>
 

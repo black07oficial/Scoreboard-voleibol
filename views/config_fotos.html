@@ -754,7 +754,7 @@
                 if (err) {
                     console.error(err.message);
                 }
-                console.log(rows);
+                // console.log(rows); // Removed: BLOB data crash
                 configListaAnexo = rows;
                 loadConfigFotos(tableId);
             });
@@ -1332,6 +1332,17 @@
 
 </script>
 
+
+    <!-- Fix NAPI Crash: Graceful Reload -->
+    <script>
+        if (typeof ipcRenderer !== 'undefined') {
+            ipcRenderer.on('force-graceful-reload', () => {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 150);
+            });
+        }
+    </script>
 </body>
 
 </html>
