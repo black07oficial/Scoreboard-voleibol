@@ -115,8 +115,8 @@
 
         .cronometro {
             font-family: 'Digital Dismay', sans-serif;
-            font-size: 110px;
-            line-height: 70px;
+            font-size: 120px;
+            line-height: 90px;
             color: red;
             margin-bottom: 0px;
             margin-top: 25px;
@@ -124,7 +124,7 @@
         }
 
         .painel-cronometro {
-            min-height: 134px;
+            min-height: 150px;
             background-color: black;
             text-align: center;
             display: flex;
@@ -193,8 +193,8 @@
 
         .pontuacao {
             font-family: 'Digital Dismay', sans-serif;
-            font-size: 175px;
-            line-height: 115px;
+            font-size: 200px;
+            line-height: 140px;
             color: #E95023;
         }
 
@@ -327,23 +327,22 @@
 
         .faltas {
             font-family: 'Digital Dismay', sans-serif;
-            font-size: 80px;
-            line-height: 80px;
+            font-size: 100px;
+            line-height: 100px;
             font-weight: 100;
-            /* color: rgb(255, 230, 0); */
         }
 
         .player-number {
             font-family: 'Digital Dismay', sans-serif;
-            font-size: 50px;
-            line-height: 40px;
+            font-size: 60px;
+            line-height: 50px;
             color: white;
         }
 
         .player-hour {
             font-family: 'Digital Dismay', sans-serif;
-            font-size: 50px;
-            line-height: 40px;
+            font-size: 60px;
+            line-height: 50px;
             color: red;
         }
 
@@ -360,8 +359,8 @@
 
         .periodo {
             font-family: 'Digital Display', sans-serif;
-            font-size: 78px;
-            line-height: 0px;
+            font-size: 90px;
+            line-height: 90px;
         }
 
         .informacoes-time {
@@ -369,15 +368,14 @@
         }
 
         .informacoes-time p {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             margin-top: 2px;
         }
 
         #label-periodo {
             text-align: center;
-            font-size: 12px;
-
+            font-size: 16px;
             font-weight: bold;
             margin-top: -65px;
             margin-bottom: 10px;
@@ -432,22 +430,22 @@
 
         #edit-cfg-equipes-t1-nome,
         #edit-cfg-equipes-t3-nome {
-            font-size: 27px;
+            font-size: 32px;
             text-align: center;
             display: block;
         }
 
         #edit-cfg-equipes-t2-nome,
         #edit-cfg-equipes-t4-nome {
-            font-size: 27px;
+            font-size: 32px;
             text-align: center;
             display: block;
         }
 
         .lista-azul {
             background-color: #14d15d;
-            height: 18px;
-            width: 18px;
+            height: 20px;
+            width: 20px;
             margin-top: 5px;
             border-radius: 50%;
         }
@@ -455,7 +453,7 @@
         .cronometro {
             font-family: 'Digital Dismay', sans-serif;
             font-size: 120px;
-            line-height: 70px;
+            line-height: 90px;
             color: red;
             margin-bottom: 0px;
             letter-spacing: 10px;
@@ -466,7 +464,6 @@
             font-size: 100px;
             line-height: 100px;
             font-weight: 100;
-            /* color: rgb(255, 230, 0); */
         }
 
         .painel-faltas-time-01 {
@@ -475,8 +472,8 @@
             padding: 2px;
             border-radius: 5px;
             margin-top: 55px;
-            height: 100px;
-            width: 100px;
+            height: 110px;
+            width: 110px;
         }
 
         .painel-faltas-time-02 {
@@ -485,12 +482,12 @@
             padding: 2px;
             border-radius: 5px;
             margin-top: 55px;
-            height: 100px;
-            width: 100px;
+            height: 110px;
+            width: 110px;
         }
 
         #pontuacao1 i, #pontuacao2 i, #pontuacao3 i, #pontuacao4 i {
-            font-size: 140px !important;
+            font-size: 160px !important;
         }
 
         /* Media Queries DESABILITADOS - Usando zoom scaling ao invés de responsive */
@@ -883,215 +880,43 @@
         </div>
     </div>
     <script>
-        function proportionSet(prop, min) {
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const referenceWidth = 1024;
-            const referenceHeight = 768;
-            let proportion1 = windowWidth / referenceWidth;
-            if (windowWidth > 1200 || windowHeight > 800) {
-                proportion1 = windowWidth / (referenceWidth + referenceWidth - 1350);
-            }
-            var widthIncreaseCount = Math.floor((windowWidth - 1200) / 100);
-            var heightIncreaseCount = Math.floor((windowHeight - 800) / 100);
-            var totalReduction = (widthIncreaseCount + heightIncreaseCount) * 9.5;
-            // Se a largura for significativamente maior que a altura, reduza a proporção
-            if (windowWidth > windowHeight * 1.2) {
-                totalReduction += (windowWidth - windowHeight) / 100;
-            }
-            if (totalReduction > 0) {
-                proportion1 -= (totalReduction / 100);
-            }
-            let proportion2 = windowHeight / referenceHeight - 0.4;
+        // ============================================
+        // FUNÇÕES LEGADAS REMOVIDAS
+        // ============================================
+        // proportionSet() - REMOVIDA (conflitava com zoom CSS)
+        // propWSet() - REMOVIDA (conflitava com zoom CSS)
+        // adjustStyles() - REMOVIDA (conflitava com zoom CSS)
+        //
+        // Agora usamos apenas CSS zoom para escalar todo o conteúdo
+        // proporcionalmente mantendo as proporções originais perfeitas
 
-            let result = prop * proportion1 * proportion2;
-            result = Math.max(result, min);
-            return result;
-        }
-        function propWSet(prop, min) {
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const referenceWidth = 1024;
-            const referenceHeight = 768;
-            let proportion1 = windowWidth / referenceWidth;
-            if (windowWidth > 1200 || windowHeight > 800) {
-                proportion1 = windowWidth / (referenceWidth + referenceWidth - 1350);
-            }
-            var widthIncreaseCount = Math.floor((windowWidth - 1200) / 100);
-            var heightIncreaseCount = Math.floor((windowHeight - 800) / 100);
-            var totalReduction = (widthIncreaseCount + heightIncreaseCount) * 9.5;
-            // Se a largura for significativamente maior que a altura, reduza a proporção
-            if (windowWidth > windowHeight * 1.2) {
-                totalReduction += (windowWidth - windowHeight) / 100;
-            }
-            if (totalReduction > 0) {
-                proportion1 -= (totalReduction / 100);
-            }
-            let proportion2 = windowHeight / referenceHeight - 0.4;
-
-            let result = prop * proportion1 * proportion2;
-            result = Math.max(result, min);
-            return result;
-        }
-        function adjustStyles() {
-            const listaAzul = document.querySelectorAll(".lista-azul");
-            const marginLista = document.querySelectorAll(".lst-margin");
-            const playerNumber = document.querySelectorAll(".player-number");
-            const playerHour = document.querySelectorAll(".player-hour");
-            const painelAnuncio = document.querySelector(".painel-anuncio");
-            const faltas = document.querySelectorAll(".faltas");
-            const periodo = document.querySelector(".periodo");
-            const labelPeriodo = document.querySelector("#label-periodo");
-            const pontuacao = document.querySelectorAll(".pontuacao");
-            const painelPontuacao = document.querySelector(".painel-pontuacao-time-01");
-            const painelPontuacao2 = document.querySelector(".painel-pontuacao-time-02");
-            const painelfaltas1 = document.querySelector(".painel-faltas-time-01");
-            const painelfaltas2 = document.querySelector(".painel-faltas-time-02");
-            const painelTempoAtq = document.querySelector(".painel-tempo-ataque");
-            const tempoAtq = document.querySelector(".tempo-ataque");
-            const iconeTime = document.querySelectorAll(".icone-time")
-            const equipeT1 = document.querySelector("#edit-cfg-equipes-t1-nome")
-            const equipeT2 = document.querySelector("#edit-cfg-equipes-t2-nome")
-            const cronometroTime = document.querySelector(".cronometro")
-            const painelTempoExc1 = document.querySelector(".painel-exclusoes-time-01");
-            const painelTempoExc2 = document.querySelector(".painel-exclusoes-time-02");
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const referenceWidth = 1024;
-            const referenceHeight = 768;
-            let proportion = windowWidth / referenceWidth;
-            if (windowWidth > 2308) {
-                proportion = windowWidth / (referenceWidth + referenceWidth - 800);
-            }
-            const proportion2 = windowHeight / referenceHeight - 0.4;
-            let marginTop = proportionSet(10, 8);
-            let playerHN = proportionSet(70, 60);
-            let listaAzulW = proportionSet(150, 80);
-            let listaAzulH = proportionSet(30, 18);
-            let iconeTimeSize = proportionSet(170, 100);
-            let equipeSize = proportionSet(45, 30);
-            let cronometroTimeSize = proportionSet(100, 100);
-            let painelTempoSize = proportionSet(160, 100);
-            let tempoSize = proportionSet(80, 60);
-            let painelSize = proportionSet(100, 60);
-            let periodoSize = proportionSet(68, 60);
-            let labelPeriodoSize = proportionSet(22, 11)
-            let labMargin = proportionSet(8, 5);
-            let painelWSize = propWSet(110, 70);
-            let painelAnuncioS = proportionSet(150, 120);
-            let painelExclusao = proportionSet(160, 160);
-            let faltasSize = proportionSet(100, 60);
-            let painelPontSize = proportionSet(180, 140);
-            let pontuacaoSize = proportionSet(180, 130);
-            let diferenca = windowWidth - windowHeight;
-            if (windowHeight > windowWidth ||
-                diferenca < windowHeight * 0.6
-            ) {
-                // console.log(diferenca)
-                // console.log(windowHeight * 0.3)
-                marginTop = proportionSet(7, 8);
-                playerHN = proportionSet(55, 60);
-                listaAzulW = proportionSet(60, 80);
-                listaAzulH = proportionSet(15, 18);
-                iconeTimeSize = proportionSet(130, 100);
-                equipeSize = proportionSet(25, 30);
-                cronometroTimeSize = proportionSet(70, 100);
-                painelTempoSize = proportionSet(80, 100);
-                tempoSize = proportionSet(50, 60);
-                painelSize = proportionSet(70, 60);
-                periodoSize = proportionSet(50, 60);
-                labelPeriodoSize = proportionSet(15, 11)
-                labMargin = proportionSet(8, 5);
-                painelWSize = propWSet(70, 70);
-                painelAnuncioS = proportionSet(150, 120);
-                painelExclusao = proportionSet(160, 160);
-                faltasSize = proportionSet(65, 60);
-                painelPontSize = proportionSet(130, 140);
-                pontuacaoSize = proportionSet(120, 130);
-            }
-            painelTempoAtq.style.marginTop = marginTop + "px";
-            if (document.querySelector("#label-periodo")) {
-                document.querySelector("#label-periodo").style.marginBottom = labMargin + "px";
-            }
-            marginLista.forEach((item) => {
-                item.style.marginTop = marginTop + "px";
-            })
-            listaAzul.forEach((item) => {
-                item.style.width = listaAzulH + "px";
-                item.style.height = listaAzulH + "px";
-            })
-            playerNumber.forEach((item) => {
-                item.style.fontSize = playerHN + "px";
-            })
-            playerHour.forEach((item) => {
-                item.style.fontSize = playerHN + "px";
-            })
-            painelAnuncio.style.height = painelAnuncioS + "px";
-            painelTempoExc1.style.height = painelExclusao + "px";
-            painelTempoExc2.style.height = painelExclusao + "px";
-            painelPontuacao.style.height = painelPontSize + "px";
-            pontuacao.forEach((item) => {
-                item.style.fontSize = pontuacaoSize + "px";
-                item.style.lineHeight = (pontuacaoSize - 20) + "px";
-            })
-            periodo.style.fontSize = periodoSize + "px";
-            if (labelPeriodo) {
-                labelPeriodo.style.fontSize = labelPeriodoSize + "px";
-            }
-            painelPontuacao2.style.height = painelPontSize + "px";
-            cronometroTime.style.fontSize = cronometroTimeSize + "px";
-            painelfaltas1.style.width = painelWSize + "px";
-            painelfaltas1.style.height = painelSize + "px";
-            painelfaltas2.style.width = painelWSize + "px";
-            painelfaltas2.style.height = painelSize + "px";
-            painelTempoAtq.style.width = painelTempoSize + "px";
-            tempoAtq.style.fontSize = tempoSize + "px";
-            // tempoAtq.style.lineHeight = (tempoSize - 20) + "px";
-            // if (windowWidth < 1024 || windowWidth < 768) {
-            tempoAtq.style.lineHeight = (tempoSize) + "px";
-            // }
-            equipeT1.style.fontSize = equipeSize + "px";
-            equipeT2.style.fontSize = equipeSize + "px";
-            cronometroTime.style.lineHeight = (cronometroTimeSize - 10) + "px";
-            iconeTime.forEach((item) => {
-                item.style.height = iconeTimeSize + "px";
-            });
-            faltas.forEach((item) => {
-                item.style.fontSize = faltasSize + "px";
-                item.style.lineHeight = (faltasSize) + "px";
-                if (windowWidth < 1228 || windowWidth < 768) {
-                    item.style.lineHeight = (faltasSize) + "px";
-                }
-            });
-        }
-
-        // Chama a função de ajuste de zoom quando o DOM estiver pronto
-        document.addEventListener("DOMContentLoaded", function () {
-            // adjustStyles();
-        });
-        // Sistema de zoom fixed-size: o placar mantém proporções fixas e só o fundo cresce
+        // ============================================
+        // SISTEMA DE ZOOM BASEADO EM CSS
+        // ============================================
+        // Remove adjustStyles() para evitar conflito com zoom CSS
+        // O zoom CSS escala TODO o conteúdo proporcionalmente
+        
         function adjustZoom() {
-            const baseWidth = 720;
-            const baseHeight = 520;
-            const aspectRatio = window.innerWidth / window.innerHeight;
-            const baseAspectRatio = baseWidth / baseHeight;
-            let scale;
-
-            if (aspectRatio < baseAspectRatio) {
-                // Tela mais alta que larga - escala baseada na largura
-                scale = window.innerWidth / baseWidth;
-                document.body.style.width = '100%';
-            } else {
-                // Tela mais larga que alta - escala baseada na altura e limita largura
-                scale = window.innerHeight / baseHeight;
-                document.body.style.width = (100 / (aspectRatio * 0.5)) + '%'; // Limita a largura do body para criar espaço de fundo
-            }
+            const baseWidth = 1920;  // Resolução base de referência (Full HD width)
+            const baseHeight = 1080; // Resolução base de referência (Full HD height)
+            
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Calcula a escala baseada na menor proporção para caber tudo na tela
+            const scaleX = windowWidth / baseWidth;
+            const scaleY = windowHeight / baseHeight;
+            const scale = Math.min(scaleX, scaleY);
 
             // Aplica o zoom para escalar todo o conteúdo proporcionalmente
             document.body.style.zoom = scale;
-            document.body.style.height = (window.innerHeight / scale) + 'px';
+            
+            // Ajusta o body para manter centralizado
+            document.body.style.width = baseWidth + 'px';
+            document.body.style.height = baseHeight + 'px';
+            document.body.style.margin = '0 auto';
+            document.body.style.overflow = 'hidden';
         }
-
 
         // Chama a função de ajuste de zoom quando o DOM estiver pronto
         document.addEventListener("DOMContentLoaded", function () {

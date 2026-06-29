@@ -43,8 +43,12 @@ tmp/
 *_backup.html
 placar_backup.html
 
-# Banco de dados (se houver dados sensíveis)
-# scoreboard.sqlite
+# Banco de dados (dados sensíveis e locais)
+scoreboard.sqlite
+*.sqlite
+
+# Package lock (pode causar conflitos)
+package-lock.json
 
 # Arquivos de configuração local
 .env
