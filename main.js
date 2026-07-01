@@ -355,7 +355,7 @@ let numero_serial = "";
 // ============================================
 // BYPASS DE LICENÇA - ATIVO PARA TODAS PLATAFORMAS
 // ============================================
-var bypassLicense = false; // Altere para true para desenvolvimento sem licença
+var bypassLicense = true; // Altere para false para reativar licenciamento
 if (bypassLicense) {
   console.log("🔓 Bypass de licença ativado (Voleibol)");
   app.whenReady().then(() => {
