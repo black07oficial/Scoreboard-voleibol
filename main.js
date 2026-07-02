@@ -21,6 +21,56 @@ const { spawn } = require("child_process");
 let activeTunnel = null;
 const bannerServer = require("./server/banner-server");
 
+// #region debug-point A:dbg-report
+let __dbgCfg = null;
+function __dbgGetCfg() {
+  if (__dbgCfg) return __dbgCfg;
+  let u = "http://127.0.0.1:7777/event";
+  let s = "napi-throw-crash";
+  try {
+    const c = require("fs").readFileSync(".dbg/napi-throw-crash.env", "utf8");
+    u = c.match(/DEBUG_SERVER_URL=(.+)/)?.[1]?.trim() || u;
+    s = c.match(/DEBUG_SESSION_ID=(.+)/)?.[1]?.trim() || s;
+  } catch { }
+  __dbgCfg = { u, s };
+  return __dbgCfg;
+}
+function __dbgEmit(hypothesisId, location, msg, data) {
+  try {
+    const { u, s } = __dbgGetCfg();
+    const payload = {
+      sessionId: s,
+      runId: "pre-fix",
+      hypothesisId,
+      location,
+      msg: `[DEBUG] ${msg}`,
+      data: data || {},
+      ts: Date.now(),
+    };
+    const body = JSON.stringify(payload);
+    const { URL } = require("url");
+    const parsed = new URL(u);
+    const mod = parsed.protocol === "https:" ? require("https") : require("http");
+    const req = mod.request(
+      {
+        protocol: parsed.protocol,
+        hostname: parsed.hostname,
+        port: parsed.port,
+        path: parsed.pathname,
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(body) },
+        timeout: 800,
+      },
+      (res) => { res.resume(); },
+    );
+    req.on("error", () => { });
+    req.on("timeout", () => { try { req.destroy(); } catch { } });
+    req.write(body);
+    req.end();
+  } catch { }
+}
+// #endregion
+
 // ============================================
 // SISTEMA DE LOGS PERSISTENTES
 // ============================================
@@ -209,6 +259,38 @@ process.on("unhandledRejection", (reason, promise) => {
 
 // Inicializar logging assim que possível
 initLogging();
+
+// #region debug-point A:process-hooks
+try {
+  __dbgEmit("A", "main.js:init", "initLogging ok", {
+    node: process.version,
+    electron: process.versions?.electron,
+    chrome: process.versions?.chrome,
+    platform: `${os.platform()} ${os.arch()}`,
+    packaged: app ? app.isPackaged : null,
+  });
+
+  process.on("warning", (w) => {
+    __dbgEmit("A", "main.js:process.warning", "process warning", {
+      name: w?.name,
+      message: w?.message,
+      stack: w?.stack ? String(w.stack).slice(0, 2000) : undefined,
+    });
+  });
+
+  process.on("exit", (code) => {
+    __dbgEmit("A", "main.js:process.exit", "process exit", { code });
+  });
+
+  app?.on?.("render-process-gone", (_event, details) => {
+    __dbgEmit("D", "main.js:render-process-gone", "render process gone", details || {});
+  });
+
+  app?.on?.("child-process-gone", (_event, details) => {
+    __dbgEmit("D", "main.js:child-process-gone", "child process gone", details || {});
+  });
+} catch { }
+// #endregion
 
 // ============================================
 // GESTÃO DO BANCO DE DADOS E ARQUIVOS
@@ -1329,6 +1411,9 @@ async function syncBannerConfigToServer() {
   const db = new sqlite.Database(getDbPath());
 
   try {
+    // #region debug-point B:banner-sync-start
+    __dbgEmit("B", "main.js:syncBannerConfigToServer", "banner sync start", {});
+    // #endregion
     // Buscar logo do gestor
     const gestorConfig = await new Promise((resolve, reject) => {
       db.get("SELECT * FROM config_equipas_geral WHERE id = 1", (err, row) => {
@@ -1452,6 +1537,17 @@ async function syncBannerConfigToServer() {
       faltasBgColor: cores?.faltas_bg_color || "",
       mostrarAtaque: gameConfig?.mostrar_ataque,
     });
+
+    // #region debug-point B:banner-sync-end
+    __dbgEmit("B", "main.js:syncBannerConfigToServer", "banner sync end", {
+      gestorLogoBytes: gestorConfig?.logo_data?.length || 0,
+      time01LogoBytes: time01?.logo_data?.length || 0,
+      time02LogoBytes: time02?.logo_data?.length || 0,
+      gestorLogoPath: gestorConfig?.logo_caminho || "",
+      time01LogoPath: time01?.logo_caminho || "",
+      time02LogoPath: time02?.logo_caminho || "",
+    });
+    // #endregion
 
     console.log("[Banner Server Voleibol] Configurações sincronizadas");
   } catch (err) {
@@ -1595,6 +1691,12 @@ ipcMain.on("alterarPontuacaoPlacar", (event, arg) => {
     safeSend(fifthWindow, "updatesFromControl", arg);
   }
   // Atualizar banner web
+  // #region debug-point C:banner-updatePontuacao
+  __dbgEmit("C", "main.js:alterarPontuacaoPlacar", "bannerServer.updatePontuacao", {
+    inputOrigin: arg?.inputOrigin,
+    pontuacaoFormatada: typeof arg?.pontuacaoFormatada === "string" ? arg.pontuacaoFormatada.slice(0, 50) : arg?.pontuacaoFormatada,
+  });
+  // #endregion
   bannerServer.updatePontuacao(arg);
 });
 

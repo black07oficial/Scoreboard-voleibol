@@ -102,7 +102,7 @@
 
 
         .icone-time {
-            height: 140px;
+            height: 125px;
         }
 
         .cronometro {
@@ -114,7 +114,7 @@
         }
 
         .painel-cronometro {
-            min-height: 190px;
+            min-height: 171px;
             padding-top: 20px;
             background-color: black;
             display: flex;
@@ -131,10 +131,12 @@
         }
 
         .cronometro-container {
-            display: flex;
+            display: inline-flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cronometro-minutos {
@@ -208,6 +210,11 @@
             justify-content: center;
         }
 
+        .painel-pontuacao-time-01,
+        .painel-pontuacao-time-02 {
+            transform: translateY(-10px);
+        }
+
         .pontuacao {
             font-family: 'Digital Dismay', sans-serif;
             font-size: 175px;
@@ -217,6 +224,7 @@
 
         .exclusoes-tabela {
             margin-top: -12px !important;
+            justify-content: center;
         }
 
         .periodo-painel {
@@ -297,6 +305,96 @@
             height: 90%;
         }
 
+        .faltas-tabela {
+            position: relative;
+        }
+
+        .logo-gestor-wrapper {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 33.33333333%;
+            padding-left: 7px;
+            padding-right: 7px;
+            box-sizing: border-box;
+            top: var(--gestor-logo-top, -20px);
+            z-index: 25;
+            pointer-events: none;
+        }
+
+        .logo-gestor-wrapper .painel-anuncio {
+            margin-top: 0;
+        }
+
+        .painel-sets-historico {
+            background-color: black;
+            border-radius: 18px;
+            padding: 12px 16px;
+            width: 93.75%;
+            height: 160px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+            display: flex;
+            gap: 16px;
+            box-sizing: border-box;
+        }
+
+        .sets-logos {
+            width: 20%;
+            min-width: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .sets-logos img {
+            max-width: 100%;
+            max-height: 78px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .sets-scores {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        #set-1,
+        #set-2 {
+            height: 50%;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+        }
+
+        #time1,
+        #time2 {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 24px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .set-cell {
+            font-family: 'Digital Dismay', sans-serif;
+            font-size: 110px;
+            line-height: 1;
+            min-width: 120px;
+            width: 120px;
+            text-align: center;
+        }
+
         .faltas {
             font-family: 'Digital Dismay', sans-serif;
             font-size: 80px;
@@ -359,7 +457,7 @@
             border-bottom-right-radius: 10px;
             background-color: #39AA49;
             padding: 12px;
-            height: 207px;
+            height: 190px;
             margin-bottom: 5px;
         }
 
@@ -372,7 +470,7 @@
             border-bottom-right-radius: 10px;
             background-color: #000000;
             padding: 12px;
-            height: 207px;
+            height: 190px;
             margin-bottom: 5px;
         }
 
@@ -385,7 +483,7 @@
             border-bottom-left-radius: 10px;
             background-color: #39AA49;
             padding: 12px;
-            height: 207px;
+            height: 190px;
             margin-bottom: 5px;
         }
 
@@ -398,8 +496,13 @@
             border-bottom-left-radius: 10px;
             background-color: #000000;
             padding: 12px;
-            height: 207px;
+            height: 190px;
             margin-bottom: 5px;
+        }
+
+        #painel-info-time-01,
+        #painel-info-time-02 {
+            transform: translateY(-8px);
         }
 
         /* .falta-destaque { background-color: red !important; } */
@@ -467,11 +570,11 @@
         <div class="d-flex"
             style="margin-right: calc(-.5 * var(--bs-gutter-x)); margin-left: calc(-.5 * var(--bs-gutter-x));">
             <div id="painel-info-time-01" class=" text-center informacoes-time desconto-ativo-black"
-                style="width:33.33333333%; padding-top: 50px !important;">
+                style="width:33.33333333%">
                 <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" />
                 <p id="edit-cfg-equipes-t1-nome" class="gobold-bold"></p>
             </div>
-            <div class="" style="position: relative; width: 33.33333333%; margin-right: 7px; margin-left: 7px; padding-top: 50px !important;">
+            <div class="" style="position: relative; width: 33.33333333%; margin-right: 7px; margin-left: 7px;">
                 <div class="painel-cronometro">
                     <div class="cronometro-container">
                         <span class="cronometro cronometro-minutos">00</span>
@@ -486,12 +589,17 @@
                 </div>
             </div>
             <div id="painel-info-time-02" class=" text-center informacoes-time desconto-ativo-black-2"
-                style="width:33.33333333%; padding-top: 50px !important;">
+                style="width:33.33333333%">
                 <img id="img-cfg-equipes-t2-logo" class="icone-time" alt="Imagem" />
                 <p id="edit-cfg-equipes-t2-nome" class="gobold-bold"></p>
             </div>
         </div>
-        <div class="d-flex faltas-tabela" style="margin-top: -20px;">
+        <div class="d-flex faltas-tabela" style="margin-top: -80px;">
+            <div class="logo-gestor-wrapper d-flex justify-content-center">
+                <div class="painel-anuncio d-flex justify-content-center w-100">
+                    <img alt="Logo Gestor" />
+                </div>
+            </div>
             <div style="width:33.33333333%;padding-left: 0px;">
                 <table style="width: 100%;" style="height: 100%;">
                     <tbody>
@@ -510,7 +618,7 @@
                                                 <div class="lista-azul"></div>
                                             </div>
                                         </div>
-                                        <span class="pontuacao" style="margin-right: 5px;">00</span>
+                                        <span class="pontuacao" style="margin-right: 5px;">0</span>
                                     </div>
                                 </div>
                             </td>
@@ -518,17 +626,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex flex-column justify-content-start align-items-center" style="width:33.33333333%; margin-right: 7px; margin-left: 7px; gap: 10px;">
-                <!-- Logo Gestor no topo -->
-                <div class="painel-anuncio d-flex justify-content-center w-100" style="margin-top: 0px !important; margin-bottom: 10px;">
-                    <img />
-                </div>
-                <!-- Faltas e Período abaixo -->
+            <div class="d-flex justify-content-center" style="width:33.33333333%; margin-right: 7px; margin-left: 7px;">
                 <div class="d-flex justify-content-center align-items-center" style="width:100%">
                     <div class="d-flex flex-row justify-content-between" style="width: 100%; margin-top: -10px;">
                         <div class="d-flex justify-content-start">
                             <div class="painel-faltas-time-01">
-                                <span class="faltas">00</span>
+                                <span class="faltas">0</span>
                             </div>
                         </div>
                         <div class="painel-periodo d-flex justify-content-center">
@@ -540,7 +643,7 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <div class="painel-faltas-time-02">
-                                <span class="faltas">00</span>
+                                <span class="faltas">0</span>
                             </div>
                         </div>
                     </div>
@@ -576,7 +679,7 @@
                             <td width="90%">
                                 <div class="painel-pontuacao-time-02">
                                     <div style="display: flex; align-items: center; gap: 60px;">
-                                        <span class="pontuacao" style="margin-left: 5px;">00</span>
+                                        <span class="pontuacao" style="margin-left: 5px;">0</span>
                                         <div style="display: flex; flex-direction: column; margin-left: 12px;">
                                             <div class="d-flex d-none lst-margin" id="time-2-1">
                                                 <div class="lista-azul"></div>
@@ -598,23 +701,29 @@
         </div>
         <div class="d-flex exclusoes-tabela"
             style="margin-right: calc(-.5 * var(--bs-gutter-x)); margin-left: calc(-.5 * var(--bs-gutter-x));">
-            <div style="width:33.33333333%;padding-left: 0px;">
-                <div class="painel-exclusoes-time-01 d-flex justify-content-start">
-                    <table style="width: 100%; padding-top: 0px;">
-                        <tbody>
-                        </tbody>
-                    </table>
-
+            <div class="painel-sets-historico">
+                <div class="sets-logos">
+                    <img id="img-sets-equipe-1" alt="Logo Equipe 1" />
+                    <img id="img-sets-equipe-2" alt="Logo Equipe 2" />
+                </div>
+                <div class="sets-scores">
+                    <div class="d-flex align-items-end" id="set-1">
+                        <div id="time1"></div>
+                    </div>
+                    <div class="d-flex align-items-start" id="set-2">
+                        <div id="time2"></div>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex" style="align-items: center; width:33.33333333%; margin-right: 7px; margin-left: 7px;">
-                <!-- Logo Gestor foi movida para baixo do cronômetro -->
-            </div>
-            <div style="padding-right: 0px;width:33.33333333%">
-                <div class="painel-exclusoes-time-02 d-flex justify-content-start" style="overflow-y: auto;">
-                    <table style="width: 100%; padding-top: 0px;">
-                        <tbody>
-                        </tbody>
+            <div class="d-none">
+                <div class="painel-exclusoes-time-01">
+                    <table>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="painel-exclusoes-time-02">
+                    <table>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -763,6 +872,7 @@
                 item.style.fontSize = playerHN + "px";
             })
             painelAnuncio.style.height = painelAnuncioS + "px";
+            document.documentElement.style.setProperty('--gestor-logo-top', (-Math.round(painelAnuncioS * 0.35) + 20) + 'px');
             painelTempoExc1.style.height = painelExclusao + "px";
             painelTempoExc2.style.height = painelExclusao + "px";
             painelPontuacao.style.height = painelPontSize + "px";
@@ -971,6 +1081,12 @@
             document.body.style.zoom = scale;
             document.body.style.height = (window.innerHeight / scale) + 'px';
             document.body.style.alignItems = "center";
+
+            const painelAnuncio = document.querySelector(".painel-anuncio");
+            if (painelAnuncio) {
+                const h = painelAnuncio.getBoundingClientRect().height;
+                document.documentElement.style.setProperty('--gestor-logo-top', (-Math.round(h * 0.35) + 20) + 'px');
+            }
         }
 
 
@@ -1009,6 +1125,57 @@
             console.error('[Placar] Erro ao definir dbPath:', err);
             dbPath = './scoreboard.sqlite';
         }
+
+        function compactIntString(value, fallbackZero = false) {
+            const s = (value ?? '').toString().trim();
+            if (s === '') return fallbackZero ? '0' : '';
+            const n = parseInt(s, 10);
+            if (Number.isNaN(n)) return s;
+            return String(n);
+        }
+
+        ipcRenderer.on('sendNovoSet', function (event, arg) {
+            const arraySets = Array.isArray(arg) ? arg : [];
+            const time1 = document.getElementById("time1");
+            const time2 = document.getElementById("time2");
+            if (!time1 || !time2) return;
+
+            time1.innerHTML = "";
+            time2.innerHTML = "";
+
+            for (const element of arraySets) {
+                const score1 = parseInt(element?.time1) || 0;
+                const score2 = parseInt(element?.time2) || 0;
+
+                let color1 = "white";
+                let color2 = "white";
+
+                if (score1 > score2) {
+                    color1 = "red";
+                } else if (score2 > score1) {
+                    color2 = "red";
+                } else if (score1 === score2 && (score1 > 0 || score2 > 0)) {
+                    color1 = "red";
+                    color2 = "red";
+                }
+
+                if (element?.time1 !== undefined && element?.time1 !== null && element?.time1 !== "") {
+                    const d1 = document.createElement("div");
+                    d1.className = "set-cell";
+                    d1.style.color = color1;
+                    d1.textContent = compactIntString(element.time1);
+                    time1.appendChild(d1);
+                }
+
+                if (element?.time2 !== undefined && element?.time2 !== null && element?.time2 !== "") {
+                    const d2 = document.createElement("div");
+                    d2.className = "set-cell";
+                    d2.style.color = color2;
+                    d2.textContent = compactIntString(element.time2);
+                    time2.appendChild(d2);
+                }
+            }
+        });
         ipcRenderer.on('updatesFromControl', function (event, arg) {
             // // console.log(arg);
 
@@ -1017,7 +1184,7 @@
                     document.querySelector(".periodo").innerHTML = arg['pontuacao'];
                     break;
                 case "#input-gols-time-01":
-                    document.querySelector(".painel-pontuacao-time-01 span.pontuacao").innerHTML = arg['pontuacaoFormatada'];
+                    document.querySelector(".painel-pontuacao-time-01 span.pontuacao").innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 case "#input-faltas-time-01":
                     var faltasAtual1 = parseInt(document.querySelector(".painel-faltas-time-01 span.faltas").innerHTML);
@@ -1034,7 +1201,7 @@
                         document.querySelector(".painel-faltas-time-01").style.backgroundColor = "black";
                     }
 
-                    element1.innerHTML = arg['pontuacaoFormatada'];
+                    element1.innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 case "#input-tempo-ataque":
                     let currentHtml = document.querySelector(".painel-tempo-ataque span.tempo-ataque").innerHTML;
@@ -1055,7 +1222,7 @@
                     }
                     break;
                 case "#input-gols-time-02":
-                    document.querySelector(".painel-pontuacao-time-02 span.pontuacao").innerHTML = arg['pontuacaoFormatada'];
+                    document.querySelector(".painel-pontuacao-time-02 span.pontuacao").innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 case "#input-faltas-time-02":
                     var faltasAtual2 = parseInt(document.querySelector(".painel-faltas-time-02 span.faltas").innerHTML);
@@ -1072,7 +1239,7 @@
                         document.querySelector(".painel-faltas-time-02").style.backgroundColor = "black";
                     }
 
-                    element2.innerHTML = arg['pontuacaoFormatada'];
+                    element2.innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 default:
                 // code block
@@ -1132,10 +1299,10 @@
             if (carregouInfoPartida) {
                 return;
             }
-            document.querySelector(".painel-pontuacao-time-01 span.pontuacao").innerHTML = arg['time01']['gols'];
-            document.querySelector(".painel-faltas-time-01 span.faltas").innerHTML = arg['time01']['faltas'];
-            document.querySelector(".painel-pontuacao-time-02 span.pontuacao").innerHTML = arg['time02']['gols'];
-            document.querySelector(".painel-faltas-time-02 span.faltas").innerHTML = arg['time02']['faltas'];
+            document.querySelector(".painel-pontuacao-time-01 span.pontuacao").innerHTML = compactIntString(arg?.time01?.gols, true);
+            document.querySelector(".painel-faltas-time-01 span.faltas").innerHTML = compactIntString(arg?.time01?.faltas, true);
+            document.querySelector(".painel-pontuacao-time-02 span.pontuacao").innerHTML = compactIntString(arg?.time02?.gols, true);
+            document.querySelector(".painel-faltas-time-02 span.faltas").innerHTML = compactIntString(arg?.time02?.faltas, true);
             // document.querySelector(".periodo").innerHTML = arg['cronometro'];
 
             document.querySelector(".periodo").innerHTML = arg['periodo'];
@@ -1395,11 +1562,16 @@
 
             if (configuration && configuration[0]) {
                 const img = document.querySelector("#img-cfg-equipes-t" + equipeId + "-logo");
+                const imgSets = document.querySelector("#img-sets-equipe-" + equipeId);
                 const team = configuration[0];
                 if (team.logo_data) {
-                    img.setAttribute('src', "data:image/png;base64," + Buffer.from(team.logo_data).toString('base64'));
+                    const src = "data:image/png;base64," + Buffer.from(team.logo_data).toString('base64');
+                    img.setAttribute('src', src);
+                    if (imgSets) imgSets.setAttribute('src', src);
                 } else {
-                    img.setAttribute('src', resolveImageSrcForDisplay(team.logo_caminho));
+                    const src = resolveImageSrcForDisplay(team.logo_caminho);
+                    img.setAttribute('src', src);
+                    if (imgSets) imgSets.setAttribute('src', src);
                 }
                 document.querySelector("#edit-cfg-equipes-t" + equipeId + "-nome").innerHTML = team.nome || team.abreviatura || "N/D";
             }
