@@ -219,6 +219,20 @@
             position: relative;
         }
 
+        body.troca-posicao .painel-pontuacao-time-01 {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        body.troca-posicao .painel-pontuacao-time-02 {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
         .painel-pontuacao-time-01,
         .painel-pontuacao-time-02 {
             transform: translateY(0px);
@@ -521,6 +535,44 @@
             transform: translateY(0px);
         }
 
+        body.troca-posicao #linha-superior #painel-info-time-01 {
+            order: 3;
+        }
+
+        body.troca-posicao #linha-superior #col-cronometro {
+            order: 2;
+        }
+
+        body.troca-posicao #linha-superior #painel-info-time-02 {
+            order: 1;
+        }
+
+        body.troca-posicao #linha-inferior #col-pontos-time-01 {
+            order: 3;
+        }
+
+        body.troca-posicao #linha-inferior #col-centro-faltas {
+            order: 2;
+        }
+
+        body.troca-posicao #linha-inferior #col-pontos-time-02 {
+            order: 1;
+        }
+
+        body.troca-posicao #painel-info-time-01 {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        body.troca-posicao #painel-info-time-02 {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
         .painel-cronometro {
             transform: translateY(-4px);
         }
@@ -583,6 +635,16 @@
             z-index: 2;
         }
 
+        body.troca-posicao .painel-sets-indicadores.time-01 {
+            right: 8px;
+            left: auto;
+        }
+
+        body.troca-posicao .painel-sets-indicadores.time-02 {
+            left: 8px;
+            right: auto;
+        }
+
         .serve-indicator {
             position: absolute;
             top: 50%;
@@ -605,6 +667,18 @@
 
         #serve-time2 {
             left: 2px;
+        }
+
+        body.troca-posicao #serve-time1 {
+            left: 2px;
+            right: auto;
+            transform: translateY(-50%) scaleX(-1);
+        }
+
+        body.troca-posicao #serve-time2 {
+            right: 2px;
+            left: auto;
+            transform: translateY(-50%) scaleX(-1);
         }
 
         .cronometro {
@@ -655,14 +729,15 @@
 
 <body>
     <div class="" style="width: 100%;">
-        <div class="d-flex"
+        <div class="d-flex" id="linha-superior"
             style="margin-right: calc(-.5 * var(--bs-gutter-x)); margin-left: calc(-.5 * var(--bs-gutter-x));">
             <div id="painel-info-time-01" class=" text-center informacoes-time desconto-ativo-black"
                 style="width:33.33333333%">
                 <img id="img-cfg-equipes-t1-logo" class="icone-time" alt="Imagem" />
                 <p id="edit-cfg-equipes-t1-nome" class="gobold-bold"></p>
             </div>
-            <div class="" style="position: relative; width: 33.33333333%; margin-right: 7px; margin-left: 7px;">
+            <div class="" id="col-cronometro"
+                style="position: relative; width: 33.33333333%; margin-right: 7px; margin-left: 7px;">
                 <div class="painel-cronometro">
                     <div class="cronometro-container">
                         <span class="cronometro cronometro-minutos">00</span>
@@ -682,13 +757,13 @@
                 <p id="edit-cfg-equipes-t2-nome" class="gobold-bold"></p>
             </div>
         </div>
-        <div class="d-flex faltas-tabela">
+        <div class="d-flex faltas-tabela" id="linha-inferior">
             <div class="logo-gestor-wrapper d-flex justify-content-center">
                 <div class="painel-anuncio d-flex justify-content-center w-100">
                     <img alt="Logo Gestor" />
                 </div>
             </div>
-            <div style="width:33.33333333%;padding-left: 0px;">
+            <div id="col-pontos-time-01" style="width:33.33333333%;padding-left: 0px;">
                 <table style="width: 100%;" style="height: 100%;">
                     <tbody>
                         <tr>
@@ -713,7 +788,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex justify-content-center" style="width:33.33333333%; margin-right: 7px; margin-left: 7px;">
+            <div class="d-flex justify-content-center" id="col-centro-faltas"
+                style="width:33.33333333%; margin-right: 7px; margin-left: 7px;">
                 <div class="d-flex justify-content-center align-items-center" style="width:100%">
                     <div class="d-flex flex-row justify-content-between" style="width: 100%; margin-top: -10px;">
                         <div class="d-flex justify-content-start">
@@ -759,7 +835,7 @@
                     </div> -->
                 </div>
             </div>
-            <div style="width:33.33333333%;padding-right: 0px; ">
+            <div id="col-pontos-time-02" style="width:33.33333333%;padding-right: 0px; ">
                 <table style="width: 100%;">
                     <tbody>
                         <tr>
@@ -1348,6 +1424,10 @@
                 serve1.classList.remove("active");
                 serve2.classList.remove("active");
             }
+        });
+
+        ipcRenderer.on("alterarPosicao", function (event, enabled) {
+            document.body.classList.toggle("troca-posicao", !!enabled);
         });
 
         ipcRenderer.on('updateCronometro', function (event, time) {
