@@ -105,6 +105,11 @@
             height: 125px;
         }
 
+        #painel-info-time-01 .icone-time,
+        #painel-info-time-02 .icone-time {
+            transform: translateY(8px);
+        }
+
         .cronometro {
             font-family: 'Digital Dismay', sans-serif;
             font-size: 110px;
@@ -133,29 +138,29 @@
         }
 
         .cronometro-container {
-            display: inline-flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            width: max-content;
+            width: 100%;
             margin-left: auto;
             margin-right: auto;
         }
 
         .cronometro-minutos {
             text-align: right;
+            justify-self: end;
             padding: 0 5px;
-            width: 1.3em;
         }
 
         .cronometro-separador {
             text-align: center;
-            width: 0.3em;
+            justify-self: center;
         }
 
         .cronometro-segundos {
             text-align: left;
+            justify-self: start;
             padding: 0 5px;
-            width: 1.3em;
         }
 
         .painel-tempo-ataque {
@@ -193,6 +198,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .painel-pontuacao-time-02 {
@@ -210,11 +216,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .painel-pontuacao-time-01,
         .painel-pontuacao-time-02 {
-            transform: translateY(-10px);
+            transform: translateY(0px);
         }
 
         .pontuacao {
@@ -222,6 +229,11 @@
             font-size: 175px;
             line-height: 137px;
             color: #E95023;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
         }
 
         .exclusoes-tabela {
@@ -296,15 +308,15 @@
 
         .painel-anuncio {
             border-radius: 10px;
-            height: 120px;
+            height: 112px;
             /* background-color: white; */
             padding: 10px;
             margin-top: 20px;
         }
 
         .painel-anuncio img {
-            width: 82%;
-            height: 82%;
+            width: 76%;
+            height: 76%;
         }
 
         .faltas-tabela {
@@ -331,11 +343,13 @@
         .painel-sets-historico {
             background-color: black;
             border-radius: 18px;
-            padding: 12px 16px;
+            padding: 8px 16px;
             width: 93.75%;
-            height: 180px;
+            height: 188px;
             margin-left: auto;
             margin-right: auto;
+            --sets-history-offset-y: -6px;
+            transform: translateY(var(--sets-history-offset-y));
             overflow: hidden;
             display: flex;
             gap: 16px;
@@ -504,11 +518,11 @@
 
         #painel-info-time-01,
         #painel-info-time-02 {
-            transform: translateY(-8px);
+            transform: translateY(0px);
         }
 
         .painel-cronometro {
-            transform: translateY(-8px);
+            transform: translateY(-4px);
         }
 
         /* .falta-destaque { background-color: red !important; } */
@@ -529,6 +543,68 @@
             width: 20px;
             margin-top: 5px;
             border-radius: 50%;
+        }
+
+        .painel-pontuacao-inner {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .painel-pontuacao-inner.time-01 {
+            padding-left: 6px;
+            padding-right: 12px;
+        }
+
+        .painel-pontuacao-inner.time-02 {
+            padding-left: 12px;
+            padding-right: 6px;
+        }
+
+        .painel-sets-indicadores {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .painel-sets-indicadores.time-01 {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .painel-sets-indicadores.time-02 {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .serve-indicator {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 120px;
+            line-height: 1;
+            color: rgb(255, 230, 0);
+            visibility: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .serve-indicator.active {
+            visibility: visible;
+        }
+
+        #serve-time1 {
+            right: 2px;
+        }
+
+        #serve-time2 {
+            left: 2px;
         }
 
         .cronometro {
@@ -554,6 +630,9 @@
             padding: 2px;
             border-radius: 5px;
             margin-top: 56px;
+            margin-left: 10px;
+            --faltas-offset-y: -11px;
+            transform: translateY(var(--faltas-offset-y));
             height: 100px;
             width: 100px;
         }
@@ -564,6 +643,9 @@
             padding: 2px;
             border-radius: 5px;
             margin-top: 56px;
+            margin-right: 10px;
+            --faltas-offset-y: -11px;
+            transform: translateY(var(--faltas-offset-y));
             height: 100px;
             width: 100px;
         }
@@ -612,20 +694,19 @@
                         <tr>
                             <td width="90%">
                                 <div class="painel-pontuacao-time-01">
-                                    <div style="display: flex; align-items: center; gap: 60px;">
-                                        <div style="display: flex; flex-direction: column; margin-right: 12px;">
-                                            <div class="d-flex d-none lst-margin" id="time-1-1">
-                                                <div class="lista-azul"></div>
-                                            </div>
-                                            <div class="d-flex d-none lst-margin" id="time-1-2">
-                                                <div class="lista-azul"></div>
-                                            </div>
-                                            <div class="d-flex d-none lst-margin" id="time-1-3">
-                                                <div class="lista-azul"></div>
-                                            </div>
+                                    <div class="painel-sets-indicadores time-01">
+                                        <div class="d-flex d-none lst-margin" id="time-1-1">
+                                            <div class="lista-azul"></div>
                                         </div>
-                                        <span class="pontuacao" style="margin-right: 5px;">0</span>
+                                        <div class="d-flex d-none lst-margin" id="time-1-2">
+                                            <div class="lista-azul"></div>
+                                        </div>
+                                        <div class="d-flex d-none lst-margin" id="time-1-3">
+                                            <div class="lista-azul"></div>
+                                        </div>
                                     </div>
+                                    <span class="pontuacao">0</span>
+                                    <i id="serve-time1" class="fa fa-caret-left serve-indicator"></i>
                                 </div>
                             </td>
                         </tr>
@@ -684,20 +765,19 @@
                         <tr>
                             <td width="90%">
                                 <div class="painel-pontuacao-time-02">
-                                    <div style="display: flex; align-items: center; gap: 60px;">
-                                        <span class="pontuacao" style="margin-left: 5px;">0</span>
-                                        <div style="display: flex; flex-direction: column; margin-left: 12px;">
-                                            <div class="d-flex d-none lst-margin" id="time-2-1">
-                                                <div class="lista-azul"></div>
-                                            </div>
-                                            <div class="d-flex d-none lst-margin" id="time-2-2">
-                                                <div class="lista-azul"></div>
-                                            </div>
-                                            <div class="d-flex d-none lst-margin" id="time-2-3">
-                                                <div class="lista-azul"></div>
-                                            </div>
+                                    <div class="painel-sets-indicadores time-02">
+                                        <div class="d-flex d-none lst-margin" id="time-2-1">
+                                            <div class="lista-azul"></div>
+                                        </div>
+                                        <div class="d-flex d-none lst-margin" id="time-2-2">
+                                            <div class="lista-azul"></div>
+                                        </div>
+                                        <div class="d-flex d-none lst-margin" id="time-2-3">
+                                            <div class="lista-azul"></div>
                                         </div>
                                     </div>
+                                    <span class="pontuacao">0</span>
+                                    <i id="serve-time2" class="fa fa-caret-right serve-indicator"></i>
                                 </div>
                             </td>
                         </tr>
@@ -1251,6 +1331,23 @@
                 // code block
             }
 
+        });
+
+        ipcRenderer.on("getClickedButton", function (event, arg) {
+            const serve1 = document.querySelector("#serve-time1");
+            const serve2 = document.querySelector("#serve-time2");
+            if (!serve1 || !serve2) return;
+
+            if (arg == 1) {
+                serve1.classList.add("active");
+                serve2.classList.remove("active");
+            } else if (arg == 2) {
+                serve1.classList.remove("active");
+                serve2.classList.add("active");
+            } else {
+                serve1.classList.remove("active");
+                serve2.classList.remove("active");
+            }
         });
 
         ipcRenderer.on('updateCronometro', function (event, time) {

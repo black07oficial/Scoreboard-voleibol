@@ -201,6 +201,14 @@
       text-align: center;
     }
 
+    .control-timer-wrapper {
+      width: 256px;
+    }
+
+    .control-timer-wrapper .label-time-extra-temp {
+      width: 100%;
+    }
+
     .label-time-large {
       font-family: 'Digital Dismay', sans-serif;
       font-size: 55px;
@@ -409,9 +417,9 @@
           <!-- Area Central: Timer and Jogo -->
           <div class="d-flex justify-content-center align-items-center w-100 position-relative py-3">
 
-            <div class="d-flex flex-column align-items-center z-2">
+            <div class="d-flex flex-column align-items-center z-2 control-timer-wrapper">
               <!-- Up Buttons -->
-              <div class="d-flex justify-content-center gap-2 mb-1">
+              <div class="d-flex justify-content-center gap-2 mb-1 w-100">
                 <button id="btn-add-time-minutes" style="width: 80px;" type="button"
                   class="custom-button-simple btn-time btn-green bd-r-10"><i class="fa fa-caret-up"></i></button>
                 <button id="btn-add-time-seconds-2" style="width: 80px;" type="button"
@@ -424,7 +432,7 @@
               <p class="label-time-extra-temp m-0 text-danger" style="line-height: 1;">00:00</p>
 
               <!-- Down Buttons -->
-              <div class="d-flex justify-content-center gap-2 mt-1">
+              <div class="d-flex justify-content-center gap-2 mt-1 w-100">
                 <button id="btn-sub-time-minutes" type="button" class="custom-button-simple btn-time btn-red bd-r-10"
                   style="width: 80px;"><i class="fa fa-caret-down"></i></button>
                 <button id="btn-sub-time-seconds-2" type="button" class="custom-button-simple btn-time btn-red bd-r-10"
