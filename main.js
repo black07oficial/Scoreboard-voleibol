@@ -1566,6 +1566,9 @@ function updateSecondWindow(route) {
     // Re-send desconto painel state after placar loads
     if (route === 'placar.html') {
       secondWindow.webContents.once('did-finish-load', () => {
+        // Reenviar estado de troca de posição PRIMEIRO para que os handlers
+        // seguintes (atualizaDesconto, setDescontoPainel) o encontrem corretamente
+        safeSend(secondWindow, 'alterarPosicao', alterarPosicaoState);
         if (descontoPainelState.equipe1 !== null) {
           safeSend(secondWindow, 'setDescontoPainel', descontoPainelState.equipe1);
         }
@@ -1586,6 +1589,9 @@ ipcMain.on("openSecondWindow", (event, data) => {
     // Re-send desconto painel state after placar loads
     if (data === 'placar.html') {
       secondWindow.webContents.once('did-finish-load', () => {
+        // Reenviar estado de troca de posição PRIMEIRO para que os handlers
+        // seguintes (atualizaDesconto, setDescontoPainel) o encontrem corretamente
+        safeSend(secondWindow, 'alterarPosicao', alterarPosicaoState);
         if (descontoPainelState.equipe1 !== null) {
           safeSend(secondWindow, 'setDescontoPainel', descontoPainelState.equipe1);
         }
@@ -1701,6 +1707,7 @@ ipcMain.on("alterarPontuacaoPlacar", (event, arg) => {
 });
 
 let atualizaDescontoState = null;
+let alterarPosicaoState = false;
 
 ipcMain.on("atualizarDesconto", (event, data) => {
   atualizaDescontoState = data;
@@ -1709,6 +1716,7 @@ ipcMain.on("atualizarDesconto", (event, data) => {
 
 ipcMain.on("alterarPosicao", (event, data) => {
   console.log(data);
+  alterarPosicaoState = data;
   safeSend(secondWindow, "alterarPosicao", data);
 });
 

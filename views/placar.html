@@ -559,6 +559,11 @@
             order: 1;
         }
 
+        /* Inverter visualmente as faltas das equipes */
+        body.troca-posicao #col-centro-faltas .d-flex.flex-row {
+            flex-direction: row-reverse !important;
+        }
+
         body.troca-posicao #painel-info-time-01 {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
@@ -643,6 +648,32 @@
         body.troca-posicao .painel-sets-indicadores.time-02 {
             left: 8px;
             right: auto;
+        }
+
+        /* Inverter a ordem das logos das equipas no painel de sets históricos */
+        body.troca-posicao .painel-sets-historico .sets-logos {
+            flex-direction: column-reverse;
+        }
+        
+        body.troca-posicao .painel-sets-historico .sets-logos #img-sets-equipe-1 {
+            order: 2;
+        }
+
+        body.troca-posicao .painel-sets-historico .sets-logos #img-sets-equipe-2 {
+            order: 1;
+        }
+
+        /* Inverter a ordem dos scores nos sets históricos (time1 e time2) */
+        body.troca-posicao .painel-sets-historico .sets-scores {
+            flex-direction: column-reverse;
+        }
+
+        body.troca-posicao .painel-sets-historico .sets-scores #set-1 {
+            order: 2;
+        }
+
+        body.troca-posicao .painel-sets-historico .sets-scores #set-2 {
+            order: 1;
         }
 
         .serve-indicator {
@@ -1460,6 +1491,13 @@
         })
         ipcRenderer.on('setDescontoPainel', function (event, data) {
             var painelId = data['origem'] === "btn-desconto-equipe1" ? "#painel-info-time-01" : "#painel-info-time-02";
+            
+            // Se as posições estiverem trocadas visualmente no placar,
+            // invertemos qual painel físico (01 ou 02) deve receber a cor verde
+            if (document.body.classList.contains("troca-posicao")) {
+                painelId = painelId === "#painel-info-time-01" ? "#painel-info-time-02" : "#painel-info-time-01";
+            }
+            
             const element = document.getElementById(painelId.replace("#", ""));
             if (data.ativo) {
                 element.classList.remove("desconto-ativo-black");

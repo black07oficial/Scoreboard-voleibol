@@ -166,7 +166,7 @@
                                         </div>
                                     </div>
                                     <div class="col-4 d-flex justify-content-center">
-                                        <span class="cronometro">00:00</span>
+                                        <span class="cronometro">0:00</span>
                                     </div>
                                     <div class="col-4">
                                         <div class="time-02 d-flex justify-content-end">
@@ -326,20 +326,28 @@
 
         const { ipcRenderer } = require('electron');
 
+        function compactIntString(value, fallbackZero = false) {
+            const s = (value ?? '').toString().trim();
+            if (s === '') return fallbackZero ? '0' : '';
+            const n = parseInt(s, 10);
+            if (Number.isNaN(n)) return s;
+            return String(n);
+        }
+
         ipcRenderer.on('updatesFromControl', function (event, arg) {
 
             switch (arg['inputOrigin']) {
                 case "#input-gols-time-01":
-                    document.querySelector(".time-01 span.gols").innerHTML = arg['pontuacaoFormatada'];
+                    document.querySelector(".time-01 span.gols").innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 case "#input-faltas-time-01":
-                    document.querySelector(".time-01 span.faltas").innerHTML = arg['pontuacaoFormatada'];
+                    document.querySelector(".time-01 span.faltas").innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 case "#input-gols-time-02":
-                    document.querySelector(".time-02 span.gols").innerHTML = arg['pontuacaoFormatada'];
+                    document.querySelector(".time-02 span.gols").innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 case "#input-faltas-time-02":
-                    document.querySelector(".time-02 span.faltas").innerHTML = arg['pontuacaoFormatada'];
+                    document.querySelector(".time-02 span.faltas").innerHTML = compactIntString(arg['pontuacaoFormatada'], true);
                     break;
                 default:
                 // code block
@@ -351,10 +359,10 @@
             if (carregouInfoPartida) {
                 return;
             }
-            document.querySelector(".time-01 span.gols").innerHTML = arg['time01']['gols'];
-            document.querySelector(".time-01 span.faltas").innerHTML = arg['time01']['faltas'];
-            document.querySelector(".time-02 span.gols").innerHTML = arg['time02']['gols'];
-            document.querySelector(".time-02 span.faltas").innerHTML = arg['time02']['faltas'];
+            document.querySelector(".time-01 span.gols").innerHTML = compactIntString(arg['time01']['gols'], true);
+            document.querySelector(".time-01 span.faltas").innerHTML = compactIntString(arg['time01']['faltas'], true);
+            document.querySelector(".time-02 span.gols").innerHTML = compactIntString(arg['time02']['gols'], true);
+            document.querySelector(".time-02 span.faltas").innerHTML = compactIntString(arg['time02']['faltas'], true);
             document.querySelector(".cronometro").innerHTML = arg['cronometro'];
             carregouInfoPartida = true;
         });
