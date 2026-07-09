@@ -1564,7 +1564,7 @@ function updateSecondWindow(route) {
   if (secondWindow) {
     secondWindow.loadFile(path.join(__dirname, "views", route));
     // Re-send desconto painel state after placar loads
-    if (route === 'placar.html') {
+    if (route === 'placar.html' || route === 'desconto_tempo.html') {
       secondWindow.webContents.once('did-finish-load', () => {
         // Reenviar estado de troca de posição PRIMEIRO para que os handlers
         // seguintes (atualizaDesconto, setDescontoPainel) o encontrem corretamente
@@ -1587,7 +1587,7 @@ ipcMain.on("openSecondWindow", (event, data) => {
   if (!secondWindow) {
     createSecondWindow(data);
     // Re-send desconto painel state after placar loads
-    if (data === 'placar.html') {
+    if (data === 'placar.html' || data === 'desconto_tempo.html') {
       secondWindow.webContents.once('did-finish-load', () => {
         // Reenviar estado de troca de posição PRIMEIRO para que os handlers
         // seguintes (atualizaDesconto, setDescontoPainel) o encontrem corretamente
