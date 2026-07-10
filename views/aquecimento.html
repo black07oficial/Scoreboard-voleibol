@@ -650,6 +650,7 @@
 
         var configListaAnexo;
         var listaAnexosTemp = [];
+        let slideshowRunId = 0;
 
         async function getConfigFotos(tableId) {
             var db = new sqlite3.Database(dbPath);
@@ -674,6 +675,8 @@
         }
 
         async function loadConfigFotos() {
+            const runId = ++slideshowRunId;
+            listaAnexosTemp = [];
 
             for (let i = 0; i < configListaAnexo.length; i++) {
 
@@ -717,8 +720,9 @@
                 return;
             }
 
-            while (true) {
+            while (runId === slideshowRunId) {
                 for (let i = 0; i < listaAnexosTemp.length; i++) {
+                    if (runId !== slideshowRunId) break;
                     duracao = listaAnexosTemp[i]['duracao'];
                     const anexoAtual = listaAnexosTemp[i];
                     console.log(`[Aquecimento] Exibindo anexo ${i}:`, anexoAtual.tipo_arquivo);
@@ -730,6 +734,23 @@
 
         }
 
+        function normalizeMime(tipoArquivo, caminhoArquivo) {
+            const raw = (tipoArquivo || '').toString().trim().toLowerCase();
+            if (raw === 'image/jpg') return 'image/jpeg';
+            if (raw === 'jpg' || raw === 'jpeg') return 'image/jpeg';
+            if (raw === 'png') return 'image/png';
+            if (raw === 'mp4') return 'video/mp4';
+            if (raw === 'webm') return 'video/webm';
+            if (raw.includes('/')) return raw;
+
+            const name = (caminhoArquivo || '').toString().toLowerCase();
+            if (name.endsWith('.jpeg') || name.endsWith('.jpg')) return 'image/jpeg';
+            if (name.endsWith('.png')) return 'image/png';
+            if (name.endsWith('.mp4')) return 'video/mp4';
+            if (name.endsWith('.webm')) return 'video/webm';
+            return 'application/octet-stream';
+        }
+
         function verAnexo(anexoAtual) {
 
             document.querySelector("#anexoArquivoVideo").pause();
@@ -737,26 +758,14 @@
             // Usar data URL do BLOB se disponível, senão usar caminho (retro-compatibilidade)
             let mediaSrc = resolveImageSrcForDisplay(anexoAtual['caminho']);
             if (anexoAtual['arquivo_data']) {
-                // Check if tipo_arquivo is valid mime type part, otherwise guess
-                let mime = anexoAtual['tipo_arquivo'];
-                // Sometimes type might be just extension like 'png' or 'mp4', needs fixing
-                if (mime === 'png' || mime === 'jpg' || mime === 'jpeg') mime = 'image/' + mime;
-                if (mime === 'mp4' || mime === 'webm') mime = 'video/' + mime;
-
+                const mime = normalizeMime(anexoAtual['tipo_arquivo'], anexoAtual['caminho']);
                 mediaSrc = `data:${mime};base64,${anexoAtual['arquivo_data']}`;
                 console.log(`[Aquecimento] Usando mediaSrc data URI (mime: ${mime})`);
             } else {
                 console.log(`[Aquecimento] Usando mediaSrc arquivo: ${mediaSrc}`);
             }
 
-            // Melhorar verificação de vídeo
-            let isVideo = false;
-            if (anexoAtual['tipo_arquivo']) {
-                const t = anexoAtual['tipo_arquivo'].toLowerCase();
-                if (t.includes('video') || t.includes('mp4') || t.includes('webm') || t.includes('mkv')) {
-                    isVideo = true;
-                }
-            }
+            const isVideo = normalizeMime(anexoAtual['tipo_arquivo'], anexoAtual['caminho']).startsWith('video/');
 
             if (isVideo) {
                 document.querySelector("#anexoArquivoVideoSessao").classList.remove("d-none");
@@ -777,7 +786,7 @@
         ipcRenderer.on('reloadAll', (event, args) => {
             getConfigEquipaTime("1");
             getConfigEquipaTime("2");
-            getConfigFotos(2);
+            getConfigFotos(1);
             // getConfigSetup();
             getConfigSons();
             getConfigCores();

@@ -210,17 +210,17 @@
         const sqlite3 = require('sqlite3').verbose();
         const path = require('path');
 
-        // Definir caminho absoluto do banco de dados
-        let dbPath;
-        try {
-            const isPackaged = !process.execPath.includes('node_modules');
-            if (isPackaged) {
-                dbPath = path.join(path.dirname(process.execPath), 'scoreboard.sqlite');
-            } else {
-                dbPath = path.join(__dirname, '..', 'scoreboard.sqlite');
-            }
-        } catch (err) {
-            dbPath = './scoreboard.sqlite';
+        let dbPath = path.join(__dirname, '..', 'scoreboard.sqlite');
+        let dbPathResolved = false;
+
+        async function ensureDbPath() {
+            if (dbPathResolved) return dbPath;
+            try {
+                const p = await ipcRenderer.invoke('get-db-path');
+                if (p) dbPath = p;
+            } catch (e) { }
+            dbPathResolved = true;
+            return dbPath;
         }
 
         var configEquipaTime = null;
@@ -273,7 +273,8 @@
             });
         }
 
-        function getConfigSetup() {
+        async function getConfigSetup() {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             db.all("SELECT * FROM config_jogo_setup where id = 1", function (err, rows) {
                 if (!err && rows && rows[0]) {
@@ -285,7 +286,8 @@
             });
         }
 
-        function getConfigEquipaTime(id) {
+        async function getConfigEquipaTime(id) {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             db.all("SELECT * FROM config_equipas_times where id =" + id, function (err, rows) {
                 if (err) {
@@ -315,7 +317,8 @@
             }
         }
 
-        function getConfigEquipaTimeJogadores(timeId) {
+        async function getConfigEquipaTimeJogadores(timeId) {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             db.all("SELECT * FROM config_equipas_times_jogadores where time_id =" + timeId + " order by COALESCE(list, id) asc", function (err, rows) {
                 if (err) {
@@ -462,12 +465,14 @@
             return (inicial + " " + sobrenome).toUpperCase();
         }
 
-        ipcRenderer.on('reloadAll', function (event, args) {
+        ipcRenderer.on('reloadAll', async function (event, args) {
+            await ensureDbPath();
             getConfigSetup();
             getConfigEquipaTime("2");
         });
 
-        window.onload = function () {
+        window.onload = async function () {
+            await ensureDbPath();
             getConfigEquipaTime("2");
             getConfigSetup();
         };

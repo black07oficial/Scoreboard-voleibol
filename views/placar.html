@@ -1304,19 +1304,18 @@
         const { ipcRenderer } = require('electron');
         const path = require('path');
 
-        // Definir caminho absoluto do banco de dados
-        let dbPath;
-        try {
-            const isPackaged = !process.execPath.includes('node_modules');
-            if (isPackaged) {
-                dbPath = path.join(path.dirname(process.execPath), 'scoreboard.sqlite');
-            } else {
-                dbPath = path.join(__dirname, '..', 'scoreboard.sqlite');
-            }
-            console.log('[Placar] DB Path:', dbPath);
-        } catch (err) {
-            console.error('[Placar] Erro ao definir dbPath:', err);
-            dbPath = './scoreboard.sqlite';
+        let dbPath = path.join(__dirname, '..', 'scoreboard.sqlite');
+        let dbPathResolved = false;
+
+        async function ensureDbPath() {
+            if (dbPathResolved) return dbPath;
+            try {
+                const p = await ipcRenderer.invoke('get-db-path');
+                if (p) dbPath = p;
+            } catch (e) { }
+            dbPathResolved = true;
+            console.log('[Placar] DB Path resolvido:', dbPath);
+            return dbPath;
         }
 
         function compactIntString(value, fallbackZero = false) {
@@ -1717,7 +1716,8 @@
     <!-- Configuracoes: Equipas/Geral -->
     <script>
         var configEquipaGeral;
-        ipcRenderer.on('reloadAll', (event, args) => {
+        ipcRenderer.on('reloadAll', async (event, args) => {
+            await ensureDbPath();
             getConfigEquipaGeral();
             getConfigSetup()
             getConfigEquipaTime("1");
@@ -1725,6 +1725,7 @@
             getConfigCores();
         })
         async function getConfigEquipaGeral() {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             _ = await db.serialize(() => {
                 db.all("SELECT * FROM config_equipas_geral where id = 1", (err, rows) => {
@@ -1759,6 +1760,7 @@
         var configEquipaTime01;
         var configEquipaTime02;
         async function getConfigEquipaTime(id) {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             _ = await db.serialize(() => {
                 db.all("SELECT * FROM config_equipas_times where id =" + id, (err, rows) => {
@@ -1805,6 +1807,7 @@
 
         var configSetup;
         async function getConfigSetup() {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             _ = await db.serialize(() => {
                 db.all("SELECT * FROM config_jogo_setup", (err, rows) => {
@@ -1863,6 +1866,7 @@
 
         var configCores;
         async function getConfigCores() {
+            await ensureDbPath();
             var db = new sqlite3.Database(dbPath);
             _ = await db.serialize(() => {
                 db.all("SELECT * FROM config_cores", (err, rows) => {
@@ -1936,7 +1940,8 @@
         function StartConfigCores() {
             getConfigCores();
         }
-        window.onload = function () {
+        window.onload = async function () {
+            await ensureDbPath();
             StartConfigEquipesGeral();
             StartConfigEquipes();
             StartConfigSetup();
